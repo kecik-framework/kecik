@@ -13,5 +13,5 @@
     },
     "autoload": {
         "psr-0": {"Kecik": "src/"}
-    },
+    }
 }
