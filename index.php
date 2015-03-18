@@ -2,7 +2,7 @@
 $manual = FALSE;
 require_once __DIR__ . "/../vendor/autoload.php";
 
-$app = new Kecik\Kecik();
+$app = new \Kecik\Kecik();
 
 $app->config->set('path.assets', 'assets');
 $app->config->set('path.app', 'app');
