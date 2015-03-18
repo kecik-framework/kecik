@@ -6,29 +6,28 @@
  * @copyright 	2015 Dony Wahyu Isp
  * @link 		http://github.io/kecik
  * @license		GPL
- * @version 	1.0.0alpha
+ * @version 	1.0.1alpha
  * @package		Kecik
  *
  *----------------------------------------
  * INDEX CODE
  *----------------------------------------
  * Keterangan								Baris Code
- * + Controller Class ......................... 47
+ * + Controller Class ......................... 46
  *   - Custom Constructor ..................... 53
- *   - Custom Fungsi .......................... 59
- * + Model Class .............................. 81
- * 	 - Custom Code save ....................... 108
- *   - Custom Code  delete .................... 130
- * 	 - Custom Fungsi Model .................... 139
- * 	 - Custom Code Inisialisasi Model ......... 168
- * + Config Class ............................. 212
- * + AssetsBase Class ......................... 271
- * + Assets Class ............................. 361
- * + Url Class ................................ 401
- * + Route Class .............................. 472
- * + Input Class .............................. 673
- * + Kecik Class .............................. 723
- * + Manual ................................... 885
+ *   - Custom Fungsi .......................... 58
+ * + Model Class .............................. 80
+ * 	 - Custom Code save ....................... 107
+ *   - Custom Code  delete .................... 129
+ * 	 - Custom Fungsi Model .................... 138
+ * 	 - Custom Code Inisialisasi Model ......... 167
+ * + Config Class ............................. 211
+ * + AssetsBase Class ......................... 270
+ * + Assets Class ............................. 360
+ * + Url Class ................................ 400
+ * + Route Class .............................. 480
+ * + Input Class .............................. 681
+ * + Kecik Class .............................. 731
  **/
 
 namespace Kecik;
@@ -66,7 +65,7 @@ class Controller {
 	 * @param string $file
 	 * @param array $param
 	 **/
-	protected function view($file, $param) {
+	protected function view($file, $param=array()) {
 		extract($param);
 		include Config::get('path.app').'/views/'.$file.'.php';
 	}
@@ -76,7 +75,7 @@ class Controller {
  * Model
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0.0alpha
+ * @since 		1.0.1alpha
  **/
 class Model {
 	protected $_field = array();
@@ -98,10 +97,10 @@ class Model {
 		if ($this->table != '') {
 			// Untuk menambah record
 			if ($this->add == TRUE) {
-				$sql ="INSERT INTO $this->table ($this->fields) VALUES ($this->values)";
+				$sql ="INSERT INTO `$this->table` ($this->fields) VALUES ($this->values)";
 			// Untuk mengupdate record
 			} else {
-				$sql ="UPDATE $this->table SET $this->updateVar $this->_where";
+				$sql ="UPDATE `$this->table` SET $this->updateVar $this->_where";
 			}
 
 			//silakan tambah code database sendiri disini
@@ -185,7 +184,7 @@ class Model {
 		$updateVar = array();
 		while (list($id, $value) = each($values)){
 			$values[$id] = "'$values[$id]'";
-			$updateVar[] = "$fields[$id] = '$values[$id]'";
+			$updateVar[] = "$fields[$id] = $values[$id]";
 		}
 		$this->values = implode(',', $values);
 		$this->updateVar = implode(',', $updateVar);
@@ -396,7 +395,7 @@ class Assets {
  * Url
  * @package Kecik
  * @author Dony Wahyu Isp
- * @since 1.0.0alpha
+ * @since 1.0.1alpha
  **/
 class Url {
 	/**
@@ -448,7 +447,16 @@ class Url {
 	 * @param string link
 	 **/
 	public function redirect($link) {
-		header('Location: '.$link);
+		header('Location: '.$this->_base_url.$link);
+	}
+
+	/**
+	 * to
+	 * @param string $link
+	 * @return echo link
+	 **/
+	public function to($link) {
+		echo $this->_base_url.$link;
 	}
 
 	/**
@@ -718,7 +726,7 @@ class Input {
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0.0alpha
+ * @since 		1.0.1alpha
  **/
 class Kecik {
 	/**
@@ -729,10 +737,22 @@ class Kecik {
 	/**
 	 * @var Closure Object $callable
 	 **/
-	var $callable;
+	private $callable;
+	/**
+	 * @var Bool $routedStatus
+	 **/
+	private $routedStatus = FALSE;
 
+	/**
+	 * @var string $fullrender
+	 **/
 	private static $fullrender = '';
 
+	/**
+	 * autoload
+	 * autoload untuk MVC
+	 * @param string $class
+	 **/
 	public function autoload($class) {
 		$class_array = explode('\\', $class);
 		include $this->config->get('path.app').'/'.strtolower($class_array[0]).'s/'.$class_array[1].'.php';
@@ -753,6 +773,11 @@ class Kecik {
 
 	}
 
+	/**
+	 * setCallable
+	 * untuk setting paramater fungsi pada get atau post
+	 * @param array $args
+	 **/
 	private function setCallable($args) {
 		$route = array_shift($args);
 		$real_params = array();
@@ -764,6 +789,7 @@ class Kecik {
 
 		if ($route == '/' && count( $this->route->_getParams() ) <= 0 ) {
 			$this->callable = array_pop($args);
+			$this->routedStatus = TRUE;
 		} else {
 			$p = explode('/', $route);
 
@@ -777,6 +803,7 @@ class Kecik {
 				} else {
 					if ( in_array($value, $this->route->_getParams()) ) {
 						$this->callable = array_pop($args);
+						$this->routedStatus = TRUE;
 					}
 				}
 			}
@@ -793,6 +820,7 @@ class Kecik {
 	public function get() {
 
 		if (is_callable($this->callable) ) {
+			$this->routedStatus = FALSE;
 			return $this;
 		}
 
@@ -810,6 +838,7 @@ class Kecik {
 	 **/
 	public function post() {
 		if (is_callable($this->callable) ) {
+			$this->routedStatus = FALSE;
 			return $this;
 		}
 
@@ -820,10 +849,17 @@ class Kecik {
 		return $this;
 	}
 
+	/**
+	 * template
+	 * Untuk menerapkan sebuah template
+	 * @param string template
+	 **/
 	public function template($template) {
-		$tpl = file_get_contents($this->config->get('path.template').'/'.$template.'.php');
-		self::$fullrender = str_replace(array('{{', '}}'), array('<?php', '?>'), $tpl);
-		self::$fullrender = str_replace(array('@controller'), array('<?php call_user_func_array($this->callable, $this->route->getParams()) ?>'), self::$fullrender);
+		if ($this->routedStatus) {
+			$tpl = file_get_contents($this->config->get('path.template').'/'.$template.'.php');
+			self::$fullrender = str_replace(array('{{', '}}'), array('<?php', '?>'), $tpl);
+			self::$fullrender = str_replace(array('@controller'), array('<?php call_user_func_array($this->callable, $this->route->getParams()) ?>'), self::$fullrender);
+		}
 	}
 
 	/**
@@ -855,6 +891,11 @@ class Kecik {
 		}
 	}
 
+	/**
+	 * error
+	 * Untuk menampilkan error http response
+	 * @param integer $code
+	 **/
 	public function error($code) {
 		header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[$code]);
 		if ($this->config->get("error.$code") != '') {
@@ -870,413 +911,3 @@ class Kecik {
 		exit();
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-global $manual;
-if (!isset($manual)) {?>
-	<html>
-<head>
-	<title>Cara Menggunakan Framework Kecik</title>
-
-	<style type="text/css">
-		h1,h2,h3,h4,hr{padding:0; margin:0;}
-		section.step{margin-bottom: 50px}
-		section#footer{font-weight: bold; font-size: 13px;}
-		table{border: 0; margin: 0px; padding: 0px;}
-		table.copy{font-weight: bold;}
-		table.copy td.field{font-size: 15px; width:30px;}
-		table.copy td.value{font-size: 18px;}
-	</style>
-</head>
-<body>
-	<h1>CARA MENGGUNAKAN FRAMEWORK KECIK</h1>
-	<hr />
-	<section id="description">
-		<h2>Framework Kecik</h2>
-		<p align="justify">
-			Merupakan framework dengan satu file system yang sangat sederhana, jadi ini bukan merupakan sebuah framework yang 
-			kompleks, tapi anda dapat membangun dan mengembangkan framework ini untuk menjadi sebuah framework yang kompleks.
-			Framework ini mendukung MVC sederhana dimana anda masih harus mengcustom beberapa code untuk mendapatkan MVC yang
-			kompleks, untuk Model hanya sebatas men-generate perintah SQL untuk INSERT, UPDATE dan DELETE saja, jadi untuk 
-			code pengeksekusian SQL nya tersebut silakan dibuat sendiri dengan bebas mau menggunakan library database manapun.
-			Framework ini juga mendukung Composer, jadi bisa memudahkan anda untuk menambahkan sebuah library dari composer.
-		</p>
-		<table class="copy">
-			<tr>
-				<td class="field">Nama</td> 
-				<td class="value">: Framework Kecik</td>
-			</tr>
-			<tr>
-				<td class="field">Pembuat</td>
-				<td class="value">: Dony Wahyu Isp</td>
-			</tr>
-			<tr>
-				<td class="field">Versi</td> 
-				<td class="value">: 1.0.0alpha</td>
-			<tr>
-				<td class="field">Kota</td> 
-				<td class="value">: Palembang</td>
-			</tr>
-		</table>
-	</section>
-
-	<br />
-	<br />
-	<hr />
-
-	<section id="step1" class="step">
-		<h3>Langkah Pertama:</h3>
-		<p align="justify">
-			Install composer pada sistem operasi anda, jika belum terinstall anda dapat mendownload melalui link
-			<a href="https://getcomposer.org">Composer</a>, setelah melakukan download dan installasi, selanjutnya anda perlu
-			membuat file <strong>composer.json</strong> dengan isi file berikut ini.
-			<pre>
-				<span style='color:#800080; '>{</span>
-				    <span style='color:#800000; '>"</span><span style='color:#0000e6; '>require</span><span style='color:#800000; '>"</span><span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>
-				        <span style='color:#800000; '>"</span><span style='color:#0000e6; '>monolog/monolog</span><span style='color:#800000; '>"</span><span style='color:#800080; '>:</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>1.2.*</span><span style='color:#800000; '>"</span>
-				    <span style='color:#800080; '>}</span>
-				<span style='color:#800080; '>}</span>
-			</pre>
-			Selanjutnya jalankan perintah berikut ini pada console/cmd
-			<pre>
-				composer <span style='color:#800000; font-weight:bold; '>install</span>
-			</pre>
-			Tunggu beberapa menit hingga semua berjalan tanpa error.
-		</p>
-		<p>
-			Untuk cara penggunaan composer tidak akan dibahas disini, anda dapat mempelajarinya dari dokumentasi yang disedia
-			di website composer, baik secara online maupun offline.
-		</p>
-	</section>
-
-	<section id="step2" class="step">
-		<h3>Langkah Kedua:</h3>
-		<p align="justify">
-			Buatlah sebuah file index.php atau apapun dengan tuliskan code dibawah ini:
-			<pre>
-				<span style='color:#5f5035; background:#ffffe8; '>&lt;?php</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$manual</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#000000; background:#ffffe8; '> FALSE</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#800000; background:#ffffe8; font-weight:bold; '>require</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>"system.php"</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			</pre>
-			Variabel $manual di set FALSE agar tidak menampilkan cara pemakaian pada project yang kita buat.<br />
-			Required "system.php" untuk memasukan file system framework ke project yang ingin kita buat. <br />
-			Lalu coba jalankan, jika hanya menampilkan halaman kosong tanpa pesan error berarti sudah berhasil.
-		</p>
-
-	</section>
-
-	<section id="step3" class="step">
-		<h3>Langkah Ketiga:</h3>
-		<p align="justify">
-			Buat variabel dari Class Framework Kecik seperti dibawah ini
-			<pre>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>new</span><span style='color:#000000; background:#ffffe8; '> Kecik\Kecik</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			</pre>
-			Lalu coba jalankan kembali, jika tidak terdapat error berarti anda sudah sukses sampai tahap ini.
-		</p>
-	</section>
-
-	<section id="step4" class="step">
-		<h3>Langkah Keempat:</h3>
-		<p align="justify">
-			Langkah selanjutnya adalah membuat Route untuk index dan menjalankan framework, berikut code nya:
-			<pre>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'/'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>function</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800080; background:#ffffe8; '>{</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '>	</span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>echo</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'Hello Kecik'</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#800080; background:#ffffe8; '>}</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>run</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			</pre>
-			Setelah code ditulis coba jalankan, maka akan tampil tulisan <strong>"Hello Kecik"</strong> itu berarti anda telah berhasil
-			membuat tampilan untuk route index/halaman utama project anda.
-		</p>
-		<p align="justify">
-			Tampilan kesuluruhan code:
-			<pre>
-				<span style='color:#5f5035; background:#ffffe8; '>&lt;?php</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$manual</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#000000; background:#ffffe8; '> FALSE</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#800000; background:#ffffe8; font-weight:bold; '>require</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>"system.php"</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>new</span><span style='color:#000000; background:#ffffe8; '> Kecik\Kecik</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'/'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>function</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800080; background:#ffffe8; '>{</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '>	</span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>echo</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'Index'</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#800080; background:#ffffe8; '>}</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>run</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			</pre>
-		</p>
-	</section>
-	<hr />
-	<section id="dep1" class="step">
-		<h2>Mengenal Lebih Dalam Lagi Framework Kecik</h2>
-		<section>
-			<h3>* Route</h3>
-			<p align="justify">
-				Route yang terdapat pada framework kecik saat ini adalah get dan post, tapi untuk sementara ini belum memiliki
-				perbedaan, untuk penggunaannya terdapat beberapa, dan paling sederhana adalah tanpa menggunakan Controller, variabel
-				eksternal dan template, seperti berikut ini:
-			<pre>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'/'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>function</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800080; background:#ffffe8; '>{</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '>	</span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>echo</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'Hello Kecik'</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#800080; background:#ffffe8; '>}</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			</pre>
-
-				Dengan menggunakan parameter:
-			<pre>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'hello/:nama'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>function</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$nama</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800080; background:#ffffe8; '>{</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '>	</span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>echo</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'Hello '</span><span style='color:#808030; background:#ffffe8; '>.</span><span style='color:#797997; background:#ffffe8; '>$nama</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#800080; background:#ffffe8; '>}</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			</pre>
-				Parameter pada route menggunakan : pada bagian depannya, sedangkan untuk parameter yang bersifat optional bisa menggunakan (:)<br />
-				contoh: hello/(:nama)
-
-				<br />
-				<br />
-				Dengan menggunakan Controller:
-			<pre>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'selamat_datang/:nama'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>new</span><span style='color:#000000; background:#ffffe8; '> Controller\Welcome</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>function</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$controller</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$nama</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>use</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800080; background:#ffffe8; '>{</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '>	</span><span style='color:#797997; background:#ffffe8; '>$controller</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>index</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$nama</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#800080; background:#ffffe8; '>}</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			</pre>
-				Pastikan sebelumnya sudah membuat Controller yang ingin digunakan pada route tersebut.
-				
-				<br />
-				<br />
-				Dengan menggunakan Template:
-			<pre>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'hello/:nama'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>function</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$nama</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800080; background:#ffffe8; '>{</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '>	</span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>echo</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'Hello '</span><span style='color:#808030; background:#ffffe8; '>.</span><span style='color:#797997; background:#ffffe8; '>$nama</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#800080; background:#ffffe8; '>}</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>template</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'template_kecik'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'selamat_datang/:nama'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>new</span><span style='color:#000000; background:#ffffe8; '> Controller\Welcome</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>function</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$controller</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$nama</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>use</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800080; background:#ffffe8; '>{</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#000000; background:#ffffe8; '>	</span><span style='color:#797997; background:#ffffe8; '>$controller</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>index</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$nama</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#800080; background:#ffffe8; '>}</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>template</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'template_kecik'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			</pre>
-
-				<strong><i>Catatan:</i></strong>
-				<hr />
-				Berlaku juga pada penggunaan post, untuk menggunakan controller dan template ada beberapa tahap yang perlu dipersiapkan
-				<h4>Pertama:</h4>
-				<p align="justify">
-					Setting path atau lokasi untuk assets, applikasi(MVC), dan template, berikut cara setting:
-			<pre>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>config</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>set</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'path.assets'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'assets'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>config</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>set</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'path.app'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'app'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>config</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>set</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'path.template'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'templates'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			</pre>
-				</p>
-				<h4>Kedua:</h4>
-				<p align="justify">
-					Buatlah folder/direktory berdasarkan settingan path sebelumnya.
-				</p>
-				<h4>Ketiga:</h4>
-				<p align="justify">
-					Untuk folder/direktori assets dan applikasi pastikan didalamnya terdapat sub folder/direktori<br />
-			<pre>
-				+-- Assets
-				  |-- css
-				  |--js
-				  |--images
-			</pre>
-			<pre>
-				+--App
-				  |--controllers
-				  |--models
-				  |--views
-			</pre>
-				</p>
-			</p>
-		</section>
-
-		<section>
-			<h3>* Config</h3>
-			<p align="justify">
-				Untuk project yang besar dan tidak sederhana kita memerlukan beberapa setting/konfigurasi, untuk melakukan
-				setting/konfigurasi framework ini juga dilengkapi config, baik untuk menyetting ataupun untuk membaca settingan
-			</p>
-			<h4> - set()</h4>
-			<p align="justify">
-				Gunakan fungsi set pada config untuk melakukan settingan nilai/menambah settingan
-		<pre>
-			<span style='color:#000000; background:#ffffe8; '>set</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$key</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$value</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-				paramater <strong>$key</strong> merupakan parameter kunci untuk sebuah settingan<br />
-				paramater <strong>$value</strong> merupakan parameter nilai dari sebuah settingan<br />
-				
-				<br />
-				<strong><i>Contoh:</i></strong>
-				<hr />
-		<pre>
-			<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>config</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>set</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'path.assets'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'assets'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-			</p>
-		
-			<h4> - get()</h4>
-			<p align="justify">
-				Gunakan fungsi get untuk mendapatkan nilai dari suatu settingan
-		<pre>
-			<span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$key</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-				parameter <strong>$key</strong> merupakan parameter kunci untuk sebuah settingan yang ingin diambil nilainya<br />
-
-				<br />
-				<strong><i>Contoh:</i></strong>
-				<hr />
-		<pre>
-			<span style='color:#797997; background:#ffffe8; '>$asset_path</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>config</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'path.assets'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-			</p>
-
-		</section>
-
-		<section>
-			<h3>* Assets</h3>
-			<p align="justify">
-				Assets sangat diperlukan dalam mempermudah pekerjaan kita untuk menambahkan atau menghilangkan assets seperti css,
-				js dan images, sangat berguna juga untuk membuat template, dan assets juga bisa disesuaikan bedasarkan controller
-				yang digunakan. Assets css dan js memiliki struktur yang sama sedangkan untuk images berbeda.
-			</p>
-
-			<h4> - add()</h4>
-			<p align="justify">
-				Fungsi ini digunakan untuk menambahkan sebuah file assets baik css maupun js.
-
-		<pre>
-			<span style='color:#000000; background:#ffffe8; '>add</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$file</span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#0000e6; background:#ffffe8; '>''</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-				paramater <strong>$file</strong> berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
-				<br />
-				<strong><i>Contoh:</i></strong>
-				<hr />
-		<pre>
-			<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>assets</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>css</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#400000; background:#ffffe8; '>add</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'boostrap'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>assets</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>js</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#400000; background:#ffffe8; '>add</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'jquery.min'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-			</p>
-
-			<h4> - delete()</h4>
-			<p align="justify">
-				Fungsi ini digunakan untuk menghapus sebuah file assets yang ingin diload baik css maupun js.
-		<pre>
-			<span style='color:#000000; background:#ffffe8; '>delete</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$file</span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#0000e6; background:#ffffe8; '>''</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-				paramater <strong>$file</strong> berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
-				<br />
-				<strong><i>Contoh:</i></strong>
-				<hr />
-		<pre>
-			<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>assets</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>css</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#400000; background:#ffffe8; '>delete</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'boostrap'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>assets</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>js</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#400000; background:#ffffe8; '>delete</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'jquery.min'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-			</p>
-
-			<h4> - render()</h4>
-			<p align="justify">
-				Fungsi ini digunakan untu merender sebuah daftar asset atau salah satu asset yang ingin diload baik css maupun js
-		<pre>
-			<span style='color:#000000; background:#ffffe8; '>render</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$file</span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#0000e6; background:#ffffe8; '>''</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-				paramater <strong>$file</strong> berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
-				<br />
-				<strong><i>Contoh:</i></strong>
-				<hr />
-		<pre>
-			<span style='color:#800000; background:#ffffe8; font-weight:bold; '>echo</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>assets</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>css</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>render</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			<span style='color:#800000; background:#ffffe8; font-weight:bold; '>echo</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>assets</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>js</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>render</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			<span style='color:#696969; background:#ffffe8; '>// atau spesifik render</span><span style='color:#000000; background:#ffffe8; '></span>
-			<span style='color:#800000; background:#ffffe8; font-weight:bold; '>echo</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>assets</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>css</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>render</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'boostrap'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			<span style='color:#800000; background:#ffffe8; font-weight:bold; '>echo</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>assets</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>js</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>render</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'boostrap.min'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-			</p>
-
-			<h4> - images()</h4>
-			<p align="justify">
-				Fungsi ini digunakan untuk mendapatkan link file assets untuk gambar.
-		<pre>
-			<span style='color:#000000; background:#ffffe8; '>images</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$file</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-				paramater <strong>$file</strong> berisikan nama file assets gambar yang ingin digunakan.
-				<br />
-				<strong><i>Contoh:</i></strong>
-				<hr />
-		<pre>
-			<span style='color:#a65700; '>&lt;</span><span style='color:#800000; font-weight:bold; '>img</span><span style='color:#274796; '> </span><span style='color:#074726; '>src</span><span style='color:#808030; '>=</span><span style='color:#0000e6; '>"</span><span style='color:#5f5035; background:#ffffe8; '>&lt;?php</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>echo</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>assets</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>images</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'kecik.jpg'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#5f5035; background:#ffffe8; '>?></span><span style='color:#0000e6; '>"</span><span style='color:#274796; '> </span><span style='color:#a65700; '>/></span>
-		</pre>
-			</p>
-		</section>
-
-		<section>
-			<h3>* Input</h3>
-			<p align="justify">
-				Input merupakan bentuk lain dari penggunaan $_GET, $_POST dan $_SERVER
-			</p>
-			
-			<h4> - get()</h4>
-			<p align="justify">
-				Anda dapat menggunakan fungsi get untuk mendapatkan nilai dari $_GET
-		<pre>
-			<span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$var</span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#0000e6; background:#ffffe8; '>''</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-				paramater <strong>$var</strong> berisikan nama dari variabel get
-				<br />
-				<strong><i>Contoh:</i></strong>
-				<hr />
-		<pre>
-			<span style='color:#400000; background:#ffffe8; '>print_r</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$</span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>this</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>input</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			<span style='color:#797997; background:#ffffe8; '>$x</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$</span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>this</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>input</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>get</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'x'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-			</p>
-
-			<h4> - post()</h4>
-			<p align="justify">
-				Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari $_POST
-		<pre>
-			<span style='color:#000000; background:#ffffe8; '>post</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$var</span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#0000e6; background:#ffffe8; '>''</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>	
-				paramater <strong>$var</strong> berisikan nama dari variabel post
-				<br />
-				<strong><i>Contoh:</i></strong>
-				<hr />
-		<pre>
-			<span style='color:#400000; background:#ffffe8; '>print_r</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$</span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>this</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>input</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>post</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			<span style='color:#797997; background:#ffffe8; '>$x</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$</span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>this</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>input</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>post</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'x'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-			</p>
-
-			<h4> - server()</h4>
-			<p align="justify">
-				Anda dapat menggunakan fungsi server untuk mendapatkan nilai dari $_SERVER
-		<pre>
-			<span style='color:#000000; background:#ffffe8; '>server</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$var</span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#0000e6; background:#ffffe8; '>''</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-				paramater <strong>$var</strong> berisikan nama dari variabel server
-				<br />
-				<strong><i>Contoh:</i></strong>
-				<hr />
-		<pre>
-			<span style='color:#400000; background:#ffffe8; '>print_r</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#797997; background:#ffffe8; '>$</span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>this</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>input</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>server</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-			<span style='color:#797997; background:#ffffe8; '>$host</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#797997; background:#ffffe8; '>$</span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>this</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>input</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>server</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'HTTP_HOST'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-		</pre>
-			</p>
-		</section>
-	</section>
-
-	<section id="footer">
-		&copy;2015 Dony Wahyu Isp, Palembang
-	</section>
-</body>
-</html>
-<?php 
-	}
-unset($manual); 
-?>
