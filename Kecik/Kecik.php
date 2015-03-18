@@ -881,7 +881,7 @@ class Kecik {
 
 
 
-
+global $manual;
 if (!isset($manual)) {?>
 	<html>
 <head>
@@ -1276,4 +1276,7 @@ if (!isset($manual)) {?>
 	</section>
 </body>
 </html>
-<?php } ?>
+<?php 
+	}
+unset($manual); 
+?>
