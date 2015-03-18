@@ -14,7 +14,6 @@ CHANGELOG
 1.0.0alpha
 -----
 
- * tambahan route
+ * membuat core/system framework
  * tambahan mvc
- * added a way to set the process name of a command
 
