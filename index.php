@@ -1,6 +1,6 @@
 <?php
 $manual = FALSE;
-require "system.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 $app = new Kecik\Kecik();
 
