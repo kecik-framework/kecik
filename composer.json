@@ -1,5 +1,5 @@
 {
-    "name": "dnaextrim/kecik",
+    "name": "kecik/kecik",
     "description": "Single File Framework",
     "license": "GPL",
     "authors": [
@@ -8,5 +8,10 @@
             "email": "dna.extrim@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "psr-0": {"Kecik": "src/"}
+    },
 }
