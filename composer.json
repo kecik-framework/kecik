@@ -1,0 +1,12 @@
+{
+    "name": "dnaextrim/kecik",
+    "description": "Single File Framework",
+    "license": "GPL",
+    "authors": [
+        {
+            "name": "Dony Wahyu Isp",
+            "email": "dna.extrim@gmail.com"
+        }
+    ],
+    "require": {}
+}
