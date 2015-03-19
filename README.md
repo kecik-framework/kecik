@@ -11,9 +11,11 @@ Kota 	: Palembang
 ```
 
 **Cara Cepat Memulai**
+
 [**Langkah Pertama**](#langkah-pertama) | [**Langkah Kedua**](#langkah-kedua) | [**Langkah Ketiga**](#langkah-ketiga) | [**Langkah Keempat**](#langkah-keempat) 
 
 **Lebih Dalam**
+
 [**Mengenal Lebih Dalam**](#mengenal-lebih-dalam-lagi) | [**Route**](#route) | [**Config**](#config) | [**Assets**](#assets) | [**Input**](#input) | [**MVC**](#mvc) | [**Controller**](#controller) | [**Model**](#model) | [**View**](#view) | [**Template**](#template) 
 
 ----
