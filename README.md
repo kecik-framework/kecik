@@ -3,11 +3,12 @@
 
 Merupakan framework dengan satu file system yang sangat sederhana, jadi ini bukan merupakan sebuah framework yang kompleks, tapi anda dapat membangun dan mengembangkan framework ini untuk menjadi sebuah framework yang kompleks. Framework ini mendukung **MVC** sederhana dimana anda masih harus mengcustom beberapa code untuk mendapatkan MVC yang kompleks, untuk Model hanya sebatas men-generate perintah SQL untuk **`INSERT`, `UPDATE` dan `DELETE`** saja, jadi untuk code pengeksekusian SQL nya tersebut silakan dibuat sendiri dengan bebas mau menggunakan library database manapun. Framework ini juga mendukung Composer, jadi bisa memudahkan anda untuk menambahkan sebuah library dari composer. 
 
-> **Nama 	: Framework Kecik**
-**Pembuat 	: Dony Wahyu Isp**
-**Versi 	: 1.0.1alpha**
-**Kota 	: Palembang**
-
+```
+Nama 	: Framework Kecik
+Pembuat 	: Dony Wahyu Isp
+Versi 	: 1.0.1alpha
+Kota 	: Palembang
+```
 
 **Cara Cepat Memulai**
 [**Langkah Pertama**](#langkah-pertama) | [**Langkah Kedua**](#langkah-kedua) | [**Langkah Ketiga**](#langkah-ketiga) | [**Langkah Keempat**](#langkah-keempat) 
@@ -154,18 +155,17 @@ Buatlah folder/direktory berdasarkan settingan path sebelumnya.
 Ketiga:
 
 Untuk folder/direktori assets dan applikasi pastikan didalamnya terdapat sub folder/direktori
+```
++-- Assets
+|   +-- css
+|   +-- js
+|   +-- images
 
->+-- Assets
-  |-- css
-  |--js
-  |--images
-
-
->+--App
-  |--controllers
-  |--models
-  |--views
-	
++--App
+|  +-- controllers
+|  +-- models
+|  +-- views
+```
 
 Config
 -------
@@ -604,3 +604,5 @@ $app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nam
 	$controller->welcome($nama);
 })->template('template');
 ```
+
+
