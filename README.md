@@ -180,7 +180,10 @@ Gunakan fungsi set pada config untuk melakukan settingan nilai/menambah settinga
 set($key, $value)
 ```	
 > paramater **``$key``** merupakan parameter kunci untuk sebuah settingan
+<<<<<<< HEAD
 > 
+=======
+>>>>>>> 8084f469985c8d9b23250be3260890365bbff2bd
 > paramater **``$value``** merupakan parameter nilai dari sebuah settingan
 
 **Contoh:**
