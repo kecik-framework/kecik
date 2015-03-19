@@ -117,7 +117,7 @@ $app->get('hello/:nama', function ($nama) {
 ```
 Parameter pada route menggunakan ``:`` pada bagian depannya, sedangkan untuk parameter yang bersifat optional bisa menggunakan ``(:)``
 
->**contoh:** hello/(:nama)
+> **contoh:** hello/(:nama)
 
 Dengan menggunakan Controller:
 ```php
@@ -139,7 +139,7 @@ $app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($contr
 })->template('template_kecik');
 ```
 
->**Catatan:** Berlaku juga pada penggunaan post, untuk menggunakan controller dan template ada beberapa tahap yang perlu dipersiapkan
+> **Catatan:** Berlaku juga pada penggunaan post, untuk menggunakan controller dan template ada beberapa tahap yang perlu dipersiapkan
 
 **Pertama:**
 
@@ -179,8 +179,9 @@ Gunakan fungsi set pada config untuk melakukan settingan nilai/menambah settinga
 ```php
 set($key, $value)
 ```	
->paramater **``$key``** merupakan parameter kunci untuk sebuah settingan
->paramater **``$value``** merupakan parameter nilai dari sebuah settingan
+> paramater **``$key``** merupakan parameter kunci untuk sebuah settingan
+> 
+> paramater **``$value``** merupakan parameter nilai dari sebuah settingan
 
 **Contoh:**
 ```php
@@ -194,7 +195,7 @@ Gunakan fungsi get untuk mendapatkan nilai dari suatu settingan
 get($key)
 ```
 
->parameter **``$key``** merupakan parameter kunci untuk sebuah settingan yang ingin diambil nilainya
+> parameter **``$key``** merupakan parameter kunci untuk sebuah settingan yang ingin diambil nilainya
 
 **Contoh:**
 ```php
@@ -213,7 +214,7 @@ Fungsi ini digunakan untuk menambahkan sebuah file assets baik css maupun js.
 add($file='')
 ```
 
->paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
+> paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
 
 **Contoh:**
 ```php
@@ -227,7 +228,7 @@ Fungsi ini digunakan untuk menghapus sebuah file assets yang ingin diload baik c
 ```php
 delete($file='')
 ```
->paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
+> paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
 
 **Contoh:**
 ```php
@@ -242,7 +243,7 @@ Fungsi ini digunakan untu merender sebuah daftar asset atau salah satu asset yan
 render($file='')
 ```		
 
->paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
+> paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
 
 **Contoh:**
 ```php
@@ -260,7 +261,7 @@ Fungsi ini digunakan untuk mendapatkan link file assets untuk gambar.
 images($file)
 ```
 
->paramater **``$file``** berisikan nama file assets gambar yang ingin digunakan.
+> paramater **``$file``** berisikan nama file assets gambar yang ingin digunakan.
 
 **Contoh:**
 ```php
@@ -280,7 +281,7 @@ Anda dapat menggunakan fungsi get untuk mendapatkan nilai dari ``$_GET``
 get($var='')
 ```
 
->paramater **``$var``** berisikan nama dari variabel get
+> paramater **``$var``** berisikan nama dari variabel get
 
 **Contoh:**
 ```php
@@ -295,7 +296,7 @@ Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari ``$_POST``
 post($var='')
 ```
 
->paramater **``$var``** berisikan nama dari variabel post
+> paramater **``$var``** berisikan nama dari variabel post
 
 **Contoh:**
 ```php
@@ -310,7 +311,7 @@ Anda dapat menggunakan fungsi server untuk mendapatkan nilai dari ``$_SERVER``
 server($var='')
 ```		
 
->paramater **``$var``** berisikan nama dari variabel server
+> paramater **``$var``** berisikan nama dari variabel server
 
 **Contoh:**
 ```php
@@ -593,8 +594,9 @@ Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat
 </html>
 ```
 
->Tanda **`{{`** dan **`}}`** hanya tag pengganti untuk tag **`<?php`** dan **`>`** ini hanya untuk kebutuhan template engine sederhana saja, tapi anda tetap bisa menggunakan tag php
-Sedangkan **`@controller`** adalah untuk meletakan hasil output dari controller.
+> Tanda **`{{`** dan **`}}`** hanya tag pengganti untuk tag **`<?php`** dan **`>`** ini hanya untuk kebutuhan template engine sederhana saja, tapi anda tetap bisa menggunakan tag php
+> 
+> Sedangkan **`@controller`** adalah untuk meletakan hasil output dari controller.
 
 Cara menggunakan template tersebut pada route adalah sebagai berikut.
 ```php
