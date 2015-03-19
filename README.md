@@ -179,8 +179,8 @@ Gunakan fungsi set pada config untuk melakukan settingan nilai/menambah settinga
 ```php
 set($key, $value)
 ```	
->paramater **``$key``** merupakan parameter kunci untuk sebuah settingan
->paramater **``$value``** merupakan parameter nilai dari sebuah settingan
+> paramater **``$key``** merupakan parameter kunci untuk sebuah settingan
+> paramater **``$value``** merupakan parameter nilai dari sebuah settingan
 
 **Contoh:**
 ```php
