@@ -24,7 +24,7 @@ Langkah Pertama
 
 Install composer pada sistem operasi anda, jika belum terinstall anda dapat mendownload melalui link Composer, setelah melakukan download dan installasi, selanjutnya anda perlu membuat file composer.json dengan isi file berikut ini. 
 
-```
+```javascript
 {
     "require": {
         "dnaextrim/kecik": "1.0-alpha"
@@ -32,7 +32,7 @@ Install composer pada sistem operasi anda, jika belum terinstall anda dapat mend
 }
 ```
 Selanjutnya jalankan perintah berikut ini pada console/cmd
-```
+```shell
 composer install		
 ```
 Tunggu beberapa menit hingga semua berjalan tanpa error.
@@ -42,7 +42,7 @@ Langkah Kedua
 [top](#kecik-framework)
 
 Buatlah sebuah file index.php atau apapun dengan tuliskan code dibawah ini:
-```
+```php
 <?php
 require_once "Kecik/Kecik.php";
 // atau untuk composer
@@ -58,7 +58,7 @@ Langkah Ketiga
 [top](#kecik-framework)
 
 Buat variabel dari Class Framework Kecik seperti dibawah ini
-```
+```php
 $app = new Kecik\Kecik();	
 ```
 Lalu coba jalankan kembali, jika tidak terdapat error berarti anda sudah sukses sampai tahap ini. 
@@ -69,7 +69,7 @@ Langkah Keempat
 [top](#kecik-framework)
 
 Langkah selanjutnya adalah membuat Route untuk index dan menjalankan framework, berikut code nya:
-```
+```php
 $app->get('/', function() {
 	echo 'Hello Kecik';
 });
@@ -80,7 +80,7 @@ $app->run();
 Setelah code ditulis coba jalankan, maka akan tampil tulisan **"Hello Kecik"** itu berarti anda telah berhasil membuat tampilan untuk route index/halaman utama project anda.
 
 Tampilan kesuluruhan code:
-```
+```php
 <?php
 $manual = FALSE;
 require "system.php";
@@ -104,13 +104,13 @@ Route
 [top](#kecik-framework)
 
 Route yang terdapat pada framework kecik saat ini adalah get dan post, tapi untuk sementara ini belum memiliki perbedaan, untuk penggunaannya terdapat beberapa, dan paling sederhana adalah tanpa menggunakan Controller, variabel eksternal dan template, seperti berikut ini:
-```
+```php
 $app->get('/', function() {
 	echo 'Hello Kecik';
 });
 ```
 Dengan menggunakan parameter:
-```
+```php
 $app->get('hello/:nama', function ($nama) {
 	echo 'Hello '.$nama;
 });
@@ -120,7 +120,7 @@ Parameter pada route menggunakan ``:`` pada bagian depannya, sedangkan untuk par
 >**contoh:** hello/(:nama)
 
 Dengan menggunakan Controller:
-```
+```php
 $app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($controller, $nama) use ($app) {
 	$controller->index($nama);
 });
@@ -129,7 +129,7 @@ $app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($contr
 Pastikan sebelumnya sudah membuat Controller yang ingin digunakan pada route tersebut.
 
 Dengan menggunakan Template:
-```
+```php
 $app->get('hello/:nama', function ($nama) {
 	echo 'Hello '.$nama;
 })->template('template_kecik');
@@ -144,7 +144,7 @@ $app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($contr
 **Pertama:**
 
 Setting path atau lokasi untuk assets, applikasi(MVC), dan template, berikut cara setting:
-```
+```php
 $app->config->set('path.assets', 'assets');
 $app->config->set('path.app', 'app');
 $app->config->set('path.template', 'templates');
@@ -176,29 +176,28 @@ Untuk project yang besar dan tidak sederhana kita memerlukan beberapa setting/ko
 ####**set()**
 
 Gunakan fungsi set pada config untuk melakukan settingan nilai/menambah settingan
-```
+```php
 set($key, $value)
 ```	
-
 >paramater **``$key``** merupakan parameter kunci untuk sebuah settingan
-paramater **``$value``** merupakan parameter nilai dari sebuah settingan
+>paramater **``$value``** merupakan parameter nilai dari sebuah settingan
 
 **Contoh:**
-```
+```php
 $app->config->set('path.assets', 'assets');
 ```
 
 ####**get()**
 
 Gunakan fungsi get untuk mendapatkan nilai dari suatu settingan
-```
+```php
 get($key)
 ```
 
 >parameter **``$key``** merupakan parameter kunci untuk sebuah settingan yang ingin diambil nilainya
 
 **Contoh:**
-```
+```php
 $asset_path = $app->config->get('path.assets');
 ```
 		
@@ -210,14 +209,14 @@ Assets sangat diperlukan dalam mempermudah pekerjaan kita untuk menambahkan atau
 ####**add()**
 
 Fungsi ini digunakan untuk menambahkan sebuah file assets baik css maupun js.
-```
+```php
 add($file='')
 ```
 
 >paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
 
 **Contoh:**
-```
+```php
 $app->assets->css->add('boostrap');
 $app->assets->js->add('jquery.min');
 ```
@@ -225,13 +224,13 @@ $app->assets->js->add('jquery.min');
 ####**delete()**
 
 Fungsi ini digunakan untuk menghapus sebuah file assets yang ingin diload baik css maupun js.
-```
+```php
 delete($file='')
 ```
 >paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
 
 **Contoh:**
-```
+```php
 $app->assets->css->delete('boostrap');
 $app->assets->js->delete('jquery.min');
 ```
@@ -239,14 +238,14 @@ $app->assets->js->delete('jquery.min');
 ####**render()**
 
 Fungsi ini digunakan untu merender sebuah daftar asset atau salah satu asset yang ingin diload baik css maupun js
-```
+```php
 render($file='')
 ```		
 
 >paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
 
 **Contoh:**
-```
+```php
 echo $app->assets->css->render();
 echo $app->assets->js->render();
 // atau spesifik render
@@ -257,14 +256,14 @@ echo $app->assets->js->render('boostrap.min');
 ####**images()**
 
 Fungsi ini digunakan untuk mendapatkan link file assets untuk gambar.
-```
+```php
 images($file)
 ```
 
 >paramater **``$file``** berisikan nama file assets gambar yang ingin digunakan.
 
 **Contoh:**
-```
+```php
 <img src="<?php echo $app->assets->images('kecik.jpg'); ?>" />
 ```
 
@@ -277,14 +276,14 @@ Input merupakan bentuk lain dari penggunaan ``$_GET``, ``$_POST`` dan ``$_SERVER
 ####**get()**
 
 Anda dapat menggunakan fungsi get untuk mendapatkan nilai dari ``$_GET``
-```
+```php
 get($var='')
 ```
 
 >paramater **``$var``** berisikan nama dari variabel get
 
 **Contoh:**
-```
+```php
 print_r($this->input->get());
 $x = $this->input->get('x');
 ```
@@ -292,14 +291,14 @@ $x = $this->input->get('x');
 #### **post()**
 
 Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari ``$_POST``
-```
+```php
 post($var='')
 ```
 
 >paramater **``$var``** berisikan nama dari variabel post
 
 **Contoh:**
-```
+```php
 print_r($this->input->post());
 $x = $this->input->post('x');
 ```
@@ -307,14 +306,14 @@ $x = $this->input->post('x');
 ####**server()**
 
 Anda dapat menggunakan fungsi server untuk mendapatkan nilai dari ``$_SERVER``
-```
+```php
 server($var='')
 ```		
 
 >paramater **``$var``** berisikan nama dari variabel server
 
 **Contoh:**
-```
+```php
 print_r($this->input->server());
 $host = $this->input->server('HTTP_HOST');
 ```
@@ -332,7 +331,7 @@ Controller
 [top](#kecik-framework)
 
 Untuk membuat controller caranya cukup mudah, kita tinggal membuat file dengan nama sesuai dengan nama controllernya dan disimpan pada direktory yang sudah disetting sebelumnya melalui config, berikut ini code sederhana sebuah controller
-```
+```php
 <?php
 // file welcome.php
 namespace Controller;
@@ -348,7 +347,7 @@ class Welcome extends Controller{
 ```
 
 Cara menggunakan controller tersebut pada route adalah sebagai berikut
-```
+```php
 $app->get('/', new Controller\Welcome(), function($controller) {
 
 });
@@ -356,7 +355,7 @@ $app->get('/', new Controller\Welcome(), function($controller) {
 
 - **Menggunakan Parameter**
 Untuk menggunakan parameter pada controller caranya juga cukup mudah, tinggal tambah parameter pada constructor dan pada saat controller dibuat tinggal masukan parameter contructornya
-```
+```php
 <?php
 // file welcome.php
 namespace Controller;
@@ -374,7 +373,7 @@ class Welcome extends Controller{
 ```
 
 Selanjutnya cara menggunakannya pada route sebagai berikut:
-```
+```php
 $app->get('/', new Controller\Welcome($dbcon), function($controller) {
 
 });
@@ -382,7 +381,7 @@ $app->get('/', new Controller\Welcome($dbcon), function($controller) {
 
 - **Menggunakan Method/Fungsi**
 Untuk menggunakan method/fungsi pada controller juga cukup mudah caranya, tinggal di panggil pada bagian callback route. Berikut ini cara penulisan code controller mennggunakan method/fungsi.
-```
+```php
 <?php
 // file welcome.php
 namespace Controller;
@@ -404,7 +403,7 @@ class Welcome extends Controller{
 ```
 
 Selanjutnya cara menggunakan method atau fungsi tersebut pada route adalah sebagai berikut.
-```
+```php
 $app->get('/', new Controller\Welcome($dbcon), function($controller) {
 	$controller->index();
 });
@@ -412,7 +411,7 @@ $app->get('/', new Controller\Welcome($dbcon), function($controller) {
 
 - **Menggunakan parameter pada Method/Fungsi**
 Untuk memberikan paramter pada Method/Fungsi dalam controller dapat kita berikan pada saat pemanggilan method pada callback route, berikut ini contoh code controller dengan method/fungsi berparameter.
-```
+```php
 <?php
 // file welcome.php
 namespace Controller;
@@ -438,7 +437,7 @@ class Welcome extends Controller{
 ```
 
 Cara menggunakannya pada route dengan cara sebagai berikut.
-```
+```php
 $app->get('/hello/:nama', new Controller\Welcome($dbcon), function($controller, $nama) {
 	$controller->index($nama);
 });
@@ -449,7 +448,7 @@ Model
 [top](#kecik-framework)
 
 Untuk membuat model caranya cukup mudah, kita tinggal membuat file dengan nama sesuai dengan nama modelnya dan disimpan pada direktory yang sudah disetting sebelumnya melalui config, berikut ini code sederhana sebuah model
-```
+```php
 <?php
 //file data.php
 namespace Model;
@@ -467,7 +466,7 @@ class Data extends Model {
 ```
 
 Cara penggunaan Model pada controller adalah sebagai berikut.
-```
+```php
 <?php
 // file welcome.php
 namespace Controller;
@@ -516,13 +515,13 @@ class Welcome extends Controller{
 [top](#kecik-framework)
 
 Untuk membuat view juga cukup mudah, karena disini anda tidak perlu membuat class/objek, tapi cukup file php biasa saja yang akan dipanggil oleh controller, berikut code view.
-```
+```php
 <!-- file welcome.php -->
 <?php echo 'Ini dari View' ?>
 ```
 
 Cara menggunakan file view dari controller adalah sebagai berikut.
-```
+```php
 <?php
 // file welcome.php
 namespace Controller;
@@ -542,7 +541,7 @@ class Welcome extends Controller{
 ```
 
 Cara mengirimkan variable ke view adalah sebagai berikut
-```
+```php
 <?php
 // file welcome.php
 namespace Controller;
@@ -568,7 +567,7 @@ class Welcome extends Controller{
 [top](#kecik-framework)
 
 Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat file template pada direktori yang telah anda setting sebelumnya pada config. Berikut ini adalah contoh sederhana dari code template
-```
+```html
 <!-- file template.php -->
 <!DOCTYPE html>
 <html lang="en">
@@ -598,7 +597,7 @@ Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat
 Sedangkan **`@controller`** adalah untuk meletakan hasil output dari controller.
 
 Cara menggunakan template tersebut pada route adalah sebagai berikut.
-```
+```php
 <?php
 $app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nama) {
 	$controller->welcome($nama);
