@@ -5,8 +5,8 @@
  * @author 		Dony Wahyu Isp
  * @copyright 	2015 Dony Wahyu Isp
  * @link 		http://github.io/kecik
- * @license		GPL
- * @version 	1.0.1alpha
+ * @license		MIT
+ * @version 	1.0-alpha2
  * @package		Kecik
  *
  *----------------------------------------
@@ -41,7 +41,7 @@ namespace Kecik;
  * Controller
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0.0alpha
+ * @since 		1.0-alpha
  **/
 class Controller {
 
@@ -75,7 +75,7 @@ class Controller {
  * Model
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0.1alpha
+ * @since 		1.0-alpha1
  **/
 class Model {
 	protected $_field = array();
@@ -206,7 +206,7 @@ class Model {
  * Config
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0.0alpha
+ * @since 		1.0-alpha
  **/
 class Config {
 	/**
@@ -265,7 +265,7 @@ Config::init();
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0.0alpha
+ * @since 		1.0-alpha
  **/
 class AssetsBase {
 	/**
@@ -355,7 +355,7 @@ class AssetsBase {
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0.0alpha
+ * @since 		1.0-alpha
  **/
 class Assets {
 	/**
@@ -395,7 +395,7 @@ class Assets {
  * Url
  * @package Kecik
  * @author Dony Wahyu Isp
- * @since 1.0.1alpha
+ * @since 1.0-alpha1
  **/
 class Url {
 	/**
@@ -475,7 +475,7 @@ class Url {
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0.0alpha
+ * @since 		1.0-alpha1
  **/
 class Route {
 	/**
@@ -598,24 +598,33 @@ class Route {
 		    self::$BASEURL = dirname(__FILE__).'\\';
 		} else {
 		    self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].substr( $pathinfo['dirname'], 0, $strlimit )."/";
+		}
 
-		    $path = str_replace( self::$PROTOCOL.$_SERVER['HTTP_HOST'].'/', '', self::$BASEURL );
-            
-            $path = str_replace($path, '', $_SERVER['REQUEST_URI']);
-            if (substr($path, 0, 1) == '/' ) $path=substr($path, 1);
-            
-            $segments = explode('/', $path);
-            
-            if ( $segments[count($segments)-1] == '' && count($segments) > 1 ) unset($segments[count($segments)-1]);
-             
-            $result_segment = array();
-            while(list($key, $seg) = each($segments)) {
-                if ($segments[$key] != 'index.php' && $seg != '' )
-                    array_push($result_segment, urldecode($seg));
-            }
+		if (php_sapi_name() == 'cli') {
+		 	$result_segment = $_SERVER['argv'];
+            array_shift($result_segment);
 
             self::$_params = $result_segment;
-            self::$_realparams = self::$_params; 
+            self::$_realparams = self::$_params;
+
+        } else {
+		    $path = str_replace( self::$PROTOCOL.$_SERVER['HTTP_HOST'].'/', '', self::$BASEURL );
+	        
+	        $path = str_replace($path, '', $_SERVER['REQUEST_URI']);
+	        if (substr($path, 0, 1) == '/' ) $path=substr($path, 1);
+	        
+	        $segments = explode('/', $path);
+	        
+	        if ( $segments[count($segments)-1] == '' && count($segments) > 1 ) unset($segments[count($segments)-1]);
+	         
+	        $result_segment = array();
+	        while(list($key, $seg) = each($segments)) {
+	            if ($segments[$key] != 'index.php' && $seg != '' )
+	                array_push($result_segment, urldecode($seg));
+	        }
+
+	        self::$_params = $result_segment;
+	        self::$_realparams = self::$_params; 
 		}
 
 		unset($strlimit);
@@ -676,7 +685,7 @@ Route::init();
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0.0alpha
+ * @since 		1.0-alpha
  **/
 class Input {
 	public function __construct() {
@@ -726,7 +735,7 @@ class Input {
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0.1alpha
+ * @since 		1.0-alpha2
  **/
 class Kecik {
 	/**
@@ -866,10 +875,16 @@ class Kecik {
 	 * run
 	 **/
 	public function run() {
+		if (php_sapi_name() == 'cli-server')  {
+			if( is_file(route::$BASEPATH.str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'])) && file_exists( route::$BASEPATH.str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'] ) ) && substr(strtolower($_SERVER['REQUEST_URI']), -4) != '.php' ) {
+				readfile(route::$BASEPATH.str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'] ));
+				return TRUE;
+			}
+		}
 		
 		if (self::$fullrender != '') {
 			if (is_callable($this->callable)) {
-				eval('?> '.self::$fullrender);
+				eval('?>'.self::$fullrender);
 			} else {
 				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
 				if ($this->config->get('error.404') != '') {
