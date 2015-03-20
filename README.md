@@ -84,8 +84,9 @@ Setelah code ditulis coba jalankan, maka akan tampil tulisan **"Hello Kecik"** i
 Tampilan kesuluruhan code:
 ```php
 <?php
-$manual = FALSE;
-require "system.php";
+require_once "Kecik/Kecik.php";
+// atau untuk composer
+//require_once "vendor/autoload.php"
 
 $app = new Kecik\Kecik();
 
