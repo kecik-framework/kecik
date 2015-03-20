@@ -36,7 +36,7 @@
 			</tr>
 			<tr>
 				<td class="field">Versi</td> 
-				<td class="value">: 1.0.1alpha</td>
+				<td class="value">: 1.0-alpha</td>
 			<tr>
 				<td class="field">Kota</td> 
 				<td class="value">: Palembang</td>
@@ -82,7 +82,7 @@
 			<pre>
 				<span style='color:#800080; '>{</span>
 				    <span style='color:#800000; '>"</span><span style='color:#0000e6; '>require</span><span style='color:#800000; '>"</span><span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>
-				        <span style='color:#800000; '>"</span><span style='color:#0000e6; '>monolog/monolog</span><span style='color:#800000; '>"</span><span style='color:#800080; '>:</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>1.2.*</span><span style='color:#800000; '>"</span>
+				        <span style='color:#800000; '>"</span><span style='color:#0000e6; '>dnaextrim/kecik</span><span style='color:#800000; '>"</span><span style='color:#800080; '>:</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>1.2.*</span><span style='color:#800000; '>"</span>
 				    <span style='color:#800080; '>}</span>
 				<span style='color:#800080; '>}</span>
 			</pre>
@@ -104,8 +104,9 @@
 			Buatlah sebuah file index.php atau apapun dengan tuliskan code dibawah ini:
 			<pre>
 				<span style='color:#5f5035; background:#ffffe8; '>&lt;?php</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$manual</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#000000; background:#ffffe8; '> FALSE</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#800000; background:#ffffe8; font-weight:bold; '>require</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>"system.php"</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
+				<span style='color:#800000; background:#ffffe8; font-weight:bold; '>require_once</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>"Kecik/Kecik.php"</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
+				<span style='color:#696969; background:#ffffe8; '>// atau untuk composer</span><span style='color:#000000; background:#ffffe8; '></span>
+				<span style='color:#800000; background:#ffffe8; font-weight:bold; '>require_once</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>"vendor/autoload.php"</span><span style='color:#000000; background:#ffffe8; '></span>
 			</pre>
 			Variabel $manual di set FALSE agar tidak menampilkan cara pemakaian pada project yang kita buat.<br />
 			Required "system.php" untuk memasukan file system framework ke project yang ingin kita buat. <br />
@@ -143,8 +144,9 @@
 			Tampilan kesuluruhan code:
 			<pre>
 				<span style='color:#5f5035; background:#ffffe8; '>&lt;?php</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$manual</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#000000; background:#ffffe8; '> FALSE</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#800000; background:#ffffe8; font-weight:bold; '>require</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>"system.php"</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
+				<span style='color:#800000; background:#ffffe8; font-weight:bold; '>require_once</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>"Kecik/Kecik.php"</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
+				<span style='color:#696969; background:#ffffe8; '>// atau untuk composer</span><span style='color:#000000; background:#ffffe8; '></span>
+				<span style='color:#696969; background:#ffffe8; '>//require_once "vendor/autoload.php"</span><span style='color:#000000; background:#ffffe8; '></span>
 				<span style='color:#000000; background:#ffffe8; '></span>
 				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#808030; background:#ffffe8; '>=</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#800000; background:#ffffe8; font-weight:bold; '>new</span><span style='color:#000000; background:#ffffe8; '> Kecik\Kecik</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
 				<span style='color:#000000; background:#ffffe8; '></span>
@@ -224,15 +226,15 @@
 					Untuk folder/direktori assets dan applikasi pastikan didalamnya terdapat sub folder/direktori<br />
 			<pre>
 				+-- Assets
-				  |-- css
-				  |--js
-				  |--images
+				|   +-- css
+				|   +-- js
+				|   +-- images
 			</pre>
 			<pre>
 				+--App
-				  |--controllers
-				  |--models
-				  |--views
+				|  +-- controllers
+				|  +-- models
+				|  +-- views
 			</pre>
 				</p>
 			</p>
