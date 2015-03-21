@@ -6,7 +6,7 @@ Merupakan framework dengan satu file system yang sangat sederhana, jadi ini buka
 ```
 Nama 	: Framework Kecik
 Pembuat : Dony Wahyu Isp
-Versi 	: 1.0.1alpha
+Versi 	: 1.0-alpha2
 Kota 	: Palembang
 ```
 
@@ -183,7 +183,6 @@ Gunakan fungsi set pada config untuk melakukan settingan nilai/menambah settinga
 set($key, $value)
 ```	
 > paramater **``$key``** merupakan parameter kunci untuk sebuah settingan
-> 
 > paramater **``$value``** merupakan parameter nilai dari sebuah settingan
 
 **Contoh:**
@@ -608,3 +607,6 @@ $app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nam
 	$controller->welcome($nama);
 })->template('template');
 ```
+
+
+
