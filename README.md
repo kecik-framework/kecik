@@ -106,7 +106,7 @@ Route
 ---------
 [top](#kecik-framework)
 
-Route yang terdapat pada framework kecik saat ini adalah get dan post, tapi untuk sementara ini belum memiliki perbedaan, untuk penggunaannya terdapat beberapa, dan paling sederhana adalah tanpa menggunakan Controller, variabel eksternal dan template, seperti berikut ini:
+Route yang terdapat pada framework kecik saat ini adalah get dan post, dimana get dan post adalah sumber request dan artinya route tersebut hanya akan diproses pada request yang sesuai. Untuk penggunaannya terdapat beberapa, dan paling sederhana adalah tanpa menggunakan Controller, variabel eksternal dan template, seperti berikut ini:
 ```php
 $app->get('/', function() {
 	echo 'Hello Kecik';
@@ -608,5 +608,3 @@ $app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nam
 	$controller->welcome($nama);
 })->template('template');
 ```
-
-
