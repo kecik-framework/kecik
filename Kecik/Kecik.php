@@ -478,6 +478,8 @@ class Url {
  * @since 		1.0-alpha1
  **/
 class Route {
+	public static $_paramsStr = '';
+
 	/**
 	 * @var array $_params for lock params
 	 **/
@@ -612,7 +614,7 @@ class Route {
 	        
 	        $path = str_replace($path, '', $_SERVER['REQUEST_URI']);
 	        if (substr($path, 0, 1) == '/' ) $path=substr($path, 1);
-	        
+
 	        $segments = explode('/', $path);
 	        
 	        if ( $segments[count($segments)-1] == '' && count($segments) > 1 ) unset($segments[count($segments)-1]);
@@ -623,6 +625,7 @@ class Route {
 	                array_push($result_segment, urldecode($seg));
 	        }
 
+	        self::$_paramsStr = implode('/', $result_segment);
 	        self::$_params = $result_segment;
 	        self::$_realparams = self::$_params; 
 		}
@@ -674,6 +677,69 @@ class Route {
 			self::$_realparams = $key;
 		} else
 			self::$_realparams[$key] = $value;
+	}
+
+	/**
+	 * setParamsStr
+	 * @param string $params
+	 **/
+	public function setParamStr($params) {
+		self::$_paramsStr = $params;
+	}
+
+	/**
+	 * getParamStr
+	 **/
+	public function getParamStr() {
+		return self::$_paramsStr;
+	}
+
+	/**
+	 * isPost
+	 * Untuk check apakah request method adalah Post
+	 * @return Bool
+	 **/
+	public function isPost() {
+		if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+			return TRUE;
+		else
+			return FALSE;
+	}
+
+	/**
+	 * isGet
+	 * Untuk check apakah request method adalah Get
+	 * @return Bool
+	 **/
+	public function isGet() {
+		if ($_SERVER['REQUEST_METHOD'] == 'GET') 
+			return TRUE;
+		else
+			return FALSE;
+	}
+
+	/**
+	 * isPut
+	 * Untuk check apakah request method adalah Put
+	 * @return Bool
+	 **/
+	public function isPut() {
+		if ($_SERVER['REQUEST_METHOD'] == 'PUT') 
+			return TRUE;
+		else
+			return FALSE;
+	}
+
+	/**
+	 * isAjax
+	 * Untuk check apakah request method adalah AJAX
+	 * @return Bool
+	 **/
+	public function isAjax() {
+		if (filter_input(INPUT_SERVER, 'HTTP_X_REQUESTED_WITH') === 'xmlhttprequest')
+		   return TRUE;
+		else
+			return FALSE;
 	}
 }
 
@@ -735,7 +801,7 @@ class Input {
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0-alpha2
+ * @since 		1.0-alpha4
  **/
 class Kecik {
 	/**
@@ -788,6 +854,7 @@ class Kecik {
 	 * @param array $args
 	 **/
 	private function setCallable($args) {
+
 		$route = array_shift($args);
 		$real_params = array();
 
@@ -799,23 +866,28 @@ class Kecik {
 		if ($route == '/' && count( $this->route->_getParams() ) <= 0 ) {
 			$this->callable = array_pop($args);
 			$this->routedStatus = TRUE;
-		} else {
-			$p = explode('/', $route);
+		} else {;
+			$route_pattern = preg_replace('/\\/:\\w+/', '+\\/\\\\w+', $route, -1);
+			
+			if ($route != '/' && preg_match('/^'.$route_pattern.'/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
 
-			while(list($key, $value) = each($p)) {
-				
-				if (substr(trim($value, '/'), 0, 1) == ':') {
-					$real_params[$value] = $this->route->_getParams($key);
-				} elseif (substr(trim($value, '/'), 0, 2) == '(:' && substr(trim($value, '/'), -1, 1) == ')') {
-					if ($this->route->_getParams($key) != NULL)
+				$this->callable = array_pop($args);
+				$this->routedStatus = TRUE;
+
+				$p = explode('/', $route);
+
+				while(list($key, $value) = each($p)) {
+					
+					if (substr(trim($value, '/'), 0, 1) == ':') {
 						$real_params[$value] = $this->route->_getParams($key);
-				} else {
-					if ( in_array($value, $this->route->_getParams()) ) {
-						$this->callable = array_pop($args);
-						$this->routedStatus = TRUE;
+					} elseif (substr(trim($value, '/'), 0, 2) == '(:' && substr(trim($value, '/'), -1, 1) == ')') {
+						if ($this->route->_getParams($key) != NULL)
+							$real_params[$value] = $this->route->_getParams($key);
 					}
 				}
+
 			}
+			
 		}
 
 		$this->route->setParams($real_params);
@@ -827,6 +899,7 @@ class Kecik {
 	 * @param multi parameters
 	 **/
 	public function get() {
+		if (!$this->route->isGet()) return $this;
 
 		if (is_callable($this->callable) ) {
 			$this->routedStatus = FALSE;
@@ -846,6 +919,8 @@ class Kecik {
 	 * @param multi paramaters
 	 **/
 	public function post() {
+		if (!$this->route->isPost()) return $this;
+
 		if (is_callable($this->callable) ) {
 			$this->routedStatus = FALSE;
 			return $this;
