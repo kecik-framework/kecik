@@ -608,6 +608,3 @@ $app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nam
 	$controller->welcome($nama);
 })->template('template');
 ```
-
-
-
