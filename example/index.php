@@ -1,6 +1,7 @@
 <?php
 $manual = FALSE;
 //require_once "vendor/autoload.php";
+//require_once "Kecik.php";
 require_once "../Kecik/Kecik.php";
 
 $app = new \Kecik\Kecik();

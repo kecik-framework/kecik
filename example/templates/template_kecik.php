@@ -1,7 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
+<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->  
+<!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
+<!--[if !IE]><!--> <html> <!--<![endif]-->  
+    <head>
+        <title>Aplikasi Standar Satuan Harga Kota Lubuk Linggau</title>
+        
+        <meta charset="utf-8">
 		<title>Simple Template</title>
 
 		<meta name="description" content="overview &amp; stats" />
