@@ -1,6 +1,7 @@
 <?php
-$manual = FALSE;
+// Untuk composer
 //require_once "vendor/autoload.php";
+// Untuk CLI SERVER atau php server.php
 //require_once "Kecik.php";
 require_once "../Kecik/Kecik.php";
 
