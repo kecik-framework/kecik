@@ -866,8 +866,11 @@ class Kecik {
 		if ($route == '/' && count( $this->route->_getParams() ) <= 0 ) {
 			$this->callable = array_pop($args);
 			$this->routedStatus = TRUE;
-		} else {;
-			$route_pattern = preg_replace('/\\/:\\w+/', '+\\/\\\\w+', $route, -1);
+		} else {
+			//convert route kedalam pattern parameter optional
+			$route_pattern = preg_replace('/\\/\\(:\\w+\\)/', '+(\\/\\w+){0,}', $route, -1);
+			//convert route kedalam pattern parameter wajib
+			$route_pattern = preg_replace('/\\/:\\w+/', '+\\/\\\\w+', $route_pattern, -1);
 			
 			if ($route != '/' && preg_match('/^'.$route_pattern.'/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
 
