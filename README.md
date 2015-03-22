@@ -29,7 +29,7 @@ Install composer pada sistem operasi anda, jika belum terinstall anda dapat mend
 ```javascript
 {
     "require": {
-        "dnaextrim/kecik": "1.0-alpha"
+        "kecik/kecik": "1.0-alpha"
     }
 }
 ```
