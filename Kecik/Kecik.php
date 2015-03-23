@@ -877,6 +877,8 @@ class Kecik {
 			$route_pattern = preg_replace('/\\/\\(:\\w+\\)/', '+(\\/\\w+){0,}', $route, -1);
 			//convert route kedalam pattern parameter wajib
 			$route_pattern = preg_replace('/\\/:\\w+/', '+\\/\\\\w+', $route_pattern, -1);
+			if (substr($route_pattern, 0, 1) == ':')
+				$route_pattern = preg_replace('/:\\w+/', '\\w+\\', $route_pattern, -1);
 			
 			if ($route != '/' && preg_match('/^'.$route_pattern.'/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
 
