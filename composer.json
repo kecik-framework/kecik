@@ -15,5 +15,5 @@
     "autoload": {
         "psr-0": {"Kecik": "."}
     },
-    "minimum-stability": "dev-master"
+    "minimum-stability": "dev"
 }
