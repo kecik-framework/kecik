@@ -6,7 +6,7 @@ Merupakan framework dengan satu file system yang sangat sederhana, jadi ini buka
 ```
 Nama 	: Framework Kecik
 Pembuat : Dony Wahyu Isp
-Versi 	: 1.0-alpha2
+Versi 	: 1.0.2-alpha
 Kota 	: Palembang
 ```
 
@@ -29,7 +29,7 @@ Install composer pada sistem operasi anda, jika belum terinstall anda dapat mend
 ```javascript
 {
     "require": {
-        "kecik/kecik": "1.0-alpha"
+        "dnaextrim/kecik": "~1.0.2"
     }
 }
 ```
@@ -149,7 +149,7 @@ $app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($contr
 Setting path atau lokasi untuk assets, applikasi(MVC), dan template, berikut cara setting:
 ```php
 $app->config->set('path.assets', 'assets');
-$app->config->set('path.app', 'app');
+$app->config->set('path.mvc', 'app');
 $app->config->set('path.template', 'templates');
 ```
 **Kedua:**
@@ -159,12 +159,12 @@ Ketiga:
 
 Untuk folder/direktori assets dan applikasi pastikan didalamnya terdapat sub folder/direktori
 ```
-+-- Assets
++-- assets
 |   +-- css
 |   +-- js
 |   +-- images
 
-+--App
++--app
 |  +-- controllers
 |  +-- models
 |  +-- views
@@ -608,3 +608,4 @@ $app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nam
 	$controller->welcome($nama);
 })->template('template');
 ```
+

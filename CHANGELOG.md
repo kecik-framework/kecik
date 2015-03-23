@@ -4,6 +4,8 @@ CHANGELOG
 1.0-alpha2
 -----
  * perbaikan bug untuk server cli
+ * perbaikan Autoload MVC
+ * perubahan config path.app menjadi path.mvc
  * perubahan code setCallable, sekarang menggunakan pattern
  * route Post dan Get sudah berfungsi sebagaimana mestinya
  * penambahan server cli agar dapat berjalan tanpa apache

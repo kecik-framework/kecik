@@ -36,7 +36,7 @@
 			</tr>
 			<tr>
 				<td class="field">Versi</td> 
-				<td class="value">: 1.0-alpha</td>
+				<td class="value">: 1.0.2-alpha</td>
 			<tr>
 				<td class="field">Kota</td> 
 				<td class="value">: Palembang</td>
@@ -82,7 +82,7 @@
 			<pre>
 				<span style='color:#800080; '>{</span>
 				    <span style='color:#800000; '>"</span><span style='color:#0000e6; '>require</span><span style='color:#800000; '>"</span><span style='color:#800080; '>:</span> <span style='color:#800080; '>{</span>
-				        <span style='color:#800000; '>"</span><span style='color:#0000e6; '>dnaextrim/kecik</span><span style='color:#800000; '>"</span><span style='color:#800080; '>:</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>1.2.*</span><span style='color:#800000; '>"</span>
+				        <span style='color:#800000; '>"</span><span style='color:#0000e6; '>kecik/kecik</span><span style='color:#800000; '>"</span><span style='color:#800080; '>:</span> <span style='color:#800000; '>"</span><span style='color:#0000e6; '>~1.0.2</span><span style='color:#800000; '>"</span>
 				    <span style='color:#800080; '>}</span>
 				<span style='color:#800080; '>}</span>
 			</pre>
@@ -213,7 +213,7 @@
 					Setting path atau lokasi untuk assets, applikasi(MVC), dan template, berikut cara setting:
 			<pre>
 				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>config</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>set</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'path.assets'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'assets'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
-				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>config</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>set</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'path.app'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'app'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
+				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>config</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>set</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'path.mvc'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'app'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
 				<span style='color:#797997; background:#ffffe8; '>$app</span><span style='color:#808030; background:#ffffe8; '>-></span><span style='color:#797997; background:#ffffe8; '>config</span><span style='color:#808030; background:#ffffe8; '>-</span><span style='color:#808030; background:#ffffe8; '>></span><span style='color:#000000; background:#ffffe8; '>set</span><span style='color:#808030; background:#ffffe8; '>(</span><span style='color:#0000e6; background:#ffffe8; '>'path.template'</span><span style='color:#808030; background:#ffffe8; '>,</span><span style='color:#000000; background:#ffffe8; '> </span><span style='color:#0000e6; background:#ffffe8; '>'templates'</span><span style='color:#808030; background:#ffffe8; '>)</span><span style='color:#800080; background:#ffffe8; '>;</span><span style='color:#000000; background:#ffffe8; '></span>
 			</pre>
 				</p>
@@ -225,13 +225,13 @@
 				<p align="justify">
 					Untuk folder/direktori assets dan applikasi pastikan didalamnya terdapat sub folder/direktori<br />
 			<pre>
-				+-- Assets
+				+-- assets
 				|   +-- css
 				|   +-- js
 				|   +-- images
 			</pre>
 			<pre>
-				+--App
+				+-- app
 				|  +-- controllers
 				|  +-- models
 				|  +-- views
