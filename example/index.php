@@ -8,7 +8,7 @@ require_once "../Kecik/Kecik.php";
 $app = new \Kecik\Kecik();
 
 $app->config->set('path.assets', 'assets');
-$app->config->set('path.app', 'app');
+$app->config->set('path.mvc', 'app');
 $app->config->set('path.template', 'templates');
 $app->config->set('error.404', '404');
 

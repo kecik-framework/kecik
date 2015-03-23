@@ -68,7 +68,7 @@ if (!class_exists('Controller')) {
 		 **/
 		protected function view($file, $param=array()) {
 			extract($param);
-			include Config::get('path.app').'/views/'.$file.'.php';
+			include Config::get('path.mvc').'/views/'.$file.'.php';
 		}
 	}
 }
@@ -834,7 +834,7 @@ class Kecik {
 	 **/
 	public function autoload($class) {
 		$class_array = explode('\\', $class);
-		$file_load = $this->config->get('path.app').'/'.strtolower($class_array[0]).'s/'.$class_array[1].'.php';
+		$file_load = $this->config->get('path.mvc').'/'.strtolower($class_array[0]).'s/'.$class_array[1].'.php';
 		if (file_exists($file_load))
 			include $file_load;
 	}
