@@ -834,9 +834,11 @@ class Kecik {
 	 **/
 	public function autoload($class) {
 		$class_array = explode('\\', $class);
-		$file_load = $this->config->get('path.mvc').'/'.strtolower($class_array[0]).'s/'.$class_array[1].'.php';
-		if (file_exists($file_load))
-			include $file_load;
+		if (count($class_array)>1) {
+			$file_load = $this->config->get('path.mvc').'/'.strtolower($class_array[0]).'s/'.$class_array[1].'.php';
+			if (file_exists($file_load))
+				include $file_load;
+		}
 	}
 
 	/**
