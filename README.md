@@ -1,7 +1,8 @@
+![Kecik Framework](https://dl.dropboxusercontent.com/u/373189/Logo-96.png)
 **Kecik Framework**
 ===================
 
-Merupakan framework dengan satu file system yang sangat sederhana, jadi ini bukan merupakan sebuah framework yang kompleks, tapi anda dapat membangun dan mengembangkan framework ini untuk menjadi sebuah framework yang kompleks. Framework ini mendukung **MVC** sederhana dimana anda masih harus mengcustom beberapa code untuk mendapatkan MVC yang kompleks, untuk Model hanya sebatas men-generate perintah SQL untuk **`INSERT`, `UPDATE` dan `DELETE`** saja, jadi untuk code pengeksekusian SQL nya tersebut silakan dibuat sendiri dengan bebas mau menggunakan library database manapun. Framework ini juga mendukung Composer, jadi bisa memudahkan anda untuk menambahkan sebuah library dari composer. 
+Merupakan framework dengan satu file system yang sangat sederhana, jadi ini bukan merupakan sebuah framework yang kompleks, tapi anda dapat membangun dan mengembangkan framework ini untuk menjadi sebuah framework yang kompleks. Framework ini mendukung **MVC** sederhana dimana anda masih harus mengcustom beberapa code untuk mendapatkan MVC yang kompleks, untuk Model hanya sebatas men-generate perintah SQL untuk **`INSERT`, `UPDATE`** dan **`DELETE`** saja, jadi untuk code pengeksekusian SQL nya tersebut silakan dibuat sendiri dengan bebas mau menggunakan library database manapun. Framework ini juga mendukung Composer, jadi bisa memudahkan anda untuk menambahkan sebuah library dari composer. 
 
 ```
 Nama 	: Framework Kecik
@@ -29,7 +30,7 @@ Install composer pada sistem operasi anda, jika belum terinstall anda dapat mend
 ```javascript
 {
     "require": {
-        "kecik/kecik": "1.0.2-alpha"
+        "dnaextrim/kecik": "1.0.2-alpha"
     }
 }
 ```
@@ -608,3 +609,4 @@ $app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nam
 	$controller->welcome($nama);
 })->template('template');
 ```
+
