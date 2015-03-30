@@ -1,4 +1,3 @@
-![Kecik Framework](https://dl.dropboxusercontent.com/u/373189/Logo-96.png)
 **Kecik Framework**
 ===================
 
