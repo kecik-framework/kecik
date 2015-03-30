@@ -15,5 +15,10 @@
     "autoload": {
         "psr-0": {"Kecik": "."}
     },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "5.0-dev"
+        }
+    },
     "minimum-stability": "dev"
 }
