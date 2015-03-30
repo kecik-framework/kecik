@@ -1,7 +1,7 @@
 {
     "name": "kecik/kecik",
     "description": "Single File Framework",
-    "keywords": ["kecik", "framework"],
+    "keywords": ["kecik", "framework", "micro", "single"],
     "license": "MIT",
     "authors": [
         {
