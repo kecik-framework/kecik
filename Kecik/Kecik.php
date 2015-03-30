@@ -593,6 +593,8 @@ class Route {
 
 		if ( strpos($pathinfo['dirname'], '/index.php') > 0 )
 			$strlimit = strpos($pathinfo['dirname'], '/index.php');
+		elseif ($pathinfo['dirname'] == '/index.php')
+			$strlimit = 0;
 		else
 			$strlimit = strlen($pathinfo['dirname']);
 
@@ -603,7 +605,7 @@ class Route {
 		    chdir(dirname(__FILE__));
 		    self::$BASEURL = dirname(__FILE__).'\\';
 		} else {
-		    self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].substr( $pathinfo['dirname'], 0, $strlimit )."/";
+		    self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].substr( $pathinfo['dirname']."/", 0, $strlimit+1 );
 		}
 
 		if (php_sapi_name() == 'cli') {
@@ -835,7 +837,7 @@ class Kecik {
 	public function autoload($class) {
 		$class_array = explode('\\', $class);
 		if (count($class_array)>1) {
-			$file_load = $this->config->get('path.mvc').'/'.strtolower($class_array[0]).'s/'.$class_array[1].'.php';
+			$file_load = $this->config->get('path.mvc').'/'.strtolower($class_array[0]).'s/'.strtolower($class_array[1]).'.php';
 			if (file_exists($file_load))
 				include $file_load;
 		}
