@@ -591,9 +591,10 @@ class Route {
 
 		$pathinfo = pathinfo($_SERVER['PHP_SELF']);
 
-		if ( strpos($pathinfo['dirname'], '/index.php') > 0 )
-			$strlimit = strpos($pathinfo['dirname'], '/index.php');
-		elseif ($pathinfo['dirname'] == '/index.php')
+		$index = basename($_SERVER["SCRIPT_FILENAME"], '.php').'.php';
+		if ( strpos($pathinfo['dirname'], '/'.$index) > 0 )
+			$strlimit = strpos($pathinfo['dirname'], '/'.$index);
+		elseif ($pathinfo['dirname'] == '/'.$index)
 			$strlimit = 0;
 		else
 			$strlimit = strlen($pathinfo['dirname']);
@@ -627,7 +628,7 @@ class Route {
 	         
 	        $result_segment = array();
 	        while(list($key, $seg) = each($segments)) {
-	            if ($segments[$key] != 'index.php' && $seg != '' )
+	            if ($segments[$key] != $index && $seg != '' )
 	                array_push($result_segment, urldecode($seg));
 	        }
 
