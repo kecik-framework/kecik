@@ -484,6 +484,7 @@ class Url {
 class Route {
 	public static $_paramsStr = '';
 
+	public static $_destination = '';
 	/**
 	 * @var array $_params for lock params
 	 **/
@@ -701,6 +702,10 @@ class Route {
 		return self::$_paramsStr;
 	}
 
+	public function is() {
+		return self::$_destination;
+	}
+
 	/**
 	 * isPost
 	 * Untuk check apakah request method adalah Post
@@ -909,6 +914,7 @@ class Kecik {
 			
 		}
 
+		Route::$_destination = $route;
 		$this->route->setParams($real_params);
 
 	}
