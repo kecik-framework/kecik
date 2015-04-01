@@ -376,7 +376,7 @@ class Assets {
 	 * __contruct
 	 * @param object $url
 	 **/
-	public function __construct($url) {
+	public function __construct(Url $url) {
 		$this->baseUrl = $url->baseUrl();
 		$this->css = new AssetsBase($this->baseUrl, 'css');
 		$this->js = new AssetsBase($this->baseUrl, 'js'); 
@@ -854,6 +854,10 @@ class Kecik {
 		$this->config = new Config();
 		$this->assets = new Assets($this->url);
 		$this->input = new Input();
+
+		if (class_exists('Kecik\DIC')) {
+			$this->container = new DIC();
+		}
 
 		spl_autoload_register(array($this, 'autoload'), true, true);
 
