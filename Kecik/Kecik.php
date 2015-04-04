@@ -599,7 +599,7 @@ class Route {
 			$strlimit = 0;
 		else
 			$strlimit = strlen($pathinfo['dirname']);
-
+		
 		if (php_sapi_name() == 'cli-server') 
 		    self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].'/';
 		else if (php_sapi_name() == 'cli') {
@@ -607,7 +607,10 @@ class Route {
 		    chdir(dirname(__FILE__));
 		    self::$BASEURL = dirname(__FILE__).'\\';
 		} else {
-		    self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].substr( $pathinfo['dirname']."/", 0, $strlimit+1 );
+		    if ($pathinfo['dirname'] != '')
+		    	self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].substr( $pathinfo['dirname']."/", 0, $strlimit+1 );
+			else 
+				self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].'/';
 		}
 
 		if (php_sapi_name() == 'cli') {
