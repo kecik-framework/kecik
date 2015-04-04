@@ -225,7 +225,7 @@ class Config {
 		self::$config = array(
 			'path.assets' => '',
 			'path.templates' => '',
-			'mod_rewrite'=>FALSE,
+			'mod_rewrite' =>FALSE,
 			'index' => '',
 		);
 	}
@@ -406,7 +406,7 @@ class Url {
 	/**
 	 * @var string $_protocol, $_base_url, $_base_path
 	 **/
-	private $_protocol, $_base_url, $_base_path;
+	private $_protocol, $_base_url, $_base_path, $_index;
 
 	/**
 	 * @var object $_route
@@ -421,6 +421,11 @@ class Url {
 		$this->_protocol = $protocol;
 		$this->_base_url = $baseUrl;
 		$this->_base_path = $basePath;
+
+		if ( Config::get('mod_rewrite') === FALSE ) {
+			$this->_index = basename($_SERVER["SCRIPT_FILENAME"], '.php').'.php/';
+			Config::set('index', $this->_index);
+		}
 	}
 
 	/**
@@ -452,7 +457,7 @@ class Url {
 	 * @param string link
 	 **/
 	public function redirect($link) {
-		header('Location: '.$this->_base_url.$link);
+		header('Location: '.$this->_base_url.$this->_index.$link);
 	}
 
 	/**
@@ -461,7 +466,7 @@ class Url {
 	 * @return echo link
 	 **/
 	public function to($link) {
-		echo $this->_base_url.$link;
+		echo $this->_base_url.$this->_index.$link;
 	}
 
 	/**
@@ -470,9 +475,9 @@ class Url {
 	 * @return string
 	 **/
 	public function linkto($link) {
-		return $this->_base_url.$link;
+		return $this->_base_url.$this->_index.$link;
 	}
-}
+}}
 //--
 
 /**
@@ -859,17 +864,21 @@ class Kecik {
 	 * @param array $config optional
 	 **/
 	public function __construct($config=array()) {
-		$this->route = new Route();
-		$this->url = new Url(Route::$PROTOCOL, Route::$BASEURL, Route::$BASEPATH);
+		//** Config
 		$this->config = new Config();
-		$this->assets = new Assets($this->url);
-		$this->input = new Input();
 
 		if (is_array($config) && count($config)) {
 			while(list($key, $value) = each($config))
 				$this->config->set($key, $value);
 		}
+		//-- End Config
+		
+		$this->route = new Route();
+		$this->url = new Url(Route::$PROTOCOL, Route::$BASEURL, Route::$BASEPATH);
+		$this->assets = new Assets($this->url);
+		$this->input = new Input();
 
+		//** Load Dynamic Libraries from config
 		$libraries = $this->config->get('libraries');
 		if (is_array($libraries) && count($libraries) > 0 ) {
 			while(list($library, $params) = each($libraries)) {
@@ -903,27 +912,7 @@ class Kecik {
 				}
 			}
 		}
-
-		/*if (class_exists('Kecik\DIC')) {
-			$this->container = new DIC();
-		}
-
-		if (class_exists('Kecik\Session') && $this->config->get('session') == TRUE) {
-			$this->session = new Session($this);
-		}
-
-		if (class_exists('Kecik\Cookie') && $this->config->get('cookie') == TRUE) {
-			$this->cookie = new Cookie($this);
-		}
-
-		if (class_exists('Kecik\Database') && $this->config->get('database') == TRUE) {
-			$this->db = new Database($this);
-		}
-
-		if (class_exists('Kecik\Language') && $this->config->get('language') == TRUE) {
-			if ( is_array($this->config->get('language.config')) && count($this->config->get('language.config')) > 0)
-				$this->lang = new Language($this->config->get('language.config'));
-		}*/
+		//-- End Load Dynamic Library
 
 		spl_autoload_register(array($this, 'autoload'), true, true);
 
