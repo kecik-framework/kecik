@@ -870,30 +870,37 @@ class Kecik {
 				$this->config->set($key, $value);
 		}
 
-		while(list($library, $params) = each($this->config->get('libraries'))) {
-			if (class_exists('Kecik\\'.$library)) {
-				if (isset($params['enable']) && $params['enable'] === TRUE) {
-					if (!isset($params['config'])) {
-						if ($library == 'DIC')
-							$this->container = new DIC();
-						else
-							$this->$library = new $library();
-					} else {
-						while (list($key, $value) = each($params['config']) )
-							$this->config->set($library.'.'.$key, $value);
-						
-						$this->$library = new $library($this);
-					}
-				} else {
-					if (isset($params['params'])) {
-						if (!isset($params['params']))
-							$this->$library = new $library();
-						else
-							$this->$library = new $library($params['params']));
+		$libraries = $this->config->get('libraries');
+		if (is_array($libraries) && count($libraries) > 0 ) {
+			while(list($library, $params) = each($libraries)) {
+				$clsLibrary = 'Kecik\\'.$library;
+				if (class_exists($clsLibrary)) {
+					if (isset($params['enable']) && $params['enable'] === TRUE) {
+						$library = strtolower($library);
 
+						if (!isset($params['config']) && !isset($params['params'])) {
+							if ($library == 'dic')
+								$this->container = new DIC();
+							else
+								$this->$library = new $clsLibrary();
+						} elseif (isset($params['config'])) {
+							while (list($key, $value) = each($params['config']) )
+								$this->config->set($library.'.'.$key, $value);
+							
+							if ($library == 'database')
+								$this->db = new Database($this);
+							else
+								$this->$library = new $clsLibrary($this);
+						} elseif (isset($params['params'])) {
+							if (!isset($params['params']))
+								$this->$library = new $clsLibrary();
+							else
+								$this->$library = new $clsLibrary($params['params']);
+
+						}
 					}
+
 				}
-
 			}
 		}
 
