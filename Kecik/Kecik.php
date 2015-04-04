@@ -43,7 +43,7 @@ namespace Kecik;
  * @author 		Dony Wahyu Isp
  * @since 		1.0-alpha
  **/
-if (!class_exists('Controller')) {
+if (!class_exists('Kecik\Controller')) {
 	class Controller {
 
 		/**
@@ -79,7 +79,7 @@ if (!class_exists('Controller')) {
  * @author 		Dony Wahyu Isp
  * @since 		1.0-alpha1
  **/
-if (!class_exists('Model')) {
+if (!class_exists('Kecik\Model')) {
 	class Model {
 		protected $_field = array();
 		protected $_where;
@@ -225,6 +225,8 @@ class Config {
 		self::$config = array(
 			'path.assets' => '',
 			'path.templates' => '',
+			'mod_rewrite'=>FALSE,
+			'index' = '',
 
 		);
 	}
@@ -593,6 +595,7 @@ class Route {
 		$pathinfo = pathinfo($_SERVER['PHP_SELF']);
 
 		$index = basename($_SERVER["SCRIPT_FILENAME"], '.php').'.php';
+		Config::set('index', $index);
 		if ( strpos($pathinfo['dirname'], '/'.$index) > 0 )
 			$strlimit = strpos($pathinfo['dirname'], '/'.$index);
 		elseif ($pathinfo['dirname'] == '/'.$index)
@@ -863,8 +866,30 @@ class Kecik {
 		$this->assets = new Assets($this->url);
 		$this->input = new Input();
 
+		if (is_array($config) && count($config)) {
+			while(list($key, $value) = each($config))
+				$this->config->set($key, $value);
+		}
+
 		if (class_exists('Kecik\DIC')) {
 			$this->container = new DIC();
+		}
+
+		if (class_exists('Kecik\Session') && $this->config->get('session') == TRUE) {
+			$this->session = new Session($this);
+		}
+
+		if (class_exists('Kecik\Cookie') && $this->config->get('cookie') == TRUE) {
+			$this->cookie = new Cookie($this);
+		}
+
+		if (class_exists('Kecik\Database') && $this->config->get('database') == TRUE) {
+			$this->db = new Database($this);
+		}
+
+		if (class_exists('Kecik\Language') && $this->config->get('language') == TRUE) {
+			if ( is_array($this->config->get('language.config')) && count($this->config->get('language.config')) > 0)
+				$this->lang = new Language($this->config->get('language.config'));
 		}
 
 		spl_autoload_register(array($this, 'autoload'), true, true);
