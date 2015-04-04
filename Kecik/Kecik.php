@@ -870,7 +870,34 @@ class Kecik {
 				$this->config->set($key, $value);
 		}
 
-		if (class_exists('Kecik\DIC')) {
+		while(list($library, $params) = each($this->config->get('libraries'))) {
+			if (class_exists('Kecik\\'.$library)) {
+				if (isset($params['enable']) && $params['enable'] === TRUE) {
+					if (!isset($params['config'])) {
+						if ($library == 'DIC')
+							$this->container = new DIC();
+						else
+							$this->$library = new $library();
+					} else {
+						while (list($key, $value) = each($params['config']) )
+							$this->config->set($library.'.'.$key, $value);
+						
+						$this->$library = new $library($this);
+					}
+				} else {
+					if (isset($params['params']) {
+						if (!isset($params['params']))
+							$this->$library = new $library();
+						else
+							$this->$library = new $library($params['params']));
+
+					}
+				}
+
+			}
+		}
+
+		/*if (class_exists('Kecik\DIC')) {
 			$this->container = new DIC();
 		}
 
@@ -889,7 +916,7 @@ class Kecik {
 		if (class_exists('Kecik\Language') && $this->config->get('language') == TRUE) {
 			if ( is_array($this->config->get('language.config')) && count($this->config->get('language.config')) > 0)
 				$this->lang = new Language($this->config->get('language.config'));
-		}
+		}*/
 
 		spl_autoload_register(array($this, 'autoload'), true, true);
 
