@@ -226,8 +226,7 @@ class Config {
 			'path.assets' => '',
 			'path.templates' => '',
 			'mod_rewrite'=>FALSE,
-			'index' = '',
-
+			'index' => '',
 		);
 	}
 
