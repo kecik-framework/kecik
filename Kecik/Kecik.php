@@ -885,7 +885,7 @@ class Kecik {
 						$this->$library = new $library($this);
 					}
 				} else {
-					if (isset($params['params']) {
+					if (isset($params['params'])) {
 						if (!isset($params['params']))
 							$this->$library = new $library();
 						else
