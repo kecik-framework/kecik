@@ -943,8 +943,8 @@ class Kecik {
 			//convert route kedalam pattern parameter wajib
 			$route_pattern = preg_replace('/:\\w+/', '\\w+', $route_pattern, -1);
 			
-			if ($route != '/' && preg_match('/^'.$route_pattern.'$/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
-
+			if ($route != '/' && preg_match('/(^'.$route_pattern.'$)|(^'.$route_pattern.'(\\?(\\w|\\d|\\=|\\&|\\-|\\.|_|\\/){0,}){0,}$)/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
+			
 				$this->callable = array_pop($args);
 				$this->routedStatus = TRUE;
 
@@ -1017,7 +1017,10 @@ class Kecik {
 		if ($this->routedStatus) {
 			$tpl = file_get_contents($this->config->get('path.template').'/'.$template.'.php');
 			self::$fullrender = str_replace(array('{{', '}}'), array('<?php', '?>'), $tpl);
-			self::$fullrender = str_replace(array('@controller'), array('<?php call_user_func_array($this->callable, $this->route->getParams()) ?>'), self::$fullrender);
+			self::$fullrender = str_replace(array('@js', '@css','@controller'), array(
+				$this->assets->js->render(), 
+				$this->assets->css->render(),
+				'<?php call_user_func_array($this->callable, $this->route->getParams()) ?>'), self::$fullrender);
 		}
 	}
 
