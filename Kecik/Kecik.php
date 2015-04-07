@@ -495,7 +495,7 @@ class Url {
 	public function linkto($link) {
 		return $this->_base_url.$this->_index.$link;
 	}
-}}
+}
 //--
 
 /**
