@@ -1,30 +1,31 @@
 **Kecik Framework**
 ===================
 
-Merupakan framework dengan satu file system yang sangat sederhana, jadi ini bukan merupakan sebuah framework yang kompleks, tapi anda dapat membangun dan mengembangkan framework ini untuk menjadi sebuah framework yang kompleks. Framework ini mendukung **MVC** sederhana dimana anda masih harus mengcustom beberapa code untuk mendapatkan MVC yang kompleks, untuk Model hanya sebatas men-generate perintah SQL untuk **`INSERT`, `UPDATE`** dan **`DELETE`** saja, jadi untuk code pengeksekusian SQL nya tersebut silakan dibuat sendiri dengan bebas mau menggunakan library database manapun. Framework ini juga mendukung Composer, jadi bisa memudahkan anda untuk menambahkan sebuah library dari composer. 
+Is a framework with a very simple file system, so this is not a complex framework, but you can build and develop this framework to be a complex framework. This Framework support simple **MVC** where you still have to customize some code for get complex MVC, for Model just generate SQL Query for **`INSERT`, `UPDATE`** and **`DELETE`** only, so for code execution that SQL Query please make your self freely as you want or using whichever database libaries. This Framework also support Composer, so as to facilitate you for adding a library from composer. 
 
 ```
-Nama 	: Framework Kecik
-Pembuat : Dony Wahyu Isp
-Versi 	: 1.0.2-alpha
-Kota 	: Palembang
+Name 	: Framework Kecik
+Author  : Dony Wahyu Isp
+Version : 1.0.3-beta
+Country	: Indonesian
+City 	: Palembang
 ```
 
-**Cara Cepat Memulai**
+**Quickstart**
 
-[**Langkah Pertama**](#langkah-pertama) | [**Langkah Kedua**](#langkah-kedua) | [**Langkah Ketiga**](#langkah-ketiga) | [**Langkah Keempat**](#langkah-keempat) 
+[**The First Step**](#the-first-step) | [**The Second Step**](#the-second-step) | [**The Third Step**](#the-third-step) | [**The Fourth Step**](#the-fourth-step) 
 
-**Lebih Dalam**
+**More**
 
-[**Mengenal Lebih Dalam**](#mengenal-lebih-dalam-lagi) | [**Route**](#route) | [**Config**](#config) | [**Assets**](#assets) | [**Input**](#input) | [**MVC**](#mvc) | [**Controller**](#controller) | [**Model**](#model) | [**View**](#view) | [**Template**](#template) 
+[**Know More In**](#know-more-in) | [**Route**](#route) | [**Config**](#config) | [**Assets**](#assets) | [**Input**](#input) | [**MVC**](#mvc) | [**Controller**](#controller) | [**Model**](#model) | [**View**](#view) | [**Template**](#template) 
 
 ----
 
-Langkah Pertama
+The First Step
 ---------------------
 [top](#kecik-framework)
 
-Install composer pada sistem operasi anda, jika belum terinstall anda dapat mendownload melalui link Composer, setelah melakukan download dan installasi, selanjutnya anda perlu membuat file composer.json dengan isi file berikut ini. 
+Install composer in your opration system, if not installed you can download it from Composer website, after download and initialitation, next you need make composer.json files with contents as follows. 
 
 ```javascript
 {
@@ -33,44 +34,45 @@ Install composer pada sistem operasi anda, jika belum terinstall anda dapat mend
     }
 }
 ```
-Selanjutnya jalankan perintah berikut ini pada console/cmd
+next, run this command on console/cmd
 ```shell
 composer install		
 ```
-Tunggu beberapa menit hingga semua berjalan tanpa error.
+wait a minute until all run without error.
 
-Langkah Kedua
+The Second Step
 ------------------
 [top](#kecik-framework)
 
-Buatlah sebuah file index.php atau apapun dengan tuliskan code dibawah ini:
+Create index.php files or anything, and enter the code below:
 ```php
 <?php
 require_once "Kecik/Kecik.php";
-// atau untuk composer
+// or for composer
 require_once "vendor/autoload.php";
 ```
-**``require "Kecik\Kecik.php"``** untuk memasukan file system framework ke project yang ingin kita buat.
-Lalu coba jalankan, jika hanya menampilkan halaman kosong tanpa pesan error berarti sudah berhasil. 
+**``require "Kecik\Kecik.php"``** for include system file of framework to the project that you want make.
+then try run, if only displaying blank page without error message is mean successfull. 
 
-Untuk cara penggunaan composer tidak akan dibahas disini, anda dapat mempelajarinya dari dokumentasi yang disedia di website composer, baik secara online maupun offline. 
 
-Langkah Ketiga
+for how to use composer will not be discussed here, you can learn from documentation from composer website, both online and offline. 
+
+The Third Step
 -------------------
 [top](#kecik-framework)
 
-Buat variabel dari Class Framework Kecik seperti dibawah ini
+Create variable from Kecik Class as below
 ```php
 $app = new Kecik\Kecik();	
 ```
-Lalu coba jalankan kembali, jika tidak terdapat error berarti anda sudah sukses sampai tahap ini. 
+then try running back, if not get error is mean you have successfull in this step.
 
 
-Langkah Keempat
+The Fourth Step
 ----------------------
 [top](#kecik-framework)
 
-Langkah selanjutnya adalah membuat Route untuk index dan menjalankan framework, berikut code nya:
+The next step is make Route for index and run the framework, following code:
 ```php
 $app->get('/', function() {
 	echo 'Hello Kecik';
@@ -79,13 +81,13 @@ $app->get('/', function() {
 $app->run();
 			
 ```
-Setelah code ditulis coba jalankan, maka akan tampil tulisan **"Hello Kecik"** itu berarti anda telah berhasil membuat tampilan untuk route index/halaman utama project anda.
+Once the code is written try running, so you can see **"Hello Kecik"** that mean you have successfull make view for route index/main page for your project.
 
-Tampilan kesuluruhan code:
+The overall appearance code:
 ```php
 <?php
 require_once "Kecik/Kecik.php";
-// atau untuk composer
+// or for composer
 //require_once "vendor/autoload.php"
 
 $app = new Kecik\Kecik();
@@ -100,64 +102,65 @@ $app->run();
 
 ----
 
-**Mengenal Lebih Dalam Lagi**
+**Know More In**
 -------------------------------------------------------------
 Route
 ---------
 [top](#kecik-framework)
 
-Route yang terdapat pada framework kecik saat ini adalah get dan post, dimana get dan post adalah sumber request dan artinya route tersebut hanya akan diproses pada request yang sesuai. Untuk penggunaannya terdapat beberapa, dan paling sederhana adalah tanpa menggunakan Controller, variabel eksternal dan template, seperti berikut ini:
+Route in contained kecik framework current  is get and post, where get and post is request source and that mean is that route just will proccess on match request.For how to use, there are several ways, and very simple is without use Controller, external variable and template, as follow:
 ```php
 $app->get('/', function() {
 	echo 'Hello Kecik';
 });
 ```
-Dengan menggunakan parameter:
+With parameter:
 ```php
-$app->get('hello/:nama', function ($nama) {
-	echo 'Hello '.$nama;
+$app->get('hello/:name', function ($name) {
+	echo 'Hello '.$name;
 });
 ```
-Parameter pada route menggunakan ``:`` pada bagian depannya, sedangkan untuk parameter yang bersifat optional bisa menggunakan ``(:)``
+Parameter in route use ``:`` at front section, while for optional parameter can use ``(:)``
 
-> **contoh:** hello/(:nama)
+> **example:** hello/(:name)
 
-Dengan menggunakan Controller:
+With Controller:
 ```php
-$app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($controller, $nama) use ($app) {
-	$controller->index($nama);
+$app->get('welcome/:name', new Controller\Welcome($app), function ($controller, $name) use ($app) {
+	$controller->index($name);
 });
 ```		
 
-Pastikan sebelumnya sudah membuat Controller yang ingin digunakan pada route tersebut.
+Ensure that already makes Controller you want to use on that route.
 
-Dengan menggunakan Template:
+With Template:
 ```php
-$app->get('hello/:nama', function ($nama) {
-	echo 'Hello '.$nama;
+$app->get('hello/:name', function ($name) {
+	echo 'Hello '.$name;
 })->template('template_kecik');
 
-$app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($controller, $nama) use ($app) {
-	$controller->index($nama);
+$app->get('welcome/:name', new Controller\Welcome($app), function ($controller, $name) use ($app) {
+	$controller->index($name);
 })->template('template_kecik');
 ```
 
-> **Catatan:** Berlaku juga pada penggunaan post, untuk menggunakan controller dan template ada beberapa tahap yang perlu dipersiapkan
+> **Note:** Applies to the use of the post, to use the controller and templates there are several steps that need to be prepared
 
-**Pertama:**
+**First:**
 
-Setting path atau lokasi untuk assets, applikasi(MVC), dan template, berikut cara setting:
+Setting path or location for assets, application (MVC), and template, following way setting:
 ```php
 $app->config->set('path.assets', 'assets');
 $app->config->set('path.mvc', 'app');
 $app->config->set('path.template', 'templates');
 ```
-**Kedua:**
+**Second:**
 
-Buatlah folder/direktory berdasarkan settingan path sebelumnya.
-Ketiga:
+create a folder / directory by setting the path before.
 
-Untuk folder/direktori assets dan applikasi pastikan didalamnya terdapat sub folder/direktori
+**Third:**
+
+For folder/directory assets and application sure in which there sub folder/direktori
 ```
 +-- assets
 |   +-- css
@@ -174,33 +177,33 @@ Config
 -------
 [top](#kecik-framework)
 
-Untuk project yang besar dan tidak sederhana kita memerlukan beberapa setting/konfigurasi, untuk melakukan setting/konfigurasi framework ini juga dilengkapi config, baik untuk menyetting ataupun untuk membaca settingan
+For a big project and not simple we need some setting/configuration, for  setting/configuration this framework also equipped with config, either for setting or to read settings
 
 ####**set()**
 
-Gunakan fungsi set pada config untuk melakukan settingan nilai/menambah settingan
+Use set function from config to a set/add value
 ```php
 set($key, $value)
 ```	
-> paramater **``$key``** merupakan parameter kunci untuk sebuah settingan
+> paramater **``$key``** is parameter key for a setting
 > 
-> paramater **``$value``** merupakan parameter nilai dari sebuah settingan
+> paramater **``$value``** is parameter value for a setting
 
-**Contoh:**
+**Example:**
 ```php
 $app->config->set('path.assets', 'assets');
 ```
 
 ####**get()**
 
-Gunakan fungsi get untuk mendapatkan nilai dari suatu settingan
+Use get function to get a value from a setting
 ```php
 get($key)
 ```
 
-> parameter **``$key``** merupakan parameter kunci untuk sebuah settingan yang ingin diambil nilainya
+> parameter **``$key``** is key parameter for a setting where to get value
 
-**Contoh:**
+**Example:**
 ```php
 $asset_path = $app->config->get('path.assets');
 ```
@@ -209,17 +212,17 @@ Assets
 -------
 [top](#kecik-framework)
 
-Assets sangat diperlukan dalam mempermudah pekerjaan kita untuk menambahkan atau menghilangkan assets seperti css, js dan images, sangat berguna juga untuk membuat template, dan assets juga bisa disesuaikan bedasarkan controller yang digunakan. Assets css dan js memiliki struktur yang sama sedangkan untuk images berbeda.
+Assets is importan for facilitate us work for add/delete assets as css, js and images, also very useful for a template, and assets juga can be adjusted by controller in used. Assets css and js have same structure while for images is diferrent.
 ####**add()**
 
-Fungsi ini digunakan untuk menambahkan sebuah file assets baik css maupun js.
+This function use for add a assets file as css or js.
 ```php
 add($file='')
 ```
 
-> paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
+> paramater **``$file``** contains the name of the file that want to load assets, write without using extension
 
-**Contoh:**
+**Example:**
 ```php
 $app->assets->css->add('boostrap');
 $app->assets->js->add('jquery.min');
@@ -227,13 +230,13 @@ $app->assets->js->add('jquery.min');
 
 ####**delete()**
 
-Fungsi ini digunakan untuk menghapus sebuah file assets yang ingin diload baik css maupun js.
+This cunction use to delete a assets file that want to load as css or js.
 ```php
 delete($file='')
 ```
-> paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
+> paramater **``$file``** contains the name of the file that want to load assets, write without using extension
 
-**Contoh:**
+**Example:**
 ```php
 $app->assets->css->delete('boostrap');
 $app->assets->js->delete('jquery.min');
@@ -241,14 +244,14 @@ $app->assets->js->delete('jquery.min');
 
 ####**render()**
 
-Fungsi ini digunakan untu merender sebuah daftar asset atau salah satu asset yang ingin diload baik css maupun js
+This function use to render a asset list or one asset that want to load as css or js
 ```php
 render($file='')
 ```		
 
-> paramater **``$file``** berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension
+> paramater **``$file``** contains the name of the file that want to load assets, write without using extension
 
-**Contoh:**
+**Example:**
 ```php
 echo $app->assets->css->render();
 echo $app->assets->js->render();
@@ -259,14 +262,14 @@ echo $app->assets->js->render('boostrap.min');
 
 ####**images()**
 
-Fungsi ini digunakan untuk mendapatkan link file assets untuk gambar.
+This function  use to get link from image assets file.
 ```php
 images($file)
 ```
 
-> paramater **``$file``** berisikan nama file assets gambar yang ingin digunakan.
+> paramater **``$file``** containt image assets file name that want to use.
 
-**Contoh:**
+**Example:**
 ```php
 <img src="<?php echo $app->assets->images('kecik.jpg'); ?>" />
 ```
@@ -275,18 +278,18 @@ Input
 ------
 [top](#kecik-framework)
 
-Input merupakan bentuk lain dari penggunaan ``$_GET``, ``$_POST`` dan ``$_SERVER``
+Input is other use from  ``$_GET``, ``$_POST`` and ``$_SERVER``
 
 ####**get()**
 
-Anda dapat menggunakan fungsi get untuk mendapatkan nilai dari ``$_GET``
+You can use get function to get value from ``$_GET``
 ```php
 get($var='')
 ```
 
-> paramater **``$var``** berisikan nama dari variabel get
+> paramater **``$var``** containt name from get variable
 
-**Contoh:**
+**Example:**
 ```php
 print_r($this->input->get());
 $x = $this->input->get('x');
@@ -294,14 +297,14 @@ $x = $this->input->get('x');
 
 #### **post()**
 
-Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari ``$_POST``
+You can use post function to get value from ``$_POST``
 ```php
 post($var='')
 ```
 
-> paramater **``$var``** berisikan nama dari variabel post
+> paramater **``$var``** containt name from post variable
 
-**Contoh:**
+**Example:**
 ```php
 print_r($this->input->post());
 $x = $this->input->post('x');
@@ -309,14 +312,14 @@ $x = $this->input->post('x');
 
 ####**server()**
 
-Anda dapat menggunakan fungsi server untuk mendapatkan nilai dari ``$_SERVER``
+You can use server function to get value from  ``$_SERVER``
 ```php
 server($var='')
 ```		
 
-> paramater **``$var``** berisikan nama dari variabel server
+> paramater **``$var``** containt name from server variable
 
-**Contoh:**
+**Exmple:**
 ```php
 print_r($this->input->server());
 $host = $this->input->server('HTTP_HOST');
@@ -328,13 +331,13 @@ $host = $this->input->server('HTTP_HOST');
 ---------------------------------------
 
 
-Framework ini juga mendukung MVC sederhana, dimana route akan memanggil Controller dan Controller akan memanggil Model atau/dan View.
+This Framework also support simple MVC, where route will call Controller and Controller will call Model or/and View.
 
 Controller
 ------------
 [top](#kecik-framework)
 
-Untuk membuat controller caranya cukup mudah, kita tinggal membuat file dengan nama sesuai dengan nama controllernya dan disimpan pada direktory yang sudah disetting sebelumnya melalui config, berikut ini code sederhana sebuah controller
+For make controller is simple, we just make file with name as controller name and save into directory that setting before via config, The following simple code a controller
 ```php
 <?php
 // file welcome.php
@@ -350,15 +353,15 @@ class Welcome extends Controller{
 }
 ```
 
-Cara menggunakan controller tersebut pada route adalah sebagai berikut
+How to use the controller on the route is as follows:
 ```php
 $app->get('/', new Controller\Welcome(), function($controller) {
 
 });
 ```
 
-- **Menggunakan Parameter**
-Untuk menggunakan parameter pada controller caranya juga cukup mudah, tinggal tambah parameter pada constructor dan pada saat controller dibuat tinggal masukan parameter contructornya
+- **With Parameter**
+To use the controller parameters on the way is also quite easy, just add a parameter to the constructor and when the controller is live input parameter constructor.
 ```php
 <?php
 // file welcome.php
@@ -376,15 +379,15 @@ class Welcome extends Controller{
 }
 ```
 
-Selanjutnya cara menggunakannya pada route sebagai berikut:
+Next how to use at route as follow:
 ```php
 $app->get('/', new Controller\Welcome($dbcon), function($controller) {
 
 });
 ```
 
-- **Menggunakan Method/Fungsi**
-Untuk menggunakan method/fungsi pada controller juga cukup mudah caranya, tinggal di panggil pada bagian callback route. Berikut ini cara penulisan code controller mennggunakan method/fungsi.
+- **With Method/Function**
+For use method/function in controller is simple, just call in callback section route. Here's how to write the code controller using the method / function.
 ```php
 <?php
 // file welcome.php
@@ -406,15 +409,15 @@ class Welcome extends Controller{
 }
 ```
 
-Selanjutnya cara menggunakan method atau fungsi tersebut pada route adalah sebagai berikut.
+Next use method/function in route is as follow.
 ```php
 $app->get('/', new Controller\Welcome($dbcon), function($controller) {
 	$controller->index();
 });
 ```
 
-- **Menggunakan parameter pada Method/Fungsi**
-Untuk memberikan paramter pada Method/Fungsi dalam controller dapat kita berikan pada saat pemanggilan method pada callback route, berikut ini contoh code controller dengan method/fungsi berparameter.
+- **With parameter in Method/Function**
+For give paramter in Method/Fungsi in controller we can give at the time of the call method in callback route, The following code example controller with a method / function parameterized.
 ```php
 <?php
 // file welcome.php
@@ -440,7 +443,7 @@ class Welcome extends Controller{
 }
 ```
 
-Cara menggunakannya pada route dengan cara sebagai berikut.
+How to use in route as follow.
 ```php
 $app->get('/hello/:nama', new Controller\Welcome($dbcon), function($controller, $nama) {
 	$controller->index($nama);
@@ -451,7 +454,7 @@ Model
 -------
 [top](#kecik-framework)
 
-Untuk membuat model caranya cukup mudah, kita tinggal membuat file dengan nama sesuai dengan nama modelnya dan disimpan pada direktory yang sudah disetting sebelumnya melalui config, berikut ini code sederhana sebuah model
+For make model is simple, we just create a file with name as model name and save in directory that setting before via config, The following simple code model
 ```php
 <?php
 //file data.php
@@ -469,7 +472,7 @@ class Data extends Model {
 }
 ```
 
-Cara penggunaan Model pada controller adalah sebagai berikut.
+How to use Model in controller are as follows.
 ```php
 <?php
 // file welcome.php
@@ -518,13 +521,13 @@ class Welcome extends Controller{
 ------
 [top](#kecik-framework)
 
-Untuk membuat view juga cukup mudah, karena disini anda tidak perlu membuat class/objek, tapi cukup file php biasa saja yang akan dipanggil oleh controller, berikut code view.
+For make view is also simple, because in this you don't need make class/object, but just plain php file will call by controller, the following code view.
 ```php
 <!-- file welcome.php -->
 <?php echo 'Ini dari View' ?>
 ```
 
-Cara menggunakan file view dari controller adalah sebagai berikut.
+How to use view file in controller are as follows.
 ```php
 <?php
 // file welcome.php
@@ -544,7 +547,7 @@ class Welcome extends Controller{
 }
 ```
 
-Cara mengirimkan variable ke view adalah sebagai berikut
+How to send variable to view are as follows:
 ```php
 <?php
 // file welcome.php
@@ -570,7 +573,7 @@ class Welcome extends Controller{
 ---------------
 [top](#kecik-framework)
 
-Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat file template pada direktori yang telah anda setting sebelumnya pada config. Berikut ini adalah contoh sederhana dari code template
+For make template in this framework is also simple, you just create template file in directory that you setting before via config. Here is a simple example of code templates
 ```html
 <!-- file template.php -->
 <!DOCTYPE html>
@@ -582,7 +585,7 @@ Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat
 		<meta name="description" content="overview &amp; stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		
-		{{ echo $this->assets->css->render() }}
+		@css
 	</head>
 	<body>
 
@@ -592,20 +595,21 @@ Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat
 
     </div>
 
-		{{ echo $this->assets->js->render() }}
+		@js
 	</body>
 </html>
 ```
 
 > Tanda **`{{`** dan **`}}`** hanya tag pengganti untuk tag **`<?php`** dan **`>`** ini hanya untuk kebutuhan template engine sederhana saja, tapi anda tetap bisa menggunakan tag php
 > 
-> Sedangkan **`@controller`** adalah untuk meletakan hasil output dari controller.
+> The **`@controller` ** is to put the output of the controller.
+>
+> The **`@css` ** or  **` @js` ** is to apply the template rendering assets
 
-Cara menggunakan template tersebut pada route adalah sebagai berikut.
+How to use the template on the route is as follows.
 ```php
 <?php
 $app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nama) {
 	$controller->welcome($nama);
 })->template('template');
 ```
-
