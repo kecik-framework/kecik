@@ -6,7 +6,7 @@ Merupakan framework dengan satu file system yang sangat sederhana, jadi ini buka
 ```
 Nama 	: Framework Kecik
 Pembuat : Dony Wahyu Isp
-Versi 	: 1.0.2-alpha
+Versi 	: 1.0.3-beta
 Kota 	: Palembang
 ```
 
