@@ -1,39 +1,46 @@
 <?php
+/*///////////////////////////////////////////////////////////////
+ /** ID: | /-- ID: Indonesia
+ /** EN: | /-- EN: English
+ ///////////////////////////////////////////////////////////////*/
+
 /**
- * Kecik Framework - Sebuah Framework dengan satu file system
+ * ID: Kecik Framework - Sebuah Framework dengan satu file system
+ * EN: Kecik Framework - The Framework with single file system 
  *
  * @author 		Dony Wahyu Isp
  * @copyright 	2015 Dony Wahyu Isp
- * @link 		http://github.io/kecik
+ * @link 		http://github.com/kecik-framework/kecik
  * @license		MIT
- * @version 	1.0-alpha2
+ * @version 	1.0.3-beta
  * @package		Kecik
  *
- *----------------------------------------
+ *-----------------------------------------------------------
  * INDEX CODE
- *----------------------------------------
- * Keterangan								Baris Code
- * + Controller Class ......................... 46
- *   - Custom Constructor ..................... 53
- *   - Custom Fungsi .......................... 58
- * + Model Class .............................. 80
- * 	 - Custom Code save ....................... 107
- *   - Custom Code  delete .................... 129
- * 	 - Custom Fungsi Model .................... 138
- * 	 - Custom Code Inisialisasi Model ......... 167
- * + Config Class ............................. 211
- * + AssetsBase Class ......................... 270
- * + Assets Class ............................. 360
- * + Url Class ................................ 400
- * + Route Class .............................. 480
- * + Input Class .............................. 681
- * + Kecik Class .............................. 731
+ *-----------------------------------------------------------
+ * Keterangan | Description					Baris Code | Line
+ * + Controller Class .............................. 54
+ *   - Custom Constructor .......................... 62
+ *   - Custom Fungsi ............................... 69
+ * + Model Class ................................... 93
+ * 	 - Custom Code save ............................ 123
+ *   - Custom Code  delete ......................... 147
+ * 	 - Custom Fungsi Model ......................... 157
+ * 	 - Custom Code Inisialisasi Model .............. 167
+ * + Config Class .................................. 233
+ * + AssetsBase Class .............................. 293
+ * + Assets Class .................................. 383
+ * + Url Class ..................................... 423
+ * + Route Class ................................... 508
+ * + Input Class ................................... 814
+ * + Kecik Class ................................... 864
  **/
 
 namespace Kecik;
 
 /**
- * Autoload untuk composer
+ * ID: Autoload untuk composer
+ * EN: Autoload for Composer
  **/
 //require 'vendor/autoload.php';
 
@@ -41,7 +48,7 @@ namespace Kecik;
  * Controller
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0-alpha
+ * @since 		1.0.1-alpha
  **/
 if (!class_exists('Kecik\Controller')) {
 	class Controller {
@@ -50,19 +57,23 @@ if (!class_exists('Kecik\Controller')) {
 		 * Construtor Controller
 		 **/
 		public function __construct() {
-			//Silakan tambah inisialisasi controller sendiri disini
+			//** ID: Silakan tambah inisialisasi controller sendiri disini
+			//** EN: Please add your initialitation of controller in this
 
-			//-- Akhir tambah inisialisasi sendiri
+			//-- ID: Akhir tambah inisialisasi sendiri
+			//-- EN: End add your initialitation
 		}
 
-		//Silakan tambah fungsi controller sendiri disini
+		//** ID: Silakan tambah fungsi controller sendiri disini
+		//** EN: Please add your function/method of controller in this
 
-
-		//-- Akhir tambah fungsi sendiri
+		//-- ID: Akhir tambah fungsi sendiri
+		//-- EN: End add your function/method
 
 		/**
 		 * view
-		 * Funngsi untuk menampilkan view
+		 * ID: Funngsi untuk menampilkan view
+		 * EN: Function for displaying view
 		 * @param string $file
 		 * @param array $param
 		 **/
@@ -77,7 +88,7 @@ if (!class_exists('Kecik\Controller')) {
  * Model
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0-alpha1
+ * @since 		1.0.1-alpha
  **/
 if (!class_exists('Kecik\Model')) {
 	class Model {
@@ -91,25 +102,27 @@ if (!class_exists('Kecik\Model')) {
 
 		/**
 		 * save
-		 * Fungsi untuk menambah atau mengupdate record (Insert/Update)
+		 * ID: Fungsi untuk menambah atau mengupdate record (Insert/Update)
+		 * EN: Function for adding/updating record (Insert/Update)
 		 * @return string SQL Query
 		 **/
 		public function save() {
 			$this->setFieldsValues();
 
 			if ($this->table != '') {
-				// Untuk menambah record
+				//** ID: Untuk menambah record | EN: For adding record
 				if ($this->add == TRUE) {
 					$sql ="INSERT INTO `$this->table` ($this->fields) VALUES ($this->values)";
-				// Untuk mengupdate record
+				//** ID: Untuk mengupdate record | EN: For updating record
 				} else {
 					$sql ="UPDATE `$this->table` SET $this->updateVar $this->_where";
 				}
 
-				//silakan tambah code database sendiri disini
+				//** ID: silakan tambah code database sendiri disini
+				//** EN: please add your database code in this
 
-
-				//-- Akhir tambah code database sendiri
+				//-- ID: Akhir tambah code database sendiri
+				//-- EN: End of add your database code
 			}
 
 			return (isset($sql))?$sql:'';
@@ -117,7 +130,8 @@ if (!class_exists('Kecik\Model')) {
 
 		/**
 		 * delete
-		 * Fungsi untuk menghapus record
+		 * ID: Fungsi untuk menghapus record
+		 * EN: Function for deleting record
 		 * @return string SQL Query
 		 **/
 		public function delete() {
@@ -128,20 +142,21 @@ if (!class_exists('Kecik\Model')) {
 					$sql = "DELETE FROM $this->table $this->_where";
 				}
 
-				//silakan tambah code database sendiri disini
+				//** ID: silakan tambah code database sendiri disini
+				//** EN: please add your database code in this
 
-
-				//-- AKhir tambah code database sendiri
+				//-- ID: AKhir tambah code database sendiri
+				//-- EN: End of add your database code
 			}
 
 			return (isset($sql))?$sql:'';
 		}
 
-		//Silakan tambah fungsi model sendiri disini
+		//** ID: Silakan tambah fungsi model sendiri disini
+		//** EN: Please add your function/method of model in this
 
-
-		//-- Akhir tambah fungsi sendiri
-
+		//-- ID: Akhir tambah fungsi sendiri
+		//-- EN: End of your function/method
 
 		/**
 		 * Model Constructor
@@ -166,15 +181,18 @@ if (!class_exists('Kecik\Model')) {
 
 				$this->add = FALSE;
 
-				//Silakan tambah inisialisasi model sendiri disini
+				//** ID: Silakan tambah inisialisasi model sendiri disini
+				//** EN: Please add your initialitation of model in this
 
-				//-- Akhir tambah inisialisasi model sendiri
+				//-- EN: Akhir tambah inisialisasi model sendiri
+				//-- EN: End of your initialitation model
 			}
 		}
 
 		/**
 		 * setFieldValues
-		 * Fungsi untuk menyetting Variable Fields dan Values
+		 * ID: Fungsi untuk menyetting Variable Fields dan Values
+		 * EN: Function/Method for setting fields and values variable
 		 **/
 		private function setFieldsValues() {
 			$fields = array_keys($this->_field);
@@ -210,7 +228,7 @@ if (!class_exists('Kecik\Model')) {
  * Config
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0-alpha
+ * @since 		1.0.1-alpha
  **/
 class Config {
 	/**
@@ -242,7 +260,7 @@ class Config {
 	/**
 	 * get
 	 * @param 	string $key
-	 * @return 	string nilai dari key config
+	 * @return 	string ID: nilai dari key config | EN: value of key config
 	 **/
 	public static function get($key) {
 		if (isset(self::$config[strtolower($key)]))
@@ -270,7 +288,7 @@ Config::init();
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0-alpha
+ * @since 		1.0.1-alpha
  **/
 class AssetsBase {
 	/**
@@ -284,7 +302,7 @@ class AssetsBase {
 	var $type;
 
 	/**
-	 * @var object of Url
+	 * @var ID: Objek dari Url | EN: Object of Url
 	 **/
 	var $baseurl;
 
@@ -360,7 +378,7 @@ class AssetsBase {
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0-alpha
+ * @since 		1.0.1-alpha
  **/
 class Assets {
 	/**
@@ -400,11 +418,11 @@ class Assets {
  * Url
  * @package Kecik
  * @author Dony Wahyu Isp
- * @since 1.0-alpha1
+ * @since 1.0.1-alpha
  **/
 class Url {
 	/**
-	 * @var string $_protocol, $_base_url, $_base_path
+	 * @var string $_protocol, $_base_url, $_base_path, $_index
 	 **/
 	private $_protocol, $_base_url, $_base_path, $_index;
 
@@ -488,9 +506,16 @@ class Url {
  * @since 		1.0-alpha1
  **/
 class Route {
+	/**
+	 * @var string $_paramStr
+	 **/
 	public static $_paramsStr = '';
 
+	/**
+	 * @var string $_destination
+	 **/
 	public static $_destination = '';
+	
 	/**
 	 * @var array $_params for lock params
 	 **/
@@ -582,7 +607,8 @@ class Route {
 
 	/**
 	 * Init
-	 * For init class Route
+	 * ID: Untuk inisialisasi Kelas Route
+	 * EN: For initialitation Route Class
 	 **/
 	public static function init() {
 
@@ -600,6 +626,7 @@ class Route {
 
 		$index = basename($_SERVER["SCRIPT_FILENAME"], '.php').'.php';
 		Config::set('index', $index);
+		
 		if ( strpos($pathinfo['dirname'], '/'.$index) > 0 )
 			$strlimit = strpos($pathinfo['dirname'], '/'.$index);
 		elseif ($pathinfo['dirname'] == '/'.$index)
@@ -614,10 +641,11 @@ class Route {
 		    chdir(dirname(__FILE__));
 		    self::$BASEURL = dirname(__FILE__).'\\';
 		} else {
-		    if ($pathinfo['dirname'] != '')
-		    	self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].substr( $pathinfo['dirname']."/", 0, $strlimit+1 );
-			else 
-				self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].'/';
+			//** ID: Terkadang terdapat masalah bagian base url, kamu dapat mengedit bagian ini. Biasanya masalah pada $pathinfo['dirname']
+			//** EN: Sometimes have a problem in base url section, you can editi this section. normally at $pathinfo['dirname']
+			self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].substr( $pathinfo['dirname'], 0, $strlimit );
+			if ( substr(self::$BASEURL, -1,1) != '/')
+				self::$BASEURL .= '/';
 		}
 
 		if (php_sapi_name() == 'cli') {
@@ -712,13 +740,18 @@ class Route {
 		return self::$_paramsStr;
 	}
 
+	/**
+	 * is
+	 * @return string ID: pattern route yang cocok | EN: current pattern route
+	 **/
 	public function is() {
 		return self::$_destination;
 	}
 
 	/**
 	 * isPost
-	 * Untuk check apakah request method adalah Post
+	 * ID: Untuk check apakah request method adalah Post
+	 * EN: For checking request method is Post
 	 * @return Bool
 	 **/
 	public function isPost() {
@@ -730,7 +763,8 @@ class Route {
 
 	/**
 	 * isGet
-	 * Untuk check apakah request method adalah Get
+	 * ID: Untuk check apakah request method adalah Get
+	 * EN: For checking request method is Get
 	 * @return Bool
 	 **/
 	public function isGet() {
@@ -742,7 +776,8 @@ class Route {
 
 	/**
 	 * isPut
-	 * Untuk check apakah request method adalah Put
+	 * ID: Untuk check apakah request method adalah Put
+	 * EN: For checking request method is Put
 	 * @return Bool
 	 **/
 	public function isPut() {
@@ -754,7 +789,8 @@ class Route {
 
 	/**
 	 * isAjax
-	 * Untuk check apakah request method adalah AJAX
+	 * ID: Untuk check apakah request method adalah AJAX
+	 * EN: For checking request method is AJAX
 	 * @return Bool
 	 **/
 	public function isAjax() {
@@ -827,7 +863,7 @@ class Input {
  **/
 class Kecik {
 	/**
-	 * @var object $route, $url, $config, $assets
+	 * @var object $route, $url, $config, $assets, $input
 	 **/
 	var $route, $url, $config, $assets, $input;
 
@@ -847,7 +883,8 @@ class Kecik {
 
 	/**
 	 * autoload
-	 * autoload untuk MVC
+	 * ID: autoload untuk MVC
+	 * EN: autoload for MVC
 	 * @param string $class
 	 **/
 	public function autoload($class) {
@@ -878,7 +915,7 @@ class Kecik {
 		$this->assets = new Assets($this->url);
 		$this->input = new Input();
 
-		//** Load Dynamic Libraries from config
+		//** ID: Memasukan Libary/Pustaka berdasarkan config | EN: Load Dynamic Libraries from config
 		$libraries = $this->config->get('libraries');
 		if (is_array($libraries) && count($libraries) > 0 ) {
 			while(list($library, $params) = each($libraries)) {
@@ -887,24 +924,30 @@ class Kecik {
 					if (isset($params['enable']) && $params['enable'] === TRUE) {
 						$library = strtolower($library);
 
+						//** ID: Untuk Library/Pustaka tanpa parameter
+						//** EN: For Library without parameter
 						if (!isset($params['config']) && !isset($params['params'])) {
+							//** ID: Untuk Library/Pustaka DIC | EN: For DIC Library
 							if ($library == 'dic')
 								$this->container = new DIC();
-							else
+							else // ID: Untuk Library/Pustaka lain | EN: Other Library
 								$this->$library = new $clsLibrary();
+						//** ID: Untuk Library/Pustaka dengan parameter Kelas Kecik
+						//** EN: For Library with parameter of Kecik CLass
 						} elseif (isset($params['config'])) {
+							//** ID: Buat variabel config
+							//** EN: Create config variable
 							while (list($key, $value) = each($params['config']) )
 								$this->config->set($library.'.'.$key, $value);
-							
+							//** ID: untuk Library/Pustaka Database | EN: For Database Library
 							if ($library == 'database')
 								$this->db = new Database($this);
-							else
+							else //** ID: untuk Library/Pustaka lain | EN: For Other library
 								$this->$library = new $clsLibrary($this);
+						//** ID: Untuk Library/Pustaka tanpa parameter Kelas Kecik
+						//** EN: For Library without parameter of Kecik CLass
 						} elseif (isset($params['params'])) {
-							if (!isset($params['params']))
-								$this->$library = new $clsLibrary();
-							else
-								$this->$library = new $clsLibrary($params['params']);
+							$this->$library = new $clsLibrary($params['params']);
 
 						}
 					}
@@ -912,7 +955,8 @@ class Kecik {
 				}
 			}
 		}
-		//-- End Load Dynamic Library
+		//-- ID: Akhir untuk memasukan library/pustaka secara dinamis
+		//-- EN: End Load Dynamic Library
 
 		spl_autoload_register(array($this, 'autoload'), true, true);
 
@@ -920,7 +964,8 @@ class Kecik {
 
 	/**
 	 * setCallable
-	 * untuk setting paramater fungsi pada get atau post
+	 * ID: untuk setting paramater fungsi pada get atau post
+	 * EN: For setting function parameter at get or post
 	 * @param array $args
 	 **/
 	private function setCallable($args) {
@@ -938,9 +983,11 @@ class Kecik {
 			$this->routedStatus = TRUE;
 		} else {
 			$route_pattern = str_replace('/', '\\/', $route);
-			//convert route kedalam pattern parameter optional
+			//** ID: Konversi route kedalam pattern parameter optional
+			//** EN: Convert route in optional parameter pattern
 			$route_pattern = preg_replace('/\\\\\\/\\(:\\w+\\)/', '(\\/\\\\w+){0,}', $route_pattern, -1);
-			//convert route kedalam pattern parameter wajib
+			//** ID: Konversi route kedalam pattern parameter wajib
+			//** EN: Cover route in required parameter pattern
 			$route_pattern = preg_replace('/:\\w+/', '\\w+', $route_pattern, -1);
 			
 			if ($route != '/' && preg_match('/(^'.$route_pattern.'$)|(^'.$route_pattern.'(\\?(\\w|\\d|\\=|\\&|\\-|\\.|_|\\/){0,}){0,}$)/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
@@ -1010,7 +1057,8 @@ class Kecik {
 
 	/**
 	 * template
-	 * Untuk menerapkan sebuah template
+	 * ID: Untuk menerapkan sebuah template
+	 * EN: For implement of template
 	 * @param string template
 	 **/
 	public function template($template) {
@@ -1061,7 +1109,8 @@ class Kecik {
 
 	/**
 	 * error
-	 * Untuk menampilkan error http response
+	 * ID: Untuk menampilkan error http response
+	 * EN: For displaying error http response
 	 * @param integer $code
 	 **/
 	public function error($code) {
