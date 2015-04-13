@@ -91,6 +91,7 @@ if (!class_exists('Kecik\Controller')) {
  * @since 		1.0.1-alpha
  **/
 if (!class_exists('Kecik\Model')) {
+
 	class Model {
 		protected $_field = array();
 		protected $_where;
@@ -930,7 +931,10 @@ class Kecik {
 							//** ID: Untuk Library/Pustaka DIC | EN: For DIC Library
 							if ($library == 'dic')
 								$this->container = new DIC();
-							else // ID: Untuk Library/Pustaka lain | EN: Other Library
+							elseif ($library == 'mvc') {
+								if (isset($this->db))
+									MVC::setDB($this->db);
+							} else // ID: Untuk Library/Pustaka lain | EN: Other Library
 								$this->$library = new $clsLibrary();
 						//** ID: Untuk Library/Pustaka dengan parameter Kelas Kecik
 						//** EN: For Library with parameter of Kecik CLass
