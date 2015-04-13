@@ -207,7 +207,56 @@ get($key)
 ```php
 $asset_path = $app->config->get('path.assets');
 ```
-		
+
+## **Configuration When Making Kecik Instance**
+```php
+$config = [
+	'path.assets'   => 'assets',
+	'path.mvc'      => 'app',
+	'path.template'	=> 'templates',
+	'error.404'     => 'kecik_template/404',
+	'mod_rewrite'	=> TRUE,
+	
+	'libraries' => [
+		'DIC' => ['enable'=>TRUE],
+		'Session' => [
+			'enable' => TRUE,
+			'config' => ['encrypt' => TRUE]
+		],
+		'Cookie' => [
+			'enable' => TRUE,
+			'config' => ['encrypt' => TRUE]
+		],
+		'Database' => [
+			'enable' => TRUE,
+			'config' => [
+				'driver' => 'mysqli',
+				'hostname' => 'localhost',
+				'username' => 'root',
+				'password' => '',
+				'dbname' => 'kecik'
+			]
+		],
+		'MVC' => ['enable' => TRUE],
+		'Language' => [
+			'enable' => TRUE,
+			'params' => [
+				'id' => 'language/lang_id.json',
+				'us' => 'language/lang_us.json'
+			]
+		]
+	]
+];
+
+$app = new Kecik\Kecik($config);
+
+	$app->get('/', function() {
+		echo 'Hello Kecik';
+	});
+	
+$app->run();
+```
+	
 Assets
 -------
 [top](#kecik-framework)
@@ -604,7 +653,7 @@ For make template in this framework is also simple, you just create template fil
 > 
 > The **`@controller`** is to put the output of the controller.
 >
-> The **`@css`** or  **`@js`** is to apply the template rendering assets
+> The **`@css`** or  **` @js`** is to apply the template rendering assets
 
 How to use the template on the route is as follows.
 ```php
@@ -613,3 +662,5 @@ $app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nam
 	$controller->welcome($nama);
 })->template('template');
 ```
+
+

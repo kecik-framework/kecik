@@ -204,7 +204,56 @@ get($key)
 ```php
 $asset_path = $app->config->get('path.assets');
 ```
-		
+
+## **Konfigurasi Saat Instance Kecik Dibuat**
+```php
+$config = [
+	'path.assets'   => 'assets',
+	'path.mvc'      => 'app',
+	'path.template'	=> 'templates',
+	'error.404'     => 'kecik_template/404',
+	'mod_rewrite'	=> TRUE,
+	
+	'libraries' => [
+		'DIC' => ['enable'=>TRUE],
+		'Session' => [
+			'enable' => TRUE,
+			'config' => ['encrypt' => TRUE]
+		],
+		'Cookie' => [
+			'enable' => TRUE,
+			'config' => ['encrypt' => TRUE]
+		],
+		'Database' => [
+			'enable' => TRUE,
+			'config' => [
+				'driver' => 'mysqli',
+				'hostname' => 'localhost',
+				'username' => 'root',
+				'password' => '',
+				'dbname' => 'kecik'
+			]
+		],
+		'MVC' => ['enable' => TRUE],
+		'Language' => [
+			'enable' => TRUE,
+			'params' => [
+				'id' => 'language/lang_id.json',
+				'us' => 'language/lang_us.json'
+			]
+		]
+	]
+];
+
+$app = new Kecik\Kecik($config);
+
+	$app->get('/', function() {
+		echo 'Hello Kecik';
+	});
+	
+$app->run();
+```
+	
 Assets
 -------
 [top](#kecik-framework)
@@ -601,7 +650,7 @@ Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat
 > 
 > Sedangkan **`@controller`** adalah untuk meletakan hasil output dari controller.
 > Sedangkan **`@css`** or  **`@js`** adalah untuk me render assets css atau js.
-
+> 
 Cara menggunakan template tersebut pada route adalah sebagai berikut.
 ```php
 <?php
