@@ -602,9 +602,9 @@ For make template in this framework is also simple, you just create template fil
 
 > Tanda **`{{`** dan **`}}`** hanya tag pengganti untuk tag **`<?php`** dan **`>`** ini hanya untuk kebutuhan template engine sederhana saja, tapi anda tetap bisa menggunakan tag php
 > 
-> The **`@controller` ** is to put the output of the controller.
+> The **`@controller`** is to put the output of the controller.
 >
-> The **`@css` ** or  **` @js` ** is to apply the template rendering assets
+> The **`@css`** or  **`@js`** is to apply the template rendering assets
 
 How to use the template on the route is as follows.
 ```php
