@@ -1013,7 +1013,8 @@ class Kecik {
 			$real_params['controller'] = $controller;
 		}
 
-		if ($route == '/' && count( $this->route->_getParams() ) <= 0 ) {
+		//if ($route == '/' && count( $this->route->_getParams() ) <= 0 ) {
+		if (preg_match('/(^\\/$)|(^\\/(\\?(\\w|\\d|\\=|\\&|\\-|\\.|_|\\/){0,}){0,}$)/', $route.$this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
 			//$this->callable = array_pop($args);
 			$this->callable = \Closure::bind(array_pop($args), $this, get_class());
 			$this->routedStatus = TRUE;
