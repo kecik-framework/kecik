@@ -648,7 +648,7 @@ Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat
 
 > Tanda **`{{`** dan **`}}`** hanya tag pengganti untuk tag **`<?php`** dan **`>`** ini hanya untuk kebutuhan template engine sederhana saja, tapi anda tetap bisa menggunakan tag php
 > 
-> Sedangkan **`@controller`** adalah untuk meletakan hasil output dari controller.
+> Sedangkan **`@response`** adalah untuk meletakan hasil output dari controller.
 > Sedangkan **`@css`** or  **`@js`** adalah untuk me render assets css atau js.
 > 
 Cara menggunakan template tersebut pada route adalah sebagai berikut.
