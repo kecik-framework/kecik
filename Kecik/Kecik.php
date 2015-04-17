@@ -77,9 +77,18 @@ if (!class_exists('Kecik\Controller')) {
 		 * @param string $file
 		 * @param array $param
 		 **/
-		protected function view($file, $param=array()) {
+		protected function view($file, $param=[]]) {
+			ob_start();
 			extract($param);
-			include Config::get('path.mvc').'/views/'.$file.'.php';
+			$file = Config::get('path.mvc').'/views/'.$file.'.php';
+			$myfile = fopen($file, "r");
+			$view = fread($myfile,filesize($file));
+			fclose($myfile);
+			//$view = file_get_contents( Config::get('path.mvc').'/views/'.$file.'.php' );
+			eval('?>'.$view);
+			$result = ob_get_clean();
+			
+			return $result;
 		}
 	}
 }
@@ -93,13 +102,13 @@ if (!class_exists('Kecik\Controller')) {
 if (!class_exists('Kecik\Model')) {
 
 	class Model {
-		protected $_field = array();
+		protected $_field = [];
 		protected $_where;
 		protected $add = TRUE;
 		protected $table = '';
-		protected $fields = array();
-		protected $values = array();
-		protected $updateVar = array();
+		protected $fields = [];
+		protected $values = [];
+		protected $updateVar = [];
 
 		/**
 		 * save
@@ -167,7 +176,7 @@ if (!class_exists('Kecik\Model')) {
 			$this->_where = '';
 			if ($id != '') {
 				if (is_array($id)) {
-					$and = array();
+					$and = [];
 					while(list($field, $value) = each($id)) {
 
 						if (preg_match('/<|>|!=/', $value))
@@ -203,7 +212,7 @@ if (!class_exists('Kecik\Model')) {
 			$this->fields = implode(',', $fields);
 
 			$values = array_values($this->_field);
-			$updateVar = array();
+			$updateVar = [];
 			while (list($id, $value) = each($values)){
 				$values[$id] = "'$values[$id]'";
 				$updateVar[] = "$fields[$id] = $values[$id]";
@@ -241,12 +250,12 @@ class Config {
 	 * init
 	 **/
 	public static function init() {
-		self::$config = array(
+		self::$config = [
 			'path.assets' => '',
 			'path.templates' => '',
 			'mod_rewrite' =>FALSE,
 			'index' => '',
-		);
+		];
 	}
 
 	/**
@@ -298,6 +307,11 @@ class AssetsBase {
 	var $assets;
 	
 	/**
+	 * @var array
+	 **/
+	var $attr;
+
+	/**
 	 * @var string
 	 **/
 	var $type;
@@ -315,16 +329,19 @@ class AssetsBase {
 	public function __construct($baseUrl, $type) {
 		$this->baseurl = $baseUrl;
 		$this->type = strtolower($type);
-		$this->assets[$type] = array();
+		$this->assets[$type] = [];
+		$this->attr[$type] = [];
 	}
 
 	/**
 	 * add
 	 * @param string $file
 	 **/
-	public function add($file) {
-		if (!in_array($file, $this->assets[$this->type]))
+	public function add($file, $attr=[]) {
+		if (!in_array($file, $this->assets[$this->type])) {
 			$this->assets[$this->type][] = $file;
+			$this->attr[$this->type][] = $attr;
+		}
 	}
 
 	/**
@@ -334,6 +351,7 @@ class AssetsBase {
 	public function delete($file) {
 		$key = array_search($file, $this->assets[$this->type]);
 		unset($this->assets[$this->type][$key]);
+		unset($this->attr[$this->type][$key]);
 	}
 
 	/**
@@ -342,16 +360,24 @@ class AssetsBase {
 	 **/
 	public function render($file='') {
 		reset($this->assets[$this->type]);
+		//reset($this->attr[$this->type]);
 		
+		$attr = '';
+
 		if ($this->type == 'js') {
 			if ($file != '') {
 				$key = array_search($file, $this->assets[$this->type]);
+				while(list($at, $val) = each($this->attr[$this->type][$key]))
+					$attr .= $at.'="'.$val.'" ';
 				if ($key)
-					return '<script type="text/javascript" src="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$this->assets[$this->type][$key].'.'.$this->type.'"></script>'."\n";
+					return '<script type="text/javascript" src="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$this->assets[$this->type][$key].'.'.$this->type.'" '.$attr.'></script>'."\n";
 			} else {
 				$render = '';
 				while(list($key, $value) = each($this->assets[$this->type])) {
-					$render .= '<script type="text/javascript" src="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$value.'.'.$this->type.'"></script>'."\n";
+					$attr = '';
+					while(list($at, $val) = each($this->attr[$this->type][$key]))
+						$attr .= $at.'="'.$val.'" ';
+					$render .= '<script type="text/javascript" src="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$value.'.'.$this->type.'" '.$attr.'></script>'."\n";
 				}
 
 				return $render;
@@ -360,12 +386,17 @@ class AssetsBase {
 		} elseif ($this->type == 'css') {
 			if ($file != '') {
 				$key = array_search($file, $this->assets[$this->type]);
+				while(list($at, $val) = each($this->attr[$this->type][$key]))
+					$attr .= $at.'="'.$val.'" ';
 				if ($key)
-					return '<link rel="stylesheet" href="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$this->assets[$this->type][$key].'.'.$this->type.'" />'."\n";
+					return '<link rel="stylesheet" href="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$this->assets[$this->type][$key].'.'.$this->type.'" '.$attr.' />'."\n";
 			} else {
 				$render = '';
 				while(list($key, $value) = each($this->assets[$this->type])) {
-					$render .= '<link rel="stylesheet" href="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$value.'.'.$this->type.'" />'."\n";
+					$attr = '';
+					while(list($at, $val) = each($this->attr[$this->type][$key]))
+						$attr .= $at.'="'.$val.'" ';
+					$render .= '<link rel="stylesheet" href="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$value.'.'.$this->type.'" '.$attr.' />'."\n";
 				}
 
 				return $render;
@@ -520,12 +551,12 @@ class Route {
 	/**
 	 * @var array $_params for lock params
 	 **/
-	public static $_params = array();
+	public static $_params = [];
 
 	/**
 	 * @var array $_realparams for callable
 	 **/
-	public static $_realparams = array();
+	public static $_realparams = [];
 	
 	/**
 	 * @var string $BASEURL
@@ -542,7 +573,7 @@ class Route {
 	 **/
 	public static $PROTOCOL;
 
-	public static $HTTP_RESPONSE = array(
+	public static $HTTP_RESPONSE = [
         //Informational 1xx
         100 => '100 Continue',
         101 => '101 Switching Protocols',
@@ -600,7 +631,7 @@ class Route {
         506 => '506 Variant Also Negotiates',
         510 => '510 Not Extended',
         511 => '511 Network Authentication Required'
-    );
+    ];
 
 	public function __construct() {
 		
@@ -666,7 +697,7 @@ class Route {
 	        
 	        if ( $segments[count($segments)-1] == '' && count($segments) > 1 ) unset($segments[count($segments)-1]);
 	         
-	        $result_segment = array();
+	        $result_segment = [];
 	        while(list($key, $seg) = each($segments)) {
 	            if ($segments[$key] != $index && $seg != '' )
 	                array_push($result_segment, urldecode($seg));
@@ -901,7 +932,7 @@ class Kecik {
 	 * __construct
 	 * @param array $config optional
 	 **/
-	public function __construct($config=array()) {
+	public function __construct($config=[]) {
 		//** Config
 		$this->config = new Config();
 
@@ -975,7 +1006,7 @@ class Kecik {
 	private function setCallable($args) {
 
 		$route = array_shift($args);
-		$real_params = array();
+		$real_params = [];
 
 		if (!is_callable($args[0])) {
 			$controller = array_shift($args);
@@ -983,7 +1014,8 @@ class Kecik {
 		}
 
 		if ($route == '/' && count( $this->route->_getParams() ) <= 0 ) {
-			$this->callable = array_pop($args);
+			//$this->callable = array_pop($args);
+			$this->callable = \Closure::bind(array_pop($args), $this, get_class());
 			$this->routedStatus = TRUE;
 		} else {
 			$route_pattern = str_replace('/', '\\/', $route);
@@ -996,7 +1028,8 @@ class Kecik {
 			
 			if ($route != '/' && preg_match('/(^'.$route_pattern.'$)|(^'.$route_pattern.'(\\?(\\w|\\d|\\=|\\&|\\-|\\.|_|\\/){0,}){0,}$)/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
 			
-				$this->callable = array_pop($args);
+				//$this->callable = array_pop($args);
+				$this->callable = \Closure::bind(array_pop($args), $this, get_class());
 				$this->routedStatus = TRUE;
 
 				$p = explode('/', $route);
@@ -1067,12 +1100,15 @@ class Kecik {
 	 **/
 	public function template($template) {
 		if ($this->routedStatus) {
-			$tpl = file_get_contents($this->config->get('path.template').'/'.$template.'.php');
-			self::$fullrender = str_replace(array('{{', '}}'), array('<?php', '?>'), $tpl);
-			self::$fullrender = str_replace(array('@js', '@css','@controller'), array(
+			$file = $this->config->get('path.template').'/'.$template.'.php'
+			$myfile = fopen($file, "r") or die("Unable to open file!");
+			$view = fread($myfile,filesize($file));
+			fclose($myfile);
+			//$tpl = file_get_contents($this->config->get('path.template').'/'.$template.'.php');
+			self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], $tpl);
+			self::$fullrender = str_replace(['@js', '@css'], [
 				$this->assets->js->render(), 
-				$this->assets->css->render(),
-				'<?php call_user_func_array($this->callable, $this->route->getParams()) ?>'), self::$fullrender);
+				$this->assets->css->render()], self::$fullrender);
 		}
 	}
 
@@ -1089,6 +1125,8 @@ class Kecik {
 		
 		if (self::$fullrender != '') {
 			if (is_callable($this->callable)) {
+				$response = call_user_func_array($this->callable, $this->route->getParams());
+				self::$fullrender = str_replace(['@controller', '@response'], [$response, $response], self::$fullrender);
 				eval('?>'.self::$fullrender);
 			} else {
 				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
@@ -1100,7 +1138,7 @@ class Kecik {
 			self::$fullrender = '';
 		} else {
 			if (is_callable($this->callable)) {
-				call_user_func_array($this->callable, $this->route->getParams());
+				echo call_user_func_array($this->callable, $this->route->getParams());
 			} else {
 				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
 				if ($this->config->get('error.404') != '') {
