@@ -6,7 +6,7 @@ Merupakan framework dengan satu file system yang sangat sederhana, jadi ini buka
 ```
 Nama 	: Framework Kecik
 Pembuat : Dony Wahyu Isp
-Versi 	: 1.0.3-beta
+Versi 	: 1.0.4-beta
 Kota 	: Palembang
 ```
 
@@ -73,7 +73,7 @@ Langkah Keempat
 Langkah selanjutnya adalah membuat Route untuk index dan menjalankan framework, berikut code nya:
 ```php
 $app->get('/', function() {
-	echo 'Hello Kecik';
+	return 'Hello Kecik';
 });
 
 $app->run();
@@ -91,7 +91,7 @@ require_once "Kecik/Kecik.php";
 $app = new Kecik\Kecik();
 
 $app->get('/', function() {
-	echo 'Hello Kecik';
+	return 'Hello Kecik';
 });
 
 $app->run();
@@ -109,13 +109,13 @@ Route
 Route yang terdapat pada framework kecik saat ini adalah get dan post, dimana get dan post adalah sumber request dan artinya route tersebut hanya akan diproses pada request yang sesuai. Untuk penggunaannya terdapat beberapa, dan paling sederhana adalah tanpa menggunakan Controller, variabel eksternal dan template, seperti berikut ini:
 ```php
 $app->get('/', function() {
-	echo 'Hello Kecik';
+	return 'Hello Kecik';
 });
 ```
 Dengan menggunakan parameter:
 ```php
 $app->get('hello/:nama', function ($nama) {
-	echo 'Hello '.$nama;
+	return 'Hello '.$nama;
 });
 ```
 Parameter pada route menggunakan ``:`` pada bagian depannya, sedangkan untuk parameter yang bersifat optional bisa menggunakan ``(:)``
@@ -124,8 +124,8 @@ Parameter pada route menggunakan ``:`` pada bagian depannya, sedangkan untuk par
 
 Dengan menggunakan Controller:
 ```php
-$app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($controller, $nama) use ($app) {
-	$controller->index($nama);
+$app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($controller, $nama)  {
+	return $controller->index($nama);
 });
 ```		
 
@@ -134,11 +134,11 @@ Pastikan sebelumnya sudah membuat Controller yang ingin digunakan pada route ter
 Dengan menggunakan Template:
 ```php
 $app->get('hello/:nama', function ($nama) {
-	echo 'Hello '.$nama;
+	return 'Hello '.$nama;
 })->template('template_kecik');
 
-$app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($controller, $nama) use ($app) {
-	$controller->index($nama);
+$app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($controller, $nama) {
+	return $controller->index($nama);
 })->template('template_kecik');
 ```
 
@@ -248,7 +248,7 @@ $config = [
 $app = new Kecik\Kecik($config);
 
 	$app->get('/', function() {
-		echo 'Hello Kecik';
+		return 'Hello Kecik';
 	});
 	
 $app->run();
@@ -450,7 +450,7 @@ class Welcome extends Controller{
 	}
 
 	public function index() {
-		echo 'Kecik berkata: Controler->index()';
+		return 'Kecik berkata: Controler->index()';
 	}
 }
 ```
@@ -458,7 +458,7 @@ class Welcome extends Controller{
 Selanjutnya cara menggunakan method atau fungsi tersebut pada route adalah sebagai berikut.
 ```php
 $app->get('/', new Controller\Welcome($dbcon), function($controller) {
-	$controller->index();
+	return $controller->index();
 });
 ```
 
@@ -480,11 +480,11 @@ class Welcome extends Controller{
 	}
 
 	public function index() {
-		echo 'Kecik berkata: Controler->index()';
+		return 'Kecik berkata: Controler->index()';
 	}
 
 	public function hello($nama) {
-		echo "Hello, $nama";
+		return "Hello, $nama";
 	}
 }
 ```
@@ -492,7 +492,7 @@ class Welcome extends Controller{
 Cara menggunakannya pada route dengan cara sebagai berikut.
 ```php
 $app->get('/hello/:nama', new Controller\Welcome($dbcon), function($controller, $nama) {
-	$controller->index($nama);
+	return $controller->index($nama);
 });
 ```
 
@@ -535,11 +535,11 @@ class Welcome extends Controller{
 	}
 
 	public function index() {
-		echo 'Kecik berkata: Controler->index()';
+		return 'Kecik berkata: Controler->index()';
 	}
 
 	public function hello($nama) {
-		echo "Hello, $nama";
+		return "Hello, $nama";
 	}
 
 	public function insert() {
@@ -588,7 +588,7 @@ class Welcome extends Controller{
 	}
 
 	public function welcome() {
-		$this->view('welcome');
+		return $this->view('welcome');
 	}
 }
 ```
@@ -608,7 +608,7 @@ class Welcome extends Controller{
 	}
 
 	public function welcome($nama) {
-		$this->view('welcome', array('nama'=>$nama));
+		return $this->view('welcome', array('nama'=>$nama));
 	}
 }
 ```
@@ -631,17 +631,17 @@ Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat
 		<meta name="description" content="overview &amp; stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		
-		{{ echo $this->assets->css->render() }}
+		@css
 	</head>
 	<body>
 
     <div class="container">
 
-        @controller
+        @response
 
     </div>
 
-		{{ echo $this->assets->js->render() }}
+		@js
 	</body>
 </html>
 ```
@@ -655,7 +655,7 @@ Cara menggunakan template tersebut pada route adalah sebagai berikut.
 ```php
 <?php
 $app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nama) {
-	$controller->welcome($nama);
+	return $controller->welcome($nama);
 })->template('template');
 ```
 

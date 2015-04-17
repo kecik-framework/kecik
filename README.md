@@ -6,7 +6,7 @@ Is a framework with a very simple file system, so this is not a complex framewor
 ```
 Name 	: Framework Kecik
 Author  : Dony Wahyu Isp
-Version : 1.0.3-beta
+Version : 1.0.4-beta
 Country	: Indonesian
 City 	: Palembang
 ```
@@ -75,7 +75,7 @@ The Fourth Step
 The next step is make Route for index and run the framework, following code:
 ```php
 $app->get('/', function() {
-	echo 'Hello Kecik';
+	return 'Hello Kecik';
 });
 
 $app->run();
@@ -93,7 +93,7 @@ require_once "Kecik/Kecik.php";
 $app = new Kecik\Kecik();
 
 $app->get('/', function() {
-	echo 'Hello Kecik';
+	return 'Hello Kecik';
 });
 
 $app->run();
@@ -111,13 +111,13 @@ Route
 Route in contained kecik framework current  is get and post, where get and post is request source and that mean is that route just will proccess on match request.For how to use, there are several ways, and very simple is without use Controller, external variable and template, as follow:
 ```php
 $app->get('/', function() {
-	echo 'Hello Kecik';
+	return 'Hello Kecik';
 });
 ```
 With parameter:
 ```php
 $app->get('hello/:name', function ($name) {
-	echo 'Hello '.$name;
+	return 'Hello '.$name;
 });
 ```
 Parameter in route use ``:`` at front section, while for optional parameter can use ``(:)``
@@ -127,7 +127,7 @@ Parameter in route use ``:`` at front section, while for optional parameter can 
 With Controller:
 ```php
 $app->get('welcome/:name', new Controller\Welcome($app), function ($controller, $name) use ($app) {
-	$controller->index($name);
+	return $controller->index($name);
 });
 ```		
 
@@ -136,11 +136,11 @@ Ensure that already makes Controller you want to use on that route.
 With Template:
 ```php
 $app->get('hello/:name', function ($name) {
-	echo 'Hello '.$name;
+	return 'Hello '.$name;
 })->template('template_kecik');
 
 $app->get('welcome/:name', new Controller\Welcome($app), function ($controller, $name) use ($app) {
-	$controller->index($name);
+	return $controller->index($name);
 })->template('template_kecik');
 ```
 
@@ -251,7 +251,7 @@ $config = [
 $app = new Kecik\Kecik($config);
 
 	$app->get('/', function() {
-		echo 'Hello Kecik';
+		return 'Hello Kecik';
 	});
 	
 $app->run();
@@ -453,7 +453,7 @@ class Welcome extends Controller{
 	}
 
 	public function index() {
-		echo 'Kecik berkata: Controler->index()';
+		return 'Kecik berkata: Controler->index()';
 	}
 }
 ```
@@ -461,7 +461,7 @@ class Welcome extends Controller{
 Next use method/function in route is as follow.
 ```php
 $app->get('/', new Controller\Welcome($dbcon), function($controller) {
-	$controller->index();
+	return $controller->index();
 });
 ```
 
@@ -483,11 +483,11 @@ class Welcome extends Controller{
 	}
 
 	public function index() {
-		echo 'Kecik berkata: Controler->index()';
+		return 'Kecik berkata: Controler->index()';
 	}
 
 	public function hello($nama) {
-		echo "Hello, $nama";
+		return "Hello, $nama";
 	}
 }
 ```
@@ -495,7 +495,7 @@ class Welcome extends Controller{
 How to use in route as follow.
 ```php
 $app->get('/hello/:nama', new Controller\Welcome($dbcon), function($controller, $nama) {
-	$controller->index($nama);
+	return $controller->index($nama);
 });
 ```
 
@@ -538,11 +538,11 @@ class Welcome extends Controller{
 	}
 
 	public function index() {
-		echo 'Kecik berkata: Controler->index()';
+		return 'Kecik berkata: Controler->index()';
 	}
 
 	public function hello($nama) {
-		echo "Hello, $nama";
+		return "Hello, $nama";
 	}
 
 	public function insert() {
@@ -591,7 +591,7 @@ class Welcome extends Controller{
 	}
 
 	public function welcome() {
-		$this->view('welcome');
+		return $this->view('welcome');
 	}
 }
 ```
@@ -611,7 +611,7 @@ class Welcome extends Controller{
 	}
 
 	public function welcome($nama) {
-		$this->view('welcome', array('nama'=>$nama));
+		return $this->view('welcome', array('nama'=>$nama));
 	}
 }
 ```
@@ -640,7 +640,7 @@ For make template in this framework is also simple, you just create template fil
 
     <div class="container">
 
-        @controller
+        @response
 
     </div>
 
@@ -651,7 +651,7 @@ For make template in this framework is also simple, you just create template fil
 
 > Tanda **`{{`** dan **`}}`** hanya tag pengganti untuk tag **`<?php`** dan **`>`** ini hanya untuk kebutuhan template engine sederhana saja, tapi anda tetap bisa menggunakan tag php
 > 
-> The **`@controller`** is to put the output of the controller.
+> The **`@response`** is to put the output of the controller.
 >
 > The **`@css`** or  **` @js`** is to apply the template rendering assets
 
@@ -659,7 +659,7 @@ How to use the template on the route is as follows.
 ```php
 <?php
 $app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nama) {
-	$controller->welcome($nama);
+	return $controller->welcome($nama);
 })->template('template');
 ```
 
