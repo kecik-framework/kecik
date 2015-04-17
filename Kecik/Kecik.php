@@ -77,7 +77,7 @@ if (!class_exists('Kecik\Controller')) {
 		 * @param string $file
 		 * @param array $param
 		 **/
-		protected function view($file, $param=[]]) {
+		protected function view($file, $param=[]) {
 			ob_start();
 			extract($param);
 			$file = Config::get('path.mvc').'/views/'.$file.'.php';
@@ -1100,9 +1100,9 @@ class Kecik {
 	 **/
 	public function template($template) {
 		if ($this->routedStatus) {
-			$file = $this->config->get('path.template').'/'.$template.'.php'
-			$myfile = fopen($file, "r") or die("Unable to open file!");
-			$view = fread($myfile,filesize($file));
+			$file = $this->config->get('path.template').'/'.$template.'.php';
+			$myfile = fopen($file, "r");
+			$tpl = fread($myfile,filesize($file));
 			fclose($myfile);
 			//$tpl = file_get_contents($this->config->get('path.template').'/'.$template.'.php');
 			self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], $tpl);
