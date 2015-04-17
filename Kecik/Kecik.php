@@ -12,7 +12,7 @@
  * @copyright 	2015 Dony Wahyu Isp
  * @link 		http://github.com/kecik-framework/kecik
  * @license		MIT
- * @version 	1.0.3-beta
+ * @version 	1.0.4-beta
  * @package		Kecik
  *
  *-----------------------------------------------------------

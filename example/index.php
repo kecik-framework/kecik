@@ -32,19 +32,19 @@ if ( mysqli_connect_errno($dbcon) ) {
 
 
 $app->get('/', new Controller\Welcome($app, $dbcon), function($controller) {
-	$controller->index();
+	return $controller->index();
 })->template('template_kecik');
 
 $app->get('data', new Controller\Welcome($app, $dbcon), function($controller) {
-	$controller->Data();
+	return $controller->Data();
 })->template('template_kecik');
 
 $app->get('tambah', new Controller\Welcome($app, $dbcon), function ($controller) {
-	$controller->Form();
+	return $controller->Form();
 })->template('template_kecik');
 
 $app->get('edit/:id', new Controller\Welcome($app, $dbcon), function ($controller, $id) {
-	$controller->Form($id);
+	return $controller->Form($id);
 })->template('template_kecik');
 
 $app->get('delete/:id', new Controller\Welcome($app, $dbcon), function($controller, $id) {

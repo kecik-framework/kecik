@@ -1,39 +1,46 @@
 <?php
+/*///////////////////////////////////////////////////////////////
+ /** ID: | /-- ID: Indonesia
+ /** EN: | /-- EN: English
+ ///////////////////////////////////////////////////////////////*/
+
 /**
- * Kecik Framework - Sebuah Framework dengan satu file system
+ * ID: Kecik Framework - Sebuah Framework dengan satu file system
+ * EN: Kecik Framework - The Framework with single file system 
  *
  * @author 		Dony Wahyu Isp
  * @copyright 	2015 Dony Wahyu Isp
- * @link 		http://github.io/kecik
+ * @link 		http://github.com/kecik-framework/kecik
  * @license		MIT
- * @version 	1.0-alpha2
+ * @version 	1.0.4-beta
  * @package		Kecik
  *
- *----------------------------------------
+ *-----------------------------------------------------------
  * INDEX CODE
- *----------------------------------------
- * Keterangan								Baris Code
- * + Controller Class ......................... 46
- *   - Custom Constructor ..................... 53
- *   - Custom Fungsi .......................... 58
- * + Model Class .............................. 80
- * 	 - Custom Code save ....................... 107
- *   - Custom Code  delete .................... 129
- * 	 - Custom Fungsi Model .................... 138
- * 	 - Custom Code Inisialisasi Model ......... 167
- * + Config Class ............................. 211
- * + AssetsBase Class ......................... 270
- * + Assets Class ............................. 360
- * + Url Class ................................ 400
- * + Route Class .............................. 480
- * + Input Class .............................. 681
- * + Kecik Class .............................. 731
+ *-----------------------------------------------------------
+ * Keterangan | Description					Baris Code | Line
+ * + Controller Class .............................. 54
+ *   - Custom Constructor .......................... 62
+ *   - Custom Fungsi ............................... 69
+ * + Model Class ................................... 93
+ * 	 - Custom Code save ............................ 123
+ *   - Custom Code  delete ......................... 147
+ * 	 - Custom Fungsi Model ......................... 157
+ * 	 - Custom Code Inisialisasi Model .............. 167
+ * + Config Class .................................. 233
+ * + AssetsBase Class .............................. 293
+ * + Assets Class .................................. 383
+ * + Url Class ..................................... 423
+ * + Route Class ................................... 508
+ * + Input Class ................................... 814
+ * + Kecik Class ................................... 864
  **/
 
 namespace Kecik;
 
 /**
- * Autoload untuk composer
+ * ID: Autoload untuk composer
+ * EN: Autoload for Composer
  **/
 //require 'vendor/autoload.php';
 
@@ -41,34 +48,47 @@ namespace Kecik;
  * Controller
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0-alpha
+ * @since 		1.0.1-alpha
  **/
-if (!class_exists('Controller')) {
+if (!class_exists('Kecik\Controller')) {
 	class Controller {
 
 		/**
 		 * Construtor Controller
 		 **/
 		public function __construct() {
-			//Silakan tambah inisialisasi controller sendiri disini
+			//** ID: Silakan tambah inisialisasi controller sendiri disini
+			//** EN: Please add your initialitation of controller in this
 
-			//-- Akhir tambah inisialisasi sendiri
+			//-- ID: Akhir tambah inisialisasi sendiri
+			//-- EN: End add your initialitation
 		}
 
-		//Silakan tambah fungsi controller sendiri disini
+		//** ID: Silakan tambah fungsi controller sendiri disini
+		//** EN: Please add your function/method of controller in this
 
-
-		//-- Akhir tambah fungsi sendiri
+		//-- ID: Akhir tambah fungsi sendiri
+		//-- EN: End add your function/method
 
 		/**
 		 * view
-		 * Funngsi untuk menampilkan view
+		 * ID: Funngsi untuk menampilkan view
+		 * EN: Function for displaying view
 		 * @param string $file
 		 * @param array $param
 		 **/
-		protected function view($file, $param=array()) {
+		protected function view($file, $param=[]) {
+			ob_start();
 			extract($param);
-			include Config::get('path.mvc').'/views/'.$file.'.php';
+			$file = Config::get('path.mvc').'/views/'.$file.'.php';
+			$myfile = fopen($file, "r");
+			$view = fread($myfile,filesize($file));
+			fclose($myfile);
+			//$view = file_get_contents( Config::get('path.mvc').'/views/'.$file.'.php' );
+			eval('?>'.$view);
+			$result = ob_get_clean();
+			
+			return $result;
 		}
 	}
 }
@@ -77,39 +97,42 @@ if (!class_exists('Controller')) {
  * Model
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0-alpha1
+ * @since 		1.0.1-alpha
  **/
-if (!class_exists('Model')) {
+if (!class_exists('Kecik\Model')) {
+
 	class Model {
-		protected $_field = array();
+		protected $_field = [];
 		protected $_where;
 		protected $add = TRUE;
 		protected $table = '';
-		protected $fields = array();
-		protected $values = array();
-		protected $updateVar = array();
+		protected $fields = [];
+		protected $values = [];
+		protected $updateVar = [];
 
 		/**
 		 * save
-		 * Fungsi untuk menambah atau mengupdate record (Insert/Update)
+		 * ID: Fungsi untuk menambah atau mengupdate record (Insert/Update)
+		 * EN: Function for adding/updating record (Insert/Update)
 		 * @return string SQL Query
 		 **/
 		public function save() {
 			$this->setFieldsValues();
 
 			if ($this->table != '') {
-				// Untuk menambah record
+				//** ID: Untuk menambah record | EN: For adding record
 				if ($this->add == TRUE) {
 					$sql ="INSERT INTO `$this->table` ($this->fields) VALUES ($this->values)";
-				// Untuk mengupdate record
+				//** ID: Untuk mengupdate record | EN: For updating record
 				} else {
 					$sql ="UPDATE `$this->table` SET $this->updateVar $this->_where";
 				}
 
-				//silakan tambah code database sendiri disini
+				//** ID: silakan tambah code database sendiri disini
+				//** EN: please add your database code in this
 
-
-				//-- Akhir tambah code database sendiri
+				//-- ID: Akhir tambah code database sendiri
+				//-- EN: End of add your database code
 			}
 
 			return (isset($sql))?$sql:'';
@@ -117,7 +140,8 @@ if (!class_exists('Model')) {
 
 		/**
 		 * delete
-		 * Fungsi untuk menghapus record
+		 * ID: Fungsi untuk menghapus record
+		 * EN: Function for deleting record
 		 * @return string SQL Query
 		 **/
 		public function delete() {
@@ -128,20 +152,21 @@ if (!class_exists('Model')) {
 					$sql = "DELETE FROM $this->table $this->_where";
 				}
 
-				//silakan tambah code database sendiri disini
+				//** ID: silakan tambah code database sendiri disini
+				//** EN: please add your database code in this
 
-
-				//-- AKhir tambah code database sendiri
+				//-- ID: AKhir tambah code database sendiri
+				//-- EN: End of add your database code
 			}
 
 			return (isset($sql))?$sql:'';
 		}
 
-		//Silakan tambah fungsi model sendiri disini
+		//** ID: Silakan tambah fungsi model sendiri disini
+		//** EN: Please add your function/method of model in this
 
-
-		//-- Akhir tambah fungsi sendiri
-
+		//-- ID: Akhir tambah fungsi sendiri
+		//-- EN: End of your function/method
 
 		/**
 		 * Model Constructor
@@ -151,7 +176,7 @@ if (!class_exists('Model')) {
 			$this->_where = '';
 			if ($id != '') {
 				if (is_array($id)) {
-					$and = array();
+					$and = [];
 					while(list($field, $value) = each($id)) {
 
 						if (preg_match('/<|>|!=/', $value))
@@ -166,15 +191,18 @@ if (!class_exists('Model')) {
 
 				$this->add = FALSE;
 
-				//Silakan tambah inisialisasi model sendiri disini
+				//** ID: Silakan tambah inisialisasi model sendiri disini
+				//** EN: Please add your initialitation of model in this
 
-				//-- Akhir tambah inisialisasi model sendiri
+				//-- EN: Akhir tambah inisialisasi model sendiri
+				//-- EN: End of your initialitation model
 			}
 		}
 
 		/**
 		 * setFieldValues
-		 * Fungsi untuk menyetting Variable Fields dan Values
+		 * ID: Fungsi untuk menyetting Variable Fields dan Values
+		 * EN: Function/Method for setting fields and values variable
 		 **/
 		private function setFieldsValues() {
 			$fields = array_keys($this->_field);
@@ -184,7 +212,7 @@ if (!class_exists('Model')) {
 			$this->fields = implode(',', $fields);
 
 			$values = array_values($this->_field);
-			$updateVar = array();
+			$updateVar = [];
 			while (list($id, $value) = each($values)){
 				$values[$id] = "'$values[$id]'";
 				$updateVar[] = "$fields[$id] = $values[$id]";
@@ -210,7 +238,7 @@ if (!class_exists('Model')) {
  * Config
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0-alpha
+ * @since 		1.0.1-alpha
  **/
 class Config {
 	/**
@@ -222,11 +250,12 @@ class Config {
 	 * init
 	 **/
 	public static function init() {
-		self::$config = array(
+		self::$config = [
 			'path.assets' => '',
 			'path.templates' => '',
-
-		);
+			'mod_rewrite' =>FALSE,
+			'index' => '',
+		];
 	}
 
 	/**
@@ -241,7 +270,7 @@ class Config {
 	/**
 	 * get
 	 * @param 	string $key
-	 * @return 	string nilai dari key config
+	 * @return 	string ID: nilai dari key config | EN: value of key config
 	 **/
 	public static function get($key) {
 		if (isset(self::$config[strtolower($key)]))
@@ -269,7 +298,7 @@ Config::init();
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0-alpha
+ * @since 		1.0.1-alpha
  **/
 class AssetsBase {
 	/**
@@ -278,12 +307,17 @@ class AssetsBase {
 	var $assets;
 	
 	/**
+	 * @var array
+	 **/
+	var $attr;
+
+	/**
 	 * @var string
 	 **/
 	var $type;
 
 	/**
-	 * @var object of Url
+	 * @var ID: Objek dari Url | EN: Object of Url
 	 **/
 	var $baseurl;
 
@@ -295,16 +329,19 @@ class AssetsBase {
 	public function __construct($baseUrl, $type) {
 		$this->baseurl = $baseUrl;
 		$this->type = strtolower($type);
-		$this->assets[$type] = array();
+		$this->assets[$type] = [];
+		$this->attr[$type] = [];
 	}
 
 	/**
 	 * add
 	 * @param string $file
 	 **/
-	public function add($file) {
-		if (!in_array($file, $this->assets[$this->type]))
+	public function add($file, $attr=[]) {
+		if (!in_array($file, $this->assets[$this->type])) {
 			$this->assets[$this->type][] = $file;
+			$this->attr[$this->type][] = $attr;
+		}
 	}
 
 	/**
@@ -314,6 +351,7 @@ class AssetsBase {
 	public function delete($file) {
 		$key = array_search($file, $this->assets[$this->type]);
 		unset($this->assets[$this->type][$key]);
+		unset($this->attr[$this->type][$key]);
 	}
 
 	/**
@@ -322,16 +360,24 @@ class AssetsBase {
 	 **/
 	public function render($file='') {
 		reset($this->assets[$this->type]);
+		//reset($this->attr[$this->type]);
 		
+		$attr = '';
+
 		if ($this->type == 'js') {
 			if ($file != '') {
 				$key = array_search($file, $this->assets[$this->type]);
+				while(list($at, $val) = each($this->attr[$this->type][$key]))
+					$attr .= $at.'="'.$val.'" ';
 				if ($key)
-					return '<script type="text/javascript" src="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$this->assets[$this->type][$key].'.'.$this->type.'"></script>'."\n";
+					return '<script type="text/javascript" src="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$this->assets[$this->type][$key].'.'.$this->type.'" '.$attr.'></script>'."\n";
 			} else {
 				$render = '';
 				while(list($key, $value) = each($this->assets[$this->type])) {
-					$render .= '<script type="text/javascript" src="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$value.'.'.$this->type.'"></script>'."\n";
+					$attr = '';
+					while(list($at, $val) = each($this->attr[$this->type][$key]))
+						$attr .= $at.'="'.$val.'" ';
+					$render .= '<script type="text/javascript" src="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$value.'.'.$this->type.'" '.$attr.'></script>'."\n";
 				}
 
 				return $render;
@@ -340,12 +386,17 @@ class AssetsBase {
 		} elseif ($this->type == 'css') {
 			if ($file != '') {
 				$key = array_search($file, $this->assets[$this->type]);
+				while(list($at, $val) = each($this->attr[$this->type][$key]))
+					$attr .= $at.'="'.$val.'" ';
 				if ($key)
-					return '<link rel="stylesheet" href="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$this->assets[$this->type][$key].'.'.$this->type.'" />'."\n";
+					return '<link rel="stylesheet" href="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$this->assets[$this->type][$key].'.'.$this->type.'" '.$attr.' />'."\n";
 			} else {
 				$render = '';
 				while(list($key, $value) = each($this->assets[$this->type])) {
-					$render .= '<link rel="stylesheet" href="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$value.'.'.$this->type.'" />'."\n";
+					$attr = '';
+					while(list($at, $val) = each($this->attr[$this->type][$key]))
+						$attr .= $at.'="'.$val.'" ';
+					$render .= '<link rel="stylesheet" href="'.$this->baseurl.Config::get('path.assets')."/$this->type/".$value.'.'.$this->type.'" '.$attr.' />'."\n";
 				}
 
 				return $render;
@@ -359,7 +410,7 @@ class AssetsBase {
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
- * @since 		1.0-alpha
+ * @since 		1.0.1-alpha
  **/
 class Assets {
 	/**
@@ -376,7 +427,7 @@ class Assets {
 	 * __contruct
 	 * @param object $url
 	 **/
-	public function __construct($url) {
+	public function __construct(Url $url) {
 		$this->baseUrl = $url->baseUrl();
 		$this->css = new AssetsBase($this->baseUrl, 'css');
 		$this->js = new AssetsBase($this->baseUrl, 'js'); 
@@ -399,13 +450,13 @@ class Assets {
  * Url
  * @package Kecik
  * @author Dony Wahyu Isp
- * @since 1.0-alpha1
+ * @since 1.0.1-alpha
  **/
 class Url {
 	/**
-	 * @var string $_protocol, $_base_url, $_base_path
+	 * @var string $_protocol, $_base_url, $_base_path, $_index
 	 **/
-	private $_protocol, $_base_url, $_base_path;
+	private $_protocol, $_base_url, $_base_path, $_index;
 
 	/**
 	 * @var object $_route
@@ -420,6 +471,11 @@ class Url {
 		$this->_protocol = $protocol;
 		$this->_base_url = $baseUrl;
 		$this->_base_path = $basePath;
+
+		if ( Config::get('mod_rewrite') === FALSE ) {
+			$this->_index = basename($_SERVER["SCRIPT_FILENAME"], '.php').'.php/';
+			Config::set('index', $this->_index);
+		}
 	}
 
 	/**
@@ -451,7 +507,7 @@ class Url {
 	 * @param string link
 	 **/
 	public function redirect($link) {
-		header('Location: '.$this->_base_url.$link);
+		header('Location: '.$this->_base_url.$this->_index.$link);
 	}
 
 	/**
@@ -460,7 +516,7 @@ class Url {
 	 * @return echo link
 	 **/
 	public function to($link) {
-		echo $this->_base_url.$link;
+		echo $this->_base_url.$this->_index.$link;
 	}
 
 	/**
@@ -469,7 +525,7 @@ class Url {
 	 * @return string
 	 **/
 	public function linkto($link) {
-		return $this->_base_url.$link;
+		return $this->_base_url.$this->_index.$link;
 	}
 }
 //--
@@ -482,17 +538,25 @@ class Url {
  * @since 		1.0-alpha1
  **/
 class Route {
+	/**
+	 * @var string $_paramStr
+	 **/
 	public static $_paramsStr = '';
 
 	/**
+	 * @var string $_destination
+	 **/
+	public static $_destination = '';
+	
+	/**
 	 * @var array $_params for lock params
 	 **/
-	public static $_params = array();
+	public static $_params = [];
 
 	/**
 	 * @var array $_realparams for callable
 	 **/
-	public static $_realparams = array();
+	public static $_realparams = [];
 	
 	/**
 	 * @var string $BASEURL
@@ -509,7 +573,7 @@ class Route {
 	 **/
 	public static $PROTOCOL;
 
-	public static $HTTP_RESPONSE = array(
+	public static $HTTP_RESPONSE = [
         //Informational 1xx
         100 => '100 Continue',
         101 => '101 Switching Protocols',
@@ -567,7 +631,7 @@ class Route {
         506 => '506 Variant Also Negotiates',
         510 => '510 Not Extended',
         511 => '511 Network Authentication Required'
-    );
+    ];
 
 	public function __construct() {
 		
@@ -575,7 +639,8 @@ class Route {
 
 	/**
 	 * Init
-	 * For init class Route
+	 * ID: Untuk inisialisasi Kelas Route
+	 * EN: For initialitation Route Class
 	 **/
 	public static function init() {
 
@@ -591,11 +656,16 @@ class Route {
 
 		$pathinfo = pathinfo($_SERVER['PHP_SELF']);
 
-		if ( strpos($pathinfo['dirname'], '/index.php') > 0 )
-			$strlimit = strpos($pathinfo['dirname'], '/index.php');
+		$index = basename($_SERVER["SCRIPT_FILENAME"], '.php').'.php';
+		Config::set('index', $index);
+		
+		if ( strpos($pathinfo['dirname'], '/'.$index) > 0 )
+			$strlimit = strpos($pathinfo['dirname'], '/'.$index);
+		elseif ($pathinfo['dirname'] == '/'.$index)
+			$strlimit = 0;
 		else
 			$strlimit = strlen($pathinfo['dirname']);
-
+		
 		if (php_sapi_name() == 'cli-server') 
 		    self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].'/';
 		else if (php_sapi_name() == 'cli') {
@@ -603,7 +673,11 @@ class Route {
 		    chdir(dirname(__FILE__));
 		    self::$BASEURL = dirname(__FILE__).'\\';
 		} else {
-		    self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].substr( $pathinfo['dirname'], 0, $strlimit )."/";
+			//** ID: Terkadang terdapat masalah bagian base url, kamu dapat mengedit bagian ini. Biasanya masalah pada $pathinfo['dirname']
+			//** EN: Sometimes have a problem in base url section, you can editi this section. normally at $pathinfo['dirname']
+			self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].substr( $pathinfo['dirname'], 0, $strlimit );
+			if ( substr(self::$BASEURL, -1,1) != '/')
+				self::$BASEURL .= '/';
 		}
 
 		if (php_sapi_name() == 'cli') {
@@ -623,9 +697,9 @@ class Route {
 	        
 	        if ( $segments[count($segments)-1] == '' && count($segments) > 1 ) unset($segments[count($segments)-1]);
 	         
-	        $result_segment = array();
+	        $result_segment = [];
 	        while(list($key, $seg) = each($segments)) {
-	            if ($segments[$key] != 'index.php' && $seg != '' )
+	            if ($segments[$key] != $index && $seg != '' )
 	                array_push($result_segment, urldecode($seg));
 	        }
 
@@ -699,8 +773,17 @@ class Route {
 	}
 
 	/**
+	 * is
+	 * @return string ID: pattern route yang cocok | EN: current pattern route
+	 **/
+	public function is() {
+		return self::$_destination;
+	}
+
+	/**
 	 * isPost
-	 * Untuk check apakah request method adalah Post
+	 * ID: Untuk check apakah request method adalah Post
+	 * EN: For checking request method is Post
 	 * @return Bool
 	 **/
 	public function isPost() {
@@ -712,7 +795,8 @@ class Route {
 
 	/**
 	 * isGet
-	 * Untuk check apakah request method adalah Get
+	 * ID: Untuk check apakah request method adalah Get
+	 * EN: For checking request method is Get
 	 * @return Bool
 	 **/
 	public function isGet() {
@@ -724,7 +808,8 @@ class Route {
 
 	/**
 	 * isPut
-	 * Untuk check apakah request method adalah Put
+	 * ID: Untuk check apakah request method adalah Put
+	 * EN: For checking request method is Put
 	 * @return Bool
 	 **/
 	public function isPut() {
@@ -736,7 +821,8 @@ class Route {
 
 	/**
 	 * isAjax
-	 * Untuk check apakah request method adalah AJAX
+	 * ID: Untuk check apakah request method adalah AJAX
+	 * EN: For checking request method is AJAX
 	 * @return Bool
 	 **/
 	public function isAjax() {
@@ -809,7 +895,7 @@ class Input {
  **/
 class Kecik {
 	/**
-	 * @var object $route, $url, $config, $assets
+	 * @var object $route, $url, $config, $assets, $input
 	 **/
 	var $route, $url, $config, $assets, $input;
 
@@ -829,26 +915,83 @@ class Kecik {
 
 	/**
 	 * autoload
-	 * autoload untuk MVC
+	 * ID: autoload untuk MVC
+	 * EN: autoload for MVC
 	 * @param string $class
 	 **/
 	public function autoload($class) {
 		$class_array = explode('\\', $class);
-		$file_load = $this->config->get('path.mvc').'/'.strtolower($class_array[0]).'s/'.$class_array[1].'.php';
-		if (file_exists($file_load))
-			include $file_load;
+		if (count($class_array)>1) {
+			$file_load = $this->config->get('path.mvc').'/'.strtolower($class_array[0]).'s/'.strtolower($class_array[1]).'.php';
+			if (file_exists($file_load))
+				include $file_load;
+		}
 	}
 
 	/**
 	 * __construct
 	 * @param array $config optional
 	 **/
-	public function __construct($config=array()) {
+	public function __construct($config=[]) {
+		//** Config
+		$this->config = new Config();
+
+		if (is_array($config) && count($config)) {
+			while(list($key, $value) = each($config))
+				$this->config->set($key, $value);
+		}
+		//-- End Config
+		
 		$this->route = new Route();
 		$this->url = new Url(Route::$PROTOCOL, Route::$BASEURL, Route::$BASEPATH);
-		$this->config = new Config();
 		$this->assets = new Assets($this->url);
 		$this->input = new Input();
+
+		//** ID: Memasukan Libary/Pustaka berdasarkan config | EN: Load Dynamic Libraries from config
+		$libraries = $this->config->get('libraries');
+		if (is_array($libraries) && count($libraries) > 0 ) {
+			while(list($library, $params) = each($libraries)) {
+				$clsLibrary = 'Kecik\\'.$library;
+				if (class_exists($clsLibrary)) {
+					if (isset($params['enable']) && $params['enable'] === TRUE) {
+						$library = strtolower($library);
+
+						//** ID: Untuk Library/Pustaka tanpa parameter
+						//** EN: For Library without parameter
+						if (!isset($params['config']) && !isset($params['params'])) {
+							//** ID: Untuk Library/Pustaka DIC | EN: For DIC Library
+							if ($library == 'dic')
+								$this->container = new DIC();
+							elseif ($library == 'mvc') {
+								if (isset($this->db))
+									MVC::setDB($this->db);
+							} else // ID: Untuk Library/Pustaka lain | EN: Other Library
+								$this->$library = new $clsLibrary();
+						//** ID: Untuk Library/Pustaka dengan parameter Kelas Kecik
+						//** EN: For Library with parameter of Kecik CLass
+						} elseif (isset($params['config'])) {
+							//** ID: Buat variabel config
+							//** EN: Create config variable
+							while (list($key, $value) = each($params['config']) )
+								$this->config->set($library.'.'.$key, $value);
+							//** ID: untuk Library/Pustaka Database | EN: For Database Library
+							if ($library == 'database')
+								$this->db = new Database($this);
+							else //** ID: untuk Library/Pustaka lain | EN: For Other library
+								$this->$library = new $clsLibrary($this);
+						//** ID: Untuk Library/Pustaka tanpa parameter Kelas Kecik
+						//** EN: For Library without parameter of Kecik CLass
+						} elseif (isset($params['params'])) {
+							$this->$library = new $clsLibrary($params['params']);
+
+						}
+					}
+
+				}
+			}
+		}
+		//-- ID: Akhir untuk memasukan library/pustaka secara dinamis
+		//-- EN: End Load Dynamic Library
 
 		spl_autoload_register(array($this, 'autoload'), true, true);
 
@@ -856,13 +999,14 @@ class Kecik {
 
 	/**
 	 * setCallable
-	 * untuk setting paramater fungsi pada get atau post
+	 * ID: untuk setting paramater fungsi pada get atau post
+	 * EN: For setting function parameter at get or post
 	 * @param array $args
 	 **/
 	private function setCallable($args) {
 
 		$route = array_shift($args);
-		$real_params = array();
+		$real_params = [];
 
 		if (!is_callable($args[0])) {
 			$controller = array_shift($args);
@@ -870,18 +1014,22 @@ class Kecik {
 		}
 
 		if ($route == '/' && count( $this->route->_getParams() ) <= 0 ) {
-			$this->callable = array_pop($args);
+			//$this->callable = array_pop($args);
+			$this->callable = \Closure::bind(array_pop($args), $this, get_class());
 			$this->routedStatus = TRUE;
 		} else {
 			$route_pattern = str_replace('/', '\\/', $route);
-			//convert route kedalam pattern parameter optional
+			//** ID: Konversi route kedalam pattern parameter optional
+			//** EN: Convert route in optional parameter pattern
 			$route_pattern = preg_replace('/\\\\\\/\\(:\\w+\\)/', '(\\/\\\\w+){0,}', $route_pattern, -1);
-			//convert route kedalam pattern parameter wajib
+			//** ID: Konversi route kedalam pattern parameter wajib
+			//** EN: Cover route in required parameter pattern
 			$route_pattern = preg_replace('/:\\w+/', '\\w+', $route_pattern, -1);
-			//echo "/^$route_pattern/".'<br />';
-			if ($route != '/' && preg_match('/^'.$route_pattern.'/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
-
-				$this->callable = array_pop($args);
+			
+			if ($route != '/' && preg_match('/(^'.$route_pattern.'$)|(^'.$route_pattern.'(\\?(\\w|\\d|\\=|\\&|\\-|\\.|_|\\/){0,}){0,}$)/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
+			
+				//$this->callable = array_pop($args);
+				$this->callable = \Closure::bind(array_pop($args), $this, get_class());
 				$this->routedStatus = TRUE;
 
 				$p = explode('/', $route);
@@ -900,6 +1048,7 @@ class Kecik {
 			
 		}
 
+		Route::$_destination = $route;
 		$this->route->setParams($real_params);
 
 	}
@@ -945,14 +1094,21 @@ class Kecik {
 
 	/**
 	 * template
-	 * Untuk menerapkan sebuah template
+	 * ID: Untuk menerapkan sebuah template
+	 * EN: For implement of template
 	 * @param string template
 	 **/
 	public function template($template) {
 		if ($this->routedStatus) {
-			$tpl = file_get_contents($this->config->get('path.template').'/'.$template.'.php');
-			self::$fullrender = str_replace(array('{{', '}}'), array('<?php', '?>'), $tpl);
-			self::$fullrender = str_replace(array('@controller'), array('<?php call_user_func_array($this->callable, $this->route->getParams()) ?>'), self::$fullrender);
+			$file = $this->config->get('path.template').'/'.$template.'.php';
+			$myfile = fopen($file, "r");
+			$tpl = fread($myfile,filesize($file));
+			fclose($myfile);
+			//$tpl = file_get_contents($this->config->get('path.template').'/'.$template.'.php');
+			self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], $tpl);
+			self::$fullrender = str_replace(['@js', '@css'], [
+				$this->assets->js->render(), 
+				$this->assets->css->render()], self::$fullrender);
 		}
 	}
 
@@ -969,6 +1125,8 @@ class Kecik {
 		
 		if (self::$fullrender != '') {
 			if (is_callable($this->callable)) {
+				$response = call_user_func_array($this->callable, $this->route->getParams());
+				self::$fullrender = str_replace(['@controller', '@response'], [$response, $response], self::$fullrender);
 				eval('?>'.self::$fullrender);
 			} else {
 				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
@@ -980,7 +1138,7 @@ class Kecik {
 			self::$fullrender = '';
 		} else {
 			if (is_callable($this->callable)) {
-				call_user_func_array($this->callable, $this->route->getParams());
+				echo call_user_func_array($this->callable, $this->route->getParams());
 			} else {
 				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
 				if ($this->config->get('error.404') != '') {
@@ -993,7 +1151,8 @@ class Kecik {
 
 	/**
 	 * error
-	 * Untuk menampilkan error http response
+	 * ID: Untuk menampilkan error http response
+	 * EN: For displaying error http response
 	 * @param integer $code
 	 **/
 	public function error($code) {
