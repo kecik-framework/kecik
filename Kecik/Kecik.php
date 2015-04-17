@@ -1125,7 +1125,9 @@ class Kecik {
 		
 		if (self::$fullrender != '') {
 			if (is_callable($this->callable)) {
+				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
+				ob_get_clean();
 				self::$fullrender = str_replace(['@controller', '@response'], [$response, $response], self::$fullrender);
 				eval('?>'.self::$fullrender);
 			} else {
@@ -1138,7 +1140,10 @@ class Kecik {
 			self::$fullrender = '';
 		} else {
 			if (is_callable($this->callable)) {
-				echo call_user_func_array($this->callable, $this->route->getParams());
+				ob_start();
+				$response = call_user_func_array($this->callable, $this->route->getParams());
+				ob_get_clean();
+				echo $response;
 			} else {
 				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
 				if ($this->config->get('error.404') != '') {
