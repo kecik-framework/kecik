@@ -1127,7 +1127,7 @@ class Kecik {
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				ob_get_clean();
 				//** Replace Tag
-				self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], self::$fullrender);
+				/*self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], self::$fullrender);*/
 				self::$fullrender = str_replace(['@js', '@css'], [
 					$this->assets->js->render(), 
 					$this->assets->css->render()], self::$fullrender);
