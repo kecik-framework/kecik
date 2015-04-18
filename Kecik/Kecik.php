@@ -1107,9 +1107,6 @@ class Kecik {
 			fclose($myfile);
 			//$tpl = file_get_contents($this->config->get('path.template').'/'.$template.'.php');
 			self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], $tpl);
-			self::$fullrender = str_replace(['@js', '@css'], [
-				$this->assets->js->render(), 
-				$this->assets->css->render()], self::$fullrender);
 		}
 	}
 
@@ -1129,6 +1126,13 @@ class Kecik {
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				ob_get_clean();
+				//** Replace Tag
+				self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], self::$fullrender);
+				self::$fullrender = str_replace(['@js', '@css'], [
+					$this->assets->js->render(), 
+					$this->assets->css->render()], self::$fullrender);
+				self::$fullrender = str_replace(['@controller', '@response'], [$response, $response], self::$fullrender);
+				//-- END Replace Tag
 				self::$fullrender = str_replace(['@controller', '@response'], [$response, $response], self::$fullrender);
 				eval('?>'.self::$fullrender);
 			} else {
