@@ -122,10 +122,10 @@ if (!class_exists('Kecik\Model')) {
 			if ($this->table != '') {
 				//** ID: Untuk menambah record | EN: For adding record
 				if ($this->add == TRUE) {
-					$sql ="INSERT INTO `$this->table` ($this->fields) VALUES ($this->values)";
+					$sql ="INSERT INTO $this->table ($this->fields) VALUES ($this->values)";
 				//** ID: Untuk mengupdate record | EN: For updating record
 				} else {
-					$sql ="UPDATE `$this->table` SET $this->updateVar $this->_where";
+					$sql ="UPDATE $this->table SET $this->updateVar $this->_where";
 				}
 
 				//** ID: silakan tambah code database sendiri disini
@@ -180,13 +180,13 @@ if (!class_exists('Kecik\Model')) {
 					while(list($field, $value) = each($id)) {
 
 						if (preg_match('/<|>|!=/', $value))
-							$and[] = "`$field`$value";
+							$and[] = "$field$value";
 						else
-							$and[] = "`$field`='$value'";
+							$and[] = "$field='$value'";
 					}
 					$this->_where .= implode(' AND ', $and);
 				} else {
-					$this->_where .= "`id`='".$id."'";
+					$this->_where .= "id='".$id."'";
 				}
 
 				$this->add = FALSE;
@@ -207,7 +207,7 @@ if (!class_exists('Kecik\Model')) {
 		private function setFieldsValues() {
 			$fields = array_keys($this->_field);
 			while(list($id, $field) = each($fields))
-				$fields[$id] = "`$fields[$id]`";
+				$fields[$id] = "$fields[$id]";
 			
 			$this->fields = implode(',', $fields);
 
@@ -403,6 +403,15 @@ class AssetsBase {
 			}
 		}
 	} 
+
+	/**
+	 * url
+	 * Get assets URL
+	 * @return string
+	 **/
+	public function url() {
+		return $this->baseurl.Config::get('path.assets')."/$this->type/";
+	}
 }
 
 /**
@@ -440,6 +449,15 @@ class Assets {
 	 **/
 	public function images($file) {
 		return $this->baseUrl.Config::get('path.assets').'/images/'.$file;
+	}
+
+	/**
+	 * url
+	 * Get assets URL
+	 * @return string
+	 **/
+	public function url() {
+		return $this->baseUrl.Config::get('path.assets');
 	}
 }
 
@@ -913,6 +931,8 @@ class Kecik {
 	 **/
 	private static $fullrender = '';
 
+	private static $header = '';
+
 	/**
 	 * autoload
 	 * ID: autoload untuk MVC
@@ -941,7 +961,8 @@ class Kecik {
 				$this->config->set($key, $value);
 		}
 		//-- End Config
-		
+		self::$header = Route::$HTTP_RESPONSE[200];
+
 		$this->route = new Route();
 		$this->url = new Url(Route::$PROTOCOL, Route::$BASEURL, Route::$BASEPATH);
 		$this->assets = new Assets($this->url);
@@ -1123,6 +1144,7 @@ class Kecik {
 		
 		if (self::$fullrender != '') {
 			if (is_callable($this->callable)) {
+				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].self::$header);
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				ob_get_clean();
@@ -1145,6 +1167,7 @@ class Kecik {
 			self::$fullrender = '';
 		} else {
 			if (is_callable($this->callable)) {
+				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].self::$header);
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				ob_get_clean();
@@ -1178,5 +1201,12 @@ class Kecik {
 	 **/
 	public function stop() {
 		exit();
+	}
+
+	public function header($code=200) {
+		if (is_int($code))
+			self::$header = Route::$HTTP_RESPONSE[$code];
+		else
+			self::$header = $code;
 	}
 }
