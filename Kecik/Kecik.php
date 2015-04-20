@@ -1047,9 +1047,9 @@ class Kecik {
 			//** ID: Konversi route kedalam pattern parameter wajib
 			//** EN: Cover route in required parameter pattern
 			$route_pattern = preg_replace('/:\\w+/', '\\w+', $route_pattern, -1);
+			$route_pattern = str_replace('\\/\\w++', '(((\/){0,}\\w+){0,})', $route_pattern);
 			
-			if ($route != '/' && preg_match('/(^'.$route_pattern.'$)|(^'.$route_pattern.'(\\?(\\w|\\d|\\=|\\&|\\-|\\.|_|\\/){0,}){0,}$)/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
-			
+			if ($route != '/' && preg_match('/(^'.$route_pattern.'$)|((^'.$route_pattern.')+(\\?(\\w|\\d|\\=|\\&|\\-|\\.|_|\\/){0,}){0,}$)/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
 				//$this->callable = array_pop($args);
 				$this->callable = \Closure::bind(array_pop($args), $this, get_class());
 				$this->routedStatus = TRUE;
@@ -1058,21 +1058,29 @@ class Kecik {
 
 				while(list($key, $value) = each($p)) {
 					
-					if (substr(trim($value, '/'), 0, 1) == ':') {
-						$real_params[$value] = $this->route->_getParams($key);
+					if (substr(trim($value), -1) == '+') {
+						if (isset($matches[2][0]) && !empty($matches[2][0]))
+							$real_params[$value] = explode('/', $matches[2][0]);
+						elseif (isset($matches[7][0]) && !empty($matches[7][0]))
+							$real_params[$value] = explode('/', $matches[7][0]);
+						else
+							$real_params[$value] = [];
+					} elseif (substr(trim($value, '/'), 0, 1) == ':') {
+						$getpos = (strpos($this->route->_getParams($key), '?') > 0)?strpos($this->route->_getParams($key), '?'):strlen($this->route->_getParams($key));
+						$real_params[$value] = substr($this->route->_getParams($key), 0, $getpos);
 					} elseif (substr(trim($value, '/'), 0, 2) == '(:' && substr(trim($value, '/'), -1, 1) == ')') {
-						if ($this->route->_getParams($key) != NULL)
-							$real_params[$value] = $this->route->_getParams($key);
+						if ($this->route->_getParams($key) != NULL) {
+							$getpos = (strpos($this->route->_getParams($key), '?') > 0)?strpos($this->route->_getParams($key), '?'):strlen($this->route->_getParams($key));
+							$real_params[$value] = substr($this->route->_getParams($key), 0, $getpos);
+						}
 					}
 				}
-
 			}
 			
 		}
-
+		
 		Route::$_destination = $route;
 		$this->route->setParams($real_params);
-
 	}
 
 	/**
