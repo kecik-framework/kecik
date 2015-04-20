@@ -1178,7 +1178,7 @@ class Kecik {
 				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].self::$header);
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
-				ob_get_clean();
+				$result = ob_get_clean();
 				//** Replace Tag
 				/*self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], self::$fullrender);*/
 				self::$fullrender = str_replace(['@js', '@css'], [
@@ -1188,6 +1188,7 @@ class Kecik {
 				//-- END Replace Tag
 				self::$fullrender = str_replace(['@controller', '@response'], [$response, $response], self::$fullrender);
 				eval('?>'.self::$fullrender);
+				echo $result;
 			} else {
 				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
 				if ($this->config->get('error.404') != '') {
@@ -1201,8 +1202,9 @@ class Kecik {
 				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].self::$header);
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
-				ob_get_clean();
+				$result = ob_get_clean();
 				echo $response;
+				echo $result;
 			} else {
 				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
 				if ($this->config->get('error.404') != '') {
