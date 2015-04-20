@@ -933,6 +933,9 @@ class Kecik {
 
 	private static $header = '';
 
+	private static $group = '';
+	private $group_func;
+
 	/**
 	 * autoload
 	 * ID: autoload untuk MVC
@@ -1098,7 +1101,8 @@ class Kecik {
 
 		self::$fullrender = '';
 		$args = func_get_args();
-
+		if (!empty(self::$group)) $args[0] = self::$group.$args[0];
+		
 		$this->setCallable($args);
 		return $this;
 	}
@@ -1117,11 +1121,30 @@ class Kecik {
 
 		self::$fullrender = '';
 		$args = func_get_args();
+		if (!empty(self::$group)) $args[0] = self::$group.$args[0];
 
 		$this->setCallable($args);
 		return $this;
 	}
 
+	public function group() {
+		if (is_callable($this->callable) ) {
+			$this->routedStatus = FALSE;
+			return $this;
+		}
+
+		self::$fullrender = '';
+		$args = func_get_args();
+		
+		self::$group .= $args[0].'/';
+
+		if (is_callable($args[1])) {
+			$this->group_func = \Closure::bind($args[1], $this, get_class());
+			call_user_func_array($this->group_func, []);
+		}
+		
+		self::$group = '';	
+	}
 	/**
 	 * template
 	 * ID: Untuk menerapkan sebuah template
@@ -1176,9 +1199,9 @@ class Kecik {
 		} else {
 			if (is_callable($this->callable)) {
 				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].self::$header);
-				ob_start();
+				//ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
-				ob_get_clean();
+				//ob_get_clean();
 				echo $response;
 			} else {
 				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
