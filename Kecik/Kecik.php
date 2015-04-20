@@ -1199,9 +1199,9 @@ class Kecik {
 		} else {
 			if (is_callable($this->callable)) {
 				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].self::$header);
-				//ob_start();
+				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
-				//ob_get_clean();
+				ob_get_clean();
 				echo $response;
 			} else {
 				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
