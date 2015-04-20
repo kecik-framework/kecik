@@ -1063,9 +1063,9 @@ class Kecik {
 					
 					if (substr(trim($value), -1) == '+') {
 						if (isset($matches[2][0]) && !empty($matches[2][0]))
-							$real_params[$value] = explode('/', $matches[2][0]);
+							$real_params[$value] = explode('/', substr($matches[2][0], 1));
 						elseif (isset($matches[7][0]) && !empty($matches[7][0]))
-							$real_params[$value] = explode('/', $matches[7][0]);
+							$real_params[$value] = explode('/', substr($matches[7][0]), 1);
 						else
 							$real_params[$value] = [];
 					} elseif (substr(trim($value, '/'), 0, 1) == ':') {
