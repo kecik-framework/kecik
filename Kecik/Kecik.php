@@ -1175,7 +1175,7 @@ class Kecik {
 		
 		if (self::$fullrender != '') {
 			if (is_callable($this->callable)) {
-				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].self::$header);
+				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].' '.self::$header);
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
@@ -1190,7 +1190,7 @@ class Kecik {
 				eval('?>'.self::$fullrender);
 				//echo $result;
 			} else {
-				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
+				header($_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[404]);
 				if ($this->config->get('error.404') != '') {
 					include($this->config->get('path.template').'/'.$this->config->get('error.404').'.php');
 				} else
@@ -1199,14 +1199,14 @@ class Kecik {
 			self::$fullrender = '';
 		} else {
 			if (is_callable($this->callable)) {
-				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].self::$header);
+				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].' '.self::$header);
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
 				echo $response;
 				//echo $result;
 			} else {
-				header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[404]);
+				header($_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[404]);
 				if ($this->config->get('error.404') != '') {
 					include($this->config->get('path.template').'/'.$this->config->get('error.404').'.php');
 				} else
