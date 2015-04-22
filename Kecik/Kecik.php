@@ -78,7 +78,7 @@ if (!class_exists('Kecik\Controller')) {
 		 * @param array $param
 		 **/
 		protected function view($file, $param=[]) {
-			ob_start();
+			/*ob_start();
 			extract($param);
 			$file = Config::get('path.mvc').'/views/'.$file.'.php';
 			$myfile = fopen($file, "r");
@@ -86,9 +86,10 @@ if (!class_exists('Kecik\Controller')) {
 			fclose($myfile);
 			//$view = file_get_contents( Config::get('path.mvc').'/views/'.$file.'.php' );
 			eval('?>'.$view);
-			$result = ob_get_clean();
-			
-			return $result;
+			$result = ob_get_clean();*/
+
+			extract($param);
+			include Config::get('path.mvc').'/views/'.$file.'.php';
 		}
 	}
 }
@@ -1153,10 +1154,13 @@ class Kecik {
 	 **/
 	public function template($template) {
 		if ($this->routedStatus) {
-			$file = $this->config->get('path.template').'/'.$template.'.php';
+			ob_start();
+				include $this->config->get('path.template').'/'.$template.'.php';
+			$tpl = ob_get_clean();
+			/*$file = $this->config->get('path.template').'/'.$template.'.php';
 			$myfile = fopen($file, "r");
 			$tpl = fread($myfile,filesize($file));
-			fclose($myfile);
+			fclose($myfile);*/
 			//$tpl = file_get_contents($this->config->get('path.template').'/'.$template.'.php');
 			self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], $tpl);
 		}
@@ -1179,6 +1183,7 @@ class Kecik {
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
+				$response = (empty($response))? $result: $response.$result;
 				//** Replace Tag
 				/*self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], self::$fullrender);*/
 				self::$fullrender = str_replace(['@js', '@css'], [
@@ -1188,6 +1193,7 @@ class Kecik {
 				//-- END Replace Tag
 				self::$fullrender = str_replace(['@controller', '@response'], [$response, $response], self::$fullrender);
 				eval('?>'.self::$fullrender);
+
 				//echo $result;
 			} else {
 				header($_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[404]);
@@ -1203,6 +1209,7 @@ class Kecik {
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
+				$response = (empty($response))? $result: $response.$result;
 				echo $response;
 				//echo $result;
 			} else {
