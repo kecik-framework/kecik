@@ -983,6 +983,10 @@ class Kecik {
 				$this->config->set($key, $value);
 		}
 		//-- End Config
+
+		if (empty($this->config->get('path.basepath')))
+			$this->config->set('path.basepath', getcwd().'/');
+		
 		self::$header = Route::$HTTP_RESPONSE[200];
 
 		$this->route = new Route();
