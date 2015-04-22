@@ -78,18 +78,22 @@ if (!class_exists('Kecik\Controller')) {
 		 * @param array $param
 		 **/
 		protected function view($file, $param=[]) {
+			if (php_sapi_name() == 'cli')
+				$mvc_path = Config::get('path.basepath').Config::get('path.mvc');
+			else
+				$mvc_path = Config::get('path.mvc');
+
 			/*ob_start();
 			extract($param);
-			$file = Config::get('path.mvc').'/views/'.$file.'.php';
-			$myfile = fopen($file, "r");
-			$view = fread($myfile,filesize($file));
+			$myfile = fopen(Config::get('path.mvc').'/views/'.$file.'.php', "r");
+			$view = fread($myfile,filesize(Config::get('path.mvc').'/views/'.$file.'.php'));
 			fclose($myfile);
 			//$view = file_get_contents( Config::get('path.mvc').'/views/'.$file.'.php' );
 			eval('?>'.$view);
-			$result = ob_get_clean();*/
-
+			$result = ob_get_clean();
+			*/
 			extract($param);
-			include Config::get('path.mvc').'/views/'.$file.'.php';
+			include $mvc_path.'/views/'.$file.'.php';
 		}
 	}
 }
@@ -689,8 +693,8 @@ class Route {
 		    self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].'/';
 		else if (php_sapi_name() == 'cli') {
 			self::$_params= $_SERVER['argv'];
-		    chdir(dirname(__FILE__));
-		    self::$BASEURL = dirname(__FILE__).'\\';
+		    chdir(self::$BASEPATH);
+		    self::$BASEURL = self::$BASEPATH;
 		} else {
 			//** ID: Terkadang terdapat masalah bagian base url, kamu dapat mengedit bagian ini. Biasanya masalah pada $pathinfo['dirname']
 			//** EN: Sometimes have a problem in base url section, you can editi this section. normally at $pathinfo['dirname']
@@ -705,7 +709,7 @@ class Route {
 
             self::$_params = $result_segment;
             self::$_realparams = self::$_params;
-
+            self::$_paramsStr = implode('/', $result_segment);
         } else {
 		    $path = str_replace( self::$PROTOCOL.$_SERVER['HTTP_HOST'].'/', '', self::$BASEURL );
 	        
@@ -806,9 +810,12 @@ class Route {
 	 * @return Bool
 	 **/
 	public function isPost() {
-		if ($_SERVER['REQUEST_METHOD'] == 'POST') 
-			return TRUE;
-		else
+		if (isset($_SERVER['REQUEST_METHOD'])) {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+				return TRUE;
+			else
+				return FALSE;
+		} else
 			return FALSE;
 	}
 
@@ -819,10 +826,13 @@ class Route {
 	 * @return Bool
 	 **/
 	public function isGet() {
-		if ($_SERVER['REQUEST_METHOD'] == 'GET') 
+		if (isset($_SERVER['REQUEST_METHOD'])) {
+			if ($_SERVER['REQUEST_METHOD'] == 'GET') 
+				return TRUE;
+			else
+				return FALSE;
+		} else
 			return TRUE;
-		else
-			return FALSE;
 	}
 
 	/**
@@ -832,9 +842,12 @@ class Route {
 	 * @return Bool
 	 **/
 	public function isPut() {
-		if ($_SERVER['REQUEST_METHOD'] == 'PUT') 
-			return TRUE;
-		else
+		if (isset($_SERVER['REQUEST_METHOD'])) {
+			if ($_SERVER['REQUEST_METHOD'] == 'PUT') 
+				return TRUE;
+			else
+				return FALSE;
+		} else 
 			return FALSE;
 	}
 
@@ -852,7 +865,7 @@ class Route {
 	}
 }
 
-Route::init();
+//Route::init();
 //--
 
 /**
@@ -946,7 +959,12 @@ class Kecik {
 	public function autoload($class) {
 		$class_array = explode('\\', $class);
 		if (count($class_array)>1) {
-			$file_load = $this->config->get('path.mvc').'/'.strtolower($class_array[0]).'s/'.strtolower($class_array[1]).'.php';
+			if (php_sapi_name() == 'cli')
+				$mvc_path = $this->config->get('path.basepath').$this->config->get('path.mvc');
+			else
+				$mvc_path = $this->config->get('path.mvc');
+
+			$file_load = $mvc_path.'/'.strtolower($class_array[0]).'s/'.strtolower($class_array[1]).'.php';
 			if (file_exists($file_load))
 				include $file_load;
 		}
@@ -968,6 +986,7 @@ class Kecik {
 		self::$header = Route::$HTTP_RESPONSE[200];
 
 		$this->route = new Route();
+		Route::init();
 		$this->url = new Url(Route::$PROTOCOL, Route::$BASEURL, Route::$BASEPATH);
 		$this->assets = new Assets($this->url);
 		$this->input = new Input();
@@ -1155,7 +1174,7 @@ class Kecik {
 	public function template($template) {
 		if ($this->routedStatus) {
 			ob_start();
-				include $this->config->get('path.template').'/'.$template.'.php';
+				include $this->config->get('path.basepath').$this->config->get('path.template').'/'.$template.'.php';
 			$tpl = ob_get_clean();
 			/*$file = $this->config->get('path.template').'/'.$template.'.php';
 			$myfile = fopen($file, "r");
@@ -1179,7 +1198,7 @@ class Kecik {
 		
 		if (self::$fullrender != '') {
 			if (is_callable($this->callable)) {
-				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].' '.self::$header);
+				if(!empty(self::$header) && php_sapi_name() != 'cli') header($_SERVER["SERVER_PROTOCOL"].' '.self::$header);
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
@@ -1196,7 +1215,9 @@ class Kecik {
 
 				//echo $result;
 			} else {
-				header($_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[404]);
+				if(php_sapi_name() != 'cli')
+					header($_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[404]);
+
 				if ($this->config->get('error.404') != '') {
 					include($this->config->get('path.template').'/'.$this->config->get('error.404').'.php');
 				} else
@@ -1205,7 +1226,7 @@ class Kecik {
 			self::$fullrender = '';
 		} else {
 			if (is_callable($this->callable)) {
-				if(!empty(self::$header)) header($_SERVER["SERVER_PROTOCOL"].' '.self::$header);
+				if(!empty(self::$header) && php_sapi_name() != 'cli') header($_SERVER["SERVER_PROTOCOL"].' '.self::$header);
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
@@ -1213,7 +1234,9 @@ class Kecik {
 				echo $response;
 				//echo $result;
 			} else {
-				header($_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[404]);
+				if(php_sapi_name() != 'cli')
+					header($_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[404]);
+				
 				if ($this->config->get('error.404') != '') {
 					include($this->config->get('path.template').'/'.$this->config->get('error.404').'.php');
 				} else
