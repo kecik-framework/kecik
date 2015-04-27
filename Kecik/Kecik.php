@@ -32,7 +32,7 @@
  * + Assets Class .................................. 383
  * + Url Class ..................................... 423
  * + Route Class ................................... 508
- * + Input Class ................................... 814
+ * + Request Class ................................... 814
  * + Kecik Class ................................... 864
  **/
 
@@ -811,7 +811,7 @@ class Route {
 	 **/
 	public function isPost() {
 		if (isset($_SERVER['REQUEST_METHOD'])) {
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') 
+			if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['_METHOD'])) 
 				return TRUE;
 			else
 				return FALSE;
@@ -827,7 +827,7 @@ class Route {
 	 **/
 	public function isGet() {
 		if (isset($_SERVER['REQUEST_METHOD'])) {
-			if ($_SERVER['REQUEST_METHOD'] == 'GET') 
+			if ($_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_POST['_METHOD'])) 
 				return TRUE;
 			else
 				return FALSE;
@@ -843,9 +843,71 @@ class Route {
 	 **/
 	public function isPut() {
 		if (isset($_SERVER['REQUEST_METHOD'])) {
-			if ($_SERVER['REQUEST_METHOD'] == 'PUT') 
+			if ($_SERVER['REQUEST_METHOD'] == 'PUT' || (isset($_POST['_METHOD']) && $_POST['_METHOD'] == 'PUT')) {
+				parse_str(file_get_contents("php://input"), $vars);
+				if (isset($vars['_METHOD'])) unset($vars['_METHOD']);			
+        		$GLOBALS['_PUT'] = $_PUT = $vars;
 				return TRUE;
-			else
+			} else
+				return FALSE;
+		} else 
+			return FALSE;
+
+
+	}
+
+	/**
+	 * isDelete
+	 * ID: Untuk check apakah request method adalah Delete
+	 * EN: For checking request method is Delete
+	 * @return Bool
+	 **/
+	public function isDelete() {
+		if (isset($_SERVER['REQUEST_METHOD'])) {
+			if ($_SERVER['REQUEST_METHOD'] == 'DELETE' || (isset($_POST['_METHOD']) && $_POST['_METHOD'] == 'DELETE')) {
+				parse_str(file_get_contents("php://input"), $vars);
+				if (isset($vars['_METHOD'])) unset($vars['_METHOD']);	
+        		$GLOBALS['_DELETE'] = $_DELETE = $vars;
+				return TRUE;
+			} else
+				return FALSE;
+		} else 
+			return FALSE;
+	}
+
+	/**
+	 * isPatch
+	 * ID: Untuk check apakah request method adalah Patch
+	 * EN: For checking request method is Patch
+	 * @return Bool
+	 **/
+	public function isPatch() {
+		if (isset($_SERVER['REQUEST_METHOD'])) {
+			if ($_SERVER['REQUEST_METHOD'] == 'PATCH' || (isset($_POST['_METHOD']) && $_POST['_METHOD'] == 'PATCH')) {
+				parse_str(file_get_contents("php://input"), $vars);
+				if (isset($vars['_METHOD'])) unset($vars['_METHOD']);	
+        		$GLOBALS['_PATCH'] = $_PATCH = $vars;
+				return TRUE;
+			} else
+				return FALSE;
+		} else 
+			return FALSE;
+	}
+
+	/**
+	 * isOptions
+	 * ID: Untuk check apakah request method adalah Options
+	 * EN: For checking request method is Options
+	 * @return Bool
+	 **/
+	public function isOptions() {
+		if (isset($_SERVER['REQUEST_METHOD'])) {
+			if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS' || (isset($_POST['_METHOD']) && $_POST['_METHOD'] == 'OPTIONS')) {
+				parse_str(file_get_contents("php://input"), $vars);
+				if (isset($vars['_METHOD'])) unset($vars['_METHOD']);
+        		$GLOBALS['_OPTIONS'] = $_OPTIONS = $vars;
+				return TRUE;
+			} else
 				return FALSE;
 		} else 
 			return FALSE;
@@ -869,13 +931,13 @@ class Route {
 //--
 
 /**
- * Input
+ * Request
  * 
  * @package 	Kecik
  * @author 		Dony Wahyu Isp
  * @since 		1.0-alpha
  **/
-class Input {
+class Request {
 	public function __construct() {
 
 	}
@@ -905,6 +967,54 @@ class Input {
 	}
 
 	/**
+	 * put
+	 * @param string $var
+	 * @return mixed
+	 **/
+	public function put($var='') {
+		if ($var == '')
+			return (isset($GLOBALS['_PUT']))? $GLOBALS['_PUT']:NULL;
+		else
+			return (isset($GLOBALS['_PUT'][$var]))? $GLOBALS['_PUT'][$var] : NULL;
+	}
+
+	/**
+	 * delete
+	 * @param string $var
+	 * @return mixed
+	 **/
+	public function delete($var='') {
+		if ($var == '')
+			return (isset($GLOBALS['_DELETE']))? $GLOBALS['_DELETE']:NULL;
+		else
+			return (isset($GLOBALS['_DELETE'][$var]))? $GLOBALS['_DELETE'][$var] : NULL;
+	}
+
+	/**
+	 * patch
+	 * @param string $var
+	 * @return mixed
+	 **/
+	public function patch($var='') {
+		if ($var == '')
+			return (isset($GLOBALS['_PATCH']))? $GLOBALS['_PATCH']:NULL;
+		else
+			return (isset($GLOBALS['_PATCH'][$var]))? $GLOBALS['_PATCH'][$var] : NULL;
+	}
+
+	/**
+	 * options
+	 * @param string $var
+	 * @return mixed
+	 **/
+	public function options($var='') {
+		if ($var == '')
+			return (isset($GLOBALS['_OPTIONS']))? $GLOBALS['_OPTIONS']:NULL;
+		else
+			return (isset($GLOBALS['_OPTIONS'][$var]))? $GLOBALS['_OPTIONS'][$var] : NULL;
+	}
+
+	/**
 	 * server
 	 * @param string $var
 	 * @return mixed
@@ -927,14 +1037,15 @@ class Input {
  **/
 class Kecik {
 	/**
-	 * @var object $route, $url, $config, $assets, $input
+	 * @var object $route, $url, $config, $assets, $request
 	 **/
-	var $route, $url, $config, $assets, $input;
+	var $route, $url, $config, $assets, $request;
 
 	/**
 	 * @var Closure Object $callable
 	 **/
 	private $callable;
+	private $middleware = ['before'=>[], 'after'=>[]];
 	/**
 	 * @var Bool $routedStatus
 	 **/
@@ -945,7 +1056,7 @@ class Kecik {
 	 **/
 	private static $fullrender = '';
 
-	private static $header = '';
+	private static $header = [];
 
 	private static $group = '';
 	private $group_func;
@@ -987,13 +1098,14 @@ class Kecik {
 		if (empty($this->config->get('path.basepath')))
 			$this->config->set('path.basepath', getcwd().'/');
 		
-		self::$header = Route::$HTTP_RESPONSE[200];
+		self::$header[] = Route::$HTTP_RESPONSE[200];
+		
 
 		$this->route = new Route();
 		Route::init();
 		$this->url = new Url(Route::$PROTOCOL, Route::$BASEURL, Route::$BASEPATH);
 		$this->assets = new Assets($this->url);
-		$this->input = new Input();
+		$this->request = new Request();
 
 		//** ID: Memasukan Libary/Pustaka berdasarkan config | EN: Load Dynamic Libraries from config
 		$libraries = $this->config->get('libraries');
@@ -1052,9 +1164,13 @@ class Kecik {
 	 * @param array $args
 	 **/
 	private function setCallable($args) {
-
 		$route = array_shift($args);
 		$real_params = [];
+
+		//Before Middleware
+		if (is_array($args[0])) {
+			$this->middleware['before'] = array_shift($args);
+		}
 
 		if (!is_callable($args[0])) {
 			$controller = array_shift($args);
@@ -1078,7 +1194,7 @@ class Kecik {
 			
 			if ($route != '/' && preg_match('/(^'.$route_pattern.'$)|((^'.$route_pattern.')+(\\?(\\w|\\d|\\=|\\&|\\-|\\.|_|\\/){0,}){0,}$)/', $this->route->getParamStr(), $matches, PREG_OFFSET_CAPTURE) ) {
 				//$this->callable = array_pop($args);
-				$this->callable = \Closure::bind(array_pop($args), $this, get_class());
+				$this->callable = \Closure::bind(array_shift($args), $this, get_class());
 				$this->routedStatus = TRUE;
 
 				$p = explode('/', $route);
@@ -1108,6 +1224,12 @@ class Kecik {
 		
 		Route::$_destination = $route;
 		$this->route->setParams($real_params);
+
+		//print_r($args);
+		//After Middleware
+		if (count($args) > 0 && is_array($args[0])) {
+			$this->middleware['after'] = array_shift($args);
+		}
 	}
 
 	/**
@@ -1117,11 +1239,11 @@ class Kecik {
 	public function get() {
 		if (!$this->route->isGet()) return $this;
 
+		$this->middleware = ['before'=>[], 'after'=>[]];
 		if (is_callable($this->callable) ) {
 			$this->routedStatus = FALSE;
 			return $this;
 		}
-
 
 		self::$fullrender = '';
 		$args = func_get_args();
@@ -1138,6 +1260,7 @@ class Kecik {
 	public function post() {
 		if (!$this->route->isPost()) return $this;
 
+		$this->middleware = ['before'=>[], 'after'=>[]];
 		if (is_callable($this->callable) ) {
 			$this->routedStatus = FALSE;
 			return $this;
@@ -1147,6 +1270,86 @@ class Kecik {
 		$args = func_get_args();
 		if (!empty(self::$group)) $args[0] = self::$group.$args[0];
 
+		$this->setCallable($args);
+		return $this;
+	}
+
+	/**
+	 * put
+	 * @param multi paramaters
+	 **/
+	public function put() {
+		if (!$this->route->isPut()) return $this;
+
+		$this->middleware = ['before'=>[], 'after'=>[]];
+		if (is_callable($this->callable) ) {
+			$this->routedStatus = FALSE;
+			return $this;
+		}
+
+		self::$fullrender = '';
+		$args = func_get_args();
+		if (!empty(self::$group)) $args[0] = self::$group.$args[0];
+		$this->setCallable($args);
+		return $this;
+	}
+
+	/**
+	 * delete
+	 * @param multi paramaters
+	 **/
+	public function delete() {
+		if (!$this->route->isDelete()) return $this;
+
+		$this->middleware = ['before'=>[], 'after'=>[]];
+		if (is_callable($this->callable) ) {
+			$this->routedStatus = FALSE;
+			return $this;
+		}
+
+		self::$fullrender = '';
+		$args = func_get_args();
+		if (!empty(self::$group)) $args[0] = self::$group.$args[0];
+		$this->setCallable($args);
+		return $this;
+	}
+
+	/**
+	 * patch
+	 * @param multi paramaters
+	 **/
+	public function patch() {
+		if (!$this->route->isPatch()) return $this;
+
+		$this->middleware = ['before'=>[], 'after'=>[]];
+		if (is_callable($this->callable) ) {
+			$this->routedStatus = FALSE;
+			return $this;
+		}
+
+		self::$fullrender = '';
+		$args = func_get_args();
+		if (!empty(self::$group)) $args[0] = self::$group.$args[0];
+		$this->setCallable($args);
+		return $this;
+	}
+
+	/**
+	 * options
+	 * @param multi paramaters
+	 **/
+	public function options() {
+		if (!$this->route->isOptions()) return $this;
+
+		$this->middleware = ['before'=>[], 'after'=>[]];
+		if (is_callable($this->callable) ) {
+			$this->routedStatus = FALSE;
+			return $this;
+		}
+
+		self::$fullrender = '';
+		$args = func_get_args();
+		if (!empty(self::$group)) $args[0] = self::$group.$args[0];
 		$this->setCallable($args);
 		return $this;
 	}
@@ -1202,11 +1405,20 @@ class Kecik {
 		
 		if (self::$fullrender != '') {
 			if (is_callable($this->callable)) {
-				if(!empty(self::$header) && php_sapi_name() != 'cli') header($_SERVER["SERVER_PROTOCOL"].' '.self::$header);
+				//** Run Middleware Before
+				while(list($idx_mw, $middleware) = each($this->middleware['before']))
+					$middleware($this, $this->request);
+
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
 				$response = (empty($response))? $result: $response.$result;
+				if(count(self::$header) > 0 && php_sapi_name() != 'cli') implode($_SERVER["SERVER_PROTOCOL"]." \n", self::$header);
+				
+				//** Run Middleware After
+				while(list($idx_mw, $middleware) = each($this->middleware['after']))
+					$middleware($this, $this->request);
+				
 				//** Replace Tag
 				/*self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], self::$fullrender);*/
 				self::$fullrender = str_replace(['@js', '@css'], [
@@ -1230,11 +1442,20 @@ class Kecik {
 			self::$fullrender = '';
 		} else {
 			if (is_callable($this->callable)) {
-				if(!empty(self::$header) && php_sapi_name() != 'cli') header($_SERVER["SERVER_PROTOCOL"].' '.self::$header);
+				//** Run Middleware Before
+				while(list($idx_mw, $middleware) = each($this->middleware['before']))
+					$middleware($this, $this->request);
+
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
 				$response = (empty($response))? $result: $response.$result;
+				if(count(self::$header) > 0 && php_sapi_name() != 'cli') implode($_SERVER["SERVER_PROTOCOL"]." \n", self::$header);
+				
+				//** Run Middleware After
+				while(list($idx_mw, $middleware) = each($this->middleware['after'])) 
+					$middleware($this, $this->request);
+				
 				echo $response;
 				//echo $result;
 			} else {
@@ -1271,9 +1492,13 @@ class Kecik {
 	}
 
 	public function header($code=200) {
-		if (is_int($code))
-			self::$header = Route::$HTTP_RESPONSE[$code];
-		else
-			self::$header = $code;
+		if (!is_array($code)) $code = [$code];
+		self::$header = [];
+		while(list($key, $value) = each($code)) {
+			if (is_int($value))
+				self::$header[] = Route::$HTTP_RESPONSE[$value];
+			else
+				self::$header[] = $value;
+		}
 	}
 }
