@@ -32,7 +32,7 @@
  * + Assets Class .................................. 383
  * + Url Class ..................................... 423
  * + Route Class ................................... 508
- * + Request Class ................................... 814
+ * + Request Class ................................. 814
  * + Kecik Class ................................... 864
  **/
 
@@ -930,6 +930,41 @@ class Route {
 //Route::init();
 //--
 
+class UploadFile extends \SplFileInfo {
+	private $file;
+
+	public function __construct($file) {
+		if (isset($file['tmp_name'])) {
+			parent::__construct($file['tmp_name']);
+			$this->file = $file;
+		}
+	}
+
+	public function move($destination, $newName='') {
+		$source = $this->file['tmp_name'];
+
+		if ($destination != '' && substr($destination, -1) != '/')
+			$destination .= '/';
+
+		if (!empty($newName)) 
+			$target = $destination.$newName;
+		else
+			$target = $destination.$this->file['name'];
+
+        if (!@move_uploaded_file($source, $target)) {
+            $error = error_get_last();
+            throw new FileException(sprintf('Could not move the file "%s" to "%s" (%s)', $this->getPathname(), $target, strip_tags($error['message'])));
+        }
+        @chmod($target, 0666 & ~umask());
+        return $target;
+
+	}
+	
+	public function __tostring() {
+		return (isset($this->file['name']))? $this->file['name']:NULL;
+	}
+}
+
 /**
  * Request
  * 
@@ -1012,6 +1047,16 @@ class Request {
 			return (isset($GLOBALS['_OPTIONS']))? $GLOBALS['_OPTIONS']:NULL;
 		else
 			return (isset($GLOBALS['_OPTIONS'][$var]))? $GLOBALS['_OPTIONS'][$var] : NULL;
+	}
+
+	/**
+	 * file
+	 * @param string $var
+	 * @return mixed
+	 **/
+	public function file($file) {
+		$file = $_FILES[$file];
+		return new UploadFile($file);
 	}
 
 	/**
