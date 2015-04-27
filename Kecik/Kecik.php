@@ -1413,7 +1413,10 @@ class Kecik {
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
 				$response = (empty($response))? $result: $response.$result;
-				if(count(self::$header) > 0 && php_sapi_name() != 'cli') implode($_SERVER["SERVER_PROTOCOL"]." \n", self::$header);
+				if(count(self::$header) > 0 && php_sapi_name() != 'cli') {
+					while(list($idx_header, $headerValue) = each(self::$header))
+						header($headerValue);
+				}
 				
 				//** Run Middleware After
 				while(list($idx_mw, $middleware) = each($this->middleware['after']))
@@ -1450,8 +1453,11 @@ class Kecik {
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
 				$response = (empty($response))? $result: $response.$result;
-				if(count(self::$header) > 0 && php_sapi_name() != 'cli') implode($_SERVER["SERVER_PROTOCOL"]." \n", self::$header);
-				
+				if(count(self::$header) > 0 && php_sapi_name() != 'cli') {
+					while(list($idx_header, $headerValue) = each(self::$header))
+						header($headerValue);
+				}
+
 				//** Run Middleware After
 				while(list($idx_mw, $middleware) = each($this->middleware['after'])) 
 					$middleware($this, $this->request);
@@ -1496,7 +1502,7 @@ class Kecik {
 		self::$header = [];
 		while(list($key, $value) = each($code)) {
 			if (is_int($value))
-				self::$header[] = Route::$HTTP_RESPONSE[$value];
+				self::$header[] = $_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[$value];
 			else
 				self::$header[] = $value;
 		}
