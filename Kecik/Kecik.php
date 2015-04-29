@@ -1140,7 +1140,7 @@ class Kecik {
 		}
 		//-- End Config
 
-		if (empty($this->config->get('path.basepath')))
+		if ($this->config->get('path.basepath') == '')
 			$this->config->set('path.basepath', getcwd().'/');
 		
 		self::$header[] = Route::$HTTP_RESPONSE[200];
