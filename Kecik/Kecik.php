@@ -52,12 +52,12 @@ namespace Kecik;
  **/
 if (!class_exists('Kecik\Controller')) {
 	class Controller {
-		private $request = '';
-		private $url = '';
-		private $assets = '';
-		private $config = '';
-		//private $container = '';
-		//private $db = '';
+		protected $request = '';
+		protected $url = '';
+		protected $assets = '';
+		protected $config = '';
+		//protected $container = '';
+		//protected $db = '';
 
 		/**
 		 * Construtor Controller
