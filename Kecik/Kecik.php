@@ -55,7 +55,9 @@ if (!class_exists('Kecik\Controller')) {
 		private $request = '';
 		private $url = '';
 		private $assets = '';
-		private $db = '';
+		private $config = '';
+		//private $container = '';
+		//private $db = '';
 
 		/**
 		 * Construtor Controller
@@ -70,6 +72,9 @@ if (!class_exists('Kecik\Controller')) {
 			$this->request = $app->request;
 			$this->url = $app->url;
 			$this->assets = $app->assets;
+			$this->config = $app->config;
+			if (isset($app->container))
+				$this->container = $app->container;
 			if (isset($app->db))
 				$this->db = $app->db;
 		}
