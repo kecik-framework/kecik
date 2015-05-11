@@ -52,16 +52,26 @@ namespace Kecik;
  **/
 if (!class_exists('Kecik\Controller')) {
 	class Controller {
+		private $request = '';
+		private $url = '';
+		private $assets = '';
+		private $db = '';
 
 		/**
 		 * Construtor Controller
 		 **/
-		public function __construct() {
+		public function __construct(Kecik $app) {
 			//** ID: Silakan tambah inisialisasi controller sendiri disini
 			//** EN: Please add your initialitation of controller in this
 
 			//-- ID: Akhir tambah inisialisasi sendiri
 			//-- EN: End add your initialitation
+
+			$this->request = $app->request;
+			$this->url = $app->url;
+			$this->assets = $app->assets;
+			if (isset($app->db))
+				$this->db = $app->db;
 		}
 
 		//** ID: Silakan tambah fungsi controller sendiri disini
