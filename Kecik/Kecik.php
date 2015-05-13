@@ -1439,17 +1439,8 @@ class Kecik {
 	 * @param string template
 	 **/
 	public function template($template) {
-		if ($this->routedStatus) {
-			ob_start();
-				include $this->config->get('path.basepath').$this->config->get('path.template').'/'.$template.'.php';
-			$tpl = ob_get_clean();
-			/*$file = $this->config->get('path.template').'/'.$template.'.php';
-			$myfile = fopen($file, "r");
-			$tpl = fread($myfile,filesize($file));
-			fclose($myfile);*/
-			//$tpl = file_get_contents($this->config->get('path.template').'/'.$template.'.php');
-			self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], $tpl);
-		}
+		if ($this->routedStatus) 
+			self::$fullrender = $template;
 	}
 
 	/**
@@ -1483,7 +1474,10 @@ class Kecik {
 					$middleware($this, $this->request);
 				
 				//** Replace Tag
-				/*self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], self::$fullrender);*/
+				ob_start();
+				include $this->config->get('path.basepath').$this->config->get('path.template').'/'.self::$fullrender.'.php';
+				self::$fullrender = ob_get_clean();
+				self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], self::$fullrender);
 				self::$fullrender = str_replace(['@js', '@css'], [
 					$this->assets->js->render(), 
 					$this->assets->css->render()], self::$fullrender);
