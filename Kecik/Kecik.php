@@ -1297,11 +1297,12 @@ class Kecik {
 	 * @param multi parameters
 	 **/
 	public function get() {
+		$this->routedStatus = FALSE;
 		if (!$this->route->isGet()) return $this;
 
 		$this->middleware = ['before'=>[], 'after'=>[]];
 		if (is_callable($this->callable) ) {
-			$this->routedStatus = FALSE;
+			//$this->routedStatus = FALSE;
 			return $this;
 		}
 
@@ -1318,11 +1319,12 @@ class Kecik {
 	 * @param multi paramaters
 	 **/
 	public function post() {
+		$this->routedStatus = FALSE;
 		if (!$this->route->isPost()) return $this;
 
 		$this->middleware = ['before'=>[], 'after'=>[]];
 		if (is_callable($this->callable) ) {
-			$this->routedStatus = FALSE;
+			//$this->routedStatus = FALSE;
 			return $this;
 		}
 
@@ -1339,11 +1341,12 @@ class Kecik {
 	 * @param multi paramaters
 	 **/
 	public function put() {
+		$this->routedStatus = FALSE;
 		if (!$this->route->isPut()) return $this;
 
 		$this->middleware = ['before'=>[], 'after'=>[]];
 		if (is_callable($this->callable) ) {
-			$this->routedStatus = FALSE;
+			//$this->routedStatus = FALSE;
 			return $this;
 		}
 
@@ -1359,11 +1362,12 @@ class Kecik {
 	 * @param multi paramaters
 	 **/
 	public function delete() {
+		$this->routedStatus = FALSE;
 		if (!$this->route->isDelete()) return $this;
 
 		$this->middleware = ['before'=>[], 'after'=>[]];
 		if (is_callable($this->callable) ) {
-			$this->routedStatus = FALSE;
+			//$this->routedStatus = FALSE;
 			return $this;
 		}
 
@@ -1379,11 +1383,12 @@ class Kecik {
 	 * @param multi paramaters
 	 **/
 	public function patch() {
+		$this->routedStatus = FALSE;
 		if (!$this->route->isPatch()) return $this;
 
 		$this->middleware = ['before'=>[], 'after'=>[]];
 		if (is_callable($this->callable) ) {
-			$this->routedStatus = FALSE;
+			//$this->routedStatus = FALSE;
 			return $this;
 		}
 
@@ -1399,11 +1404,12 @@ class Kecik {
 	 * @param multi paramaters
 	 **/
 	public function options() {
+		$this->routedStatus = FALSE;
 		if (!$this->route->isOptions()) return $this;
 
 		$this->middleware = ['before'=>[], 'after'=>[]];
 		if (is_callable($this->callable) ) {
-			$this->routedStatus = FALSE;
+			//$this->routedStatus = FALSE;
 			return $this;
 		}
 
@@ -1416,7 +1422,7 @@ class Kecik {
 
 	public function group() {
 		if (is_callable($this->callable) ) {
-			$this->routedStatus = FALSE;
+			//$this->routedStatus = FALSE;
 			return $this;
 		}
 
