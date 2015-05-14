@@ -1438,8 +1438,8 @@ class Kecik {
 	 * EN: For implement of template
 	 * @param string template
 	 **/
-	public function template($template) {
-		if ($this->routedStatus) 
+	public function template($template, $replace=FALSE) {
+		if ($this->routedStatus || $replace === TRUE) 
 			self::$fullrender = $template;
 	}
 
