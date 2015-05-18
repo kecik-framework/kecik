@@ -6,7 +6,7 @@ Merupakan framework dengan satu file system yang sangat sederhana, jadi ini buka
 ```
 Nama 	: Framework Kecik
 Pembuat : Dony Wahyu Isp
-Versi 	: 1.0.4-beta
+Versi 	: 1.1.0
 Kota 	: Palembang
 ```
 
@@ -16,7 +16,7 @@ Kota 	: Palembang
 
 **Lebih Dalam**
 
-[**Mengenal Lebih Dalam**](#mengenal-lebih-dalam-lagi) | [**Route**](#route) | [**Config**](#config) | [**Assets**](#assets) | [**Input**](#input) | [**MVC**](#mvc) | [**Controller**](#controller) | [**Model**](#model) | [**View**](#view) | [**Template**](#template) 
+[**Mengenal Lebih Dalam**](#mengenal-lebih-dalam-lagi) | [**Header**](#header) |  [**Route**](#route) | [**Config**](#config) | [**Assets**](#assets) | [**Request**](#request) | [**MVC**](#mvc) | [**Controller**](#controller) | [**Middleware**](#middleware) | [**Model**](#model) | [**View**](#view) | [**Url**](#url) | [**Template**](#template) 
 
 ----
 
@@ -29,7 +29,7 @@ Install composer pada sistem operasi anda, jika belum terinstall anda dapat mend
 ```javascript
 {
     "require": {
-        "dnaextrim/kecik": "1.0.*@dev"
+        "dnaextrim/kecik": "1.1.*@dev"
     }
 }
 ```
@@ -84,9 +84,9 @@ Setelah code ditulis coba jalankan, maka akan tampil tulisan **"Hello Kecik"** i
 Tampilan kesuluruhan code:
 ```php
 <?php
-require_once "Kecik/Kecik.php";
+//require_once "Kecik/Kecik.php";
 // atau untuk composer
-//require_once "vendor/autoload.php"
+require_once "vendor/autoload.php"
 
 $app = new Kecik\Kecik();
 
@@ -95,18 +95,30 @@ $app->get('/', function() {
 });
 
 $app->run();
-			
 ```
 
 ----
 
 **Mengenal Lebih Dalam Lagi**
 -------------------------------------------------------------
+Header
+----------
+[top](#kecik-framework)
+
+```php
+$app->get('hello', function() {
+	$this->header(200);
+	return 'Hello Kecik';
+});
+```
+
+----
+
 Route
 ---------
 [top](#kecik-framework)
 
-Route yang terdapat pada framework kecik saat ini adalah get dan post, dimana get dan post adalah sumber request dan artinya route tersebut hanya akan diproses pada request yang sesuai. Untuk penggunaannya terdapat beberapa, dan paling sederhana adalah tanpa menggunakan Controller, variabel eksternal dan template, seperti berikut ini:
+Route yang terdapat pada framework kecik saat ini adalah get, post, put, delete, options, dan patch, dimana get, post, put, delete, options, dan patch adalah sumber request dan artinya route tersebut hanya akan diproses pada request yang sesuai. Untuk penggunaannya terdapat beberapa, dan paling sederhana adalah tanpa menggunakan Controller, variabel eksternal dan template, seperti berikut ini:
 ```php
 $app->get('/', function() {
 	return 'Hello Kecik';
@@ -128,7 +140,13 @@ $app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($contr
 	return $controller->index($nama);
 });
 ```		
-
+atau
+```php
+$app->get('selamat_datang/:nama', function($nama) {
+	$controller = new Controller\Welcome($this);
+	return $controller->index($nama);
+});
+```
 Pastikan sebelumnya sudah membuat Controller yang ingin digunakan pada route tersebut.
 
 Dengan menggunakan Template:
@@ -140,9 +158,53 @@ $app->get('hello/:nama', function ($nama) {
 $app->get('selamat_datang/:nama', new Controller\Welcome($app), function ($controller, $nama) {
 	return $controller->index($nama);
 })->template('template_kecik');
+
+$app->get('welcome/:nama', function($nama) {
+	$controller = new Controller\Welcome($this);
+	return $controller->index($nama);
+})->template('template_kecik');
 ```
 
-> **Catatan:** Berlaku juga pada penggunaan post, untuk menggunakan controller dan template ada beberapa tahap yang perlu dipersiapkan
+####**Group**
+Kecik Framework juga mendukung pengelompokan route.
+```php
+$app->group('book', function() {
+	$this->post('insert', function() {
+		$controller = new Controller\Book($this);
+		return $controller->insert();
+	});
+	
+	$this->get('get', function() {
+		$controller = new Controller\Book($this);
+		return $controller->get();
+	});
+
+	$this->post('update', function() {
+		$controller = new Controller\Book($this);
+		return $controller->update();
+	});
+
+	$this->post('delete', function() {
+		$controller = new Controller\Book($this);
+		return $controller->delete();
+	});
+	
+	$this->post('find', function() {
+		$controller = new Controller\Book($this);
+		return $controller->find();
+	});
+});
+```
+> **Catatan:** Berlaku juga pada penggunaan post, put, delete, options, dan patch, untuk menggunakan controller dan template ada beberapa tahap yang perlu dipersiapkan
+
+####**is()**
+####**isPost()**
+####**isGet()**
+####**isPut()**
+####**isDelete()**
+####**isPatch()**
+####**isOptions()**
+####**isAjax()**
 
 **Pertama:**
 
@@ -154,8 +216,9 @@ $app->config->set('path.template', 'templates');
 ```
 **Kedua:**
 
-Buatlah folder/direktory berdasarkan settingan path sebelumnya.
-Ketiga:
+Buatlah folder/direktori berdasarkan settingan path sebelumnya.
+
+**Ketiga:**
 
 Untuk folder/direktori assets dan applikasi pastikan didalamnya terdapat sub folder/direktori
 ```
@@ -171,7 +234,7 @@ Untuk folder/direktori assets dan applikasi pastikan didalamnya terdapat sub fol
 ```
 
 Config
--------
+---------
 [top](#kecik-framework)
 
 Untuk project yang besar dan tidak sederhana kita memerlukan beberapa setting/konfigurasi, untuk melakukan setting/konfigurasi framework ini juga dilengkapi config, baik untuk menyetting ataupun untuk membaca settingan
@@ -255,7 +318,7 @@ $app->run();
 ```
 	
 Assets
--------
+---------
 [top](#kecik-framework)
 
 Assets sangat diperlukan dalam mempermudah pekerjaan kita untuk menambahkan atau menghilangkan assets seperti css, js dan images, sangat berguna juga untuk membuat template, dan assets juga bisa disesuaikan bedasarkan controller yang digunakan. Assets css dan js memiliki struktur yang sama sedangkan untuk images berbeda.
@@ -320,8 +383,22 @@ images($file)
 <img src="<?php echo $app->assets->images('kecik.jpg'); ?>" />
 ```
 
-Input
-------
+####**url()**
+
+Fungsi ini digunakan untuk mendapatkan link file assets untuk gambar.
+```php
+url()
+```
+
+> paramater **``$file``** berisikan nama file assets gambar yang ingin digunakan.
+
+**Contoh:**
+```php
+echo $app->assets->url()."fonts/";
+```
+
+Request
+-----------
 [top](#kecik-framework)
 
 Input merupakan bentuk lain dari penggunaan ``$_GET``, ``$_POST`` dan ``$_SERVER``
@@ -337,8 +414,8 @@ get($var='')
 
 **Contoh:**
 ```php
-print_r($this->input->get());
-$x = $this->input->get('x');
+print_r($this->request->get());
+$x = $this->request->get('x');
 ```
 
 #### **post()**
@@ -352,8 +429,81 @@ post($var='')
 
 **Contoh:**
 ```php
-print_r($this->input->post());
-$x = $this->input->post('x');
+print_r($this->request->post());
+$x = $this->request->post('x');
+```
+
+#### **put()**
+
+Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method `put`
+```php
+put($var='')
+```
+
+> paramater **``$var``** berisikan nama dari variabel post
+
+**Contoh:**
+```php
+print_r($this->request->post());
+$x = $this->request->post('x');
+```
+
+#### **delete()**
+
+Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method `delete`
+```php
+delete($var='')
+```
+
+> paramater **``$var``** berisikan nama dari variabel post
+
+**Contoh:**
+```php
+print_r($this->request->delete());
+$x = $this->request->delete('x');
+```
+
+#### **options()**
+
+Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method `options`
+```php
+options($var='')
+```
+
+> paramater **``$var``** berisikan nama dari variabel post
+
+**Contoh:**
+```php
+print_r($this->request->options());
+$x = $this->request->options('x');
+```
+
+#### **patch()**
+
+Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method `patch`
+```php
+patch($var='')
+```
+
+> paramater **``$var``** berisikan nama dari variabel post
+
+**Contoh:**
+```php
+print_r($this->request->patch());
+$x = $this->request->patch('x');
+```
+
+####**file()**
+Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method `file`
+```php
+file($file)
+```
+
+> paramater **``$file``** berisikan nama dari variabel FILES
+
+**Contoh:**
+```php
+$x = $this->request->file('photo')->move($source, $destination);
 ```
 
 ####**server()**
@@ -367,20 +517,20 @@ server($var='')
 
 **Contoh:**
 ```php
-print_r($this->input->server());
-$host = $this->input->server('HTTP_HOST');
+print_r($this->request->server());
+$host = $this->request->server('HTTP_HOST');
 ```
 
 ----
 
 **MVC**
----------------------------------------
+------------
 
 
 Framework ini juga mendukung MVC sederhana, dimana route akan memanggil Controller dan Controller akan memanggil Model atau/dan View.
 
 Controller
-------------
+---------------
 [top](#kecik-framework)
 
 Untuk membuat controller caranya cukup mudah, kita tinggal membuat file dengan nama sesuai dengan nama controllernya dan disimpan pada direktory yang sudah disetting sebelumnya melalui config, berikut ini code sederhana sebuah controller
@@ -393,15 +543,15 @@ use Kecik\Controller;
 
 class Welcome extends Controller{
 
-	public function __construct() {
-		parent::__construct();
+	public function __construct($app) {
+		parent::__construct($app);
 	}
 }
 ```
 
 Cara menggunakan controller tersebut pada route adalah sebagai berikut
 ```php
-$app->get('/', new Controller\Welcome(), function($controller) {
+$app->get('/', new Controller\Welcome($app), function($controller) {
 
 });
 ```
@@ -418,8 +568,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($dbcon) {
-		parent::__construct();
+	public function __construct($app, $dbcon) {
+		parent::__construct($app);
 		$this->dbcon = $dbcon;
 	}
 }
@@ -427,7 +577,7 @@ class Welcome extends Controller{
 
 Selanjutnya cara menggunakannya pada route sebagai berikut:
 ```php
-$app->get('/', new Controller\Welcome($dbcon), function($controller) {
+$app->get('/', new Controller\Welcome($app, $dbcon), function($controller) {
 
 });
 ```
@@ -444,8 +594,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($dbcon) {
-		parent::__construct();
+	public function __construct($app, $dbcon) {
+		parent::__construct($app);
 		$this->dbcon = $dbcon;
 	}
 
@@ -457,7 +607,7 @@ class Welcome extends Controller{
 
 Selanjutnya cara menggunakan method atau fungsi tersebut pada route adalah sebagai berikut.
 ```php
-$app->get('/', new Controller\Welcome($dbcon), function($controller) {
+$app->get('/', new Controller\Welcome($app, $dbcon), function($controller) {
 	return $controller->index();
 });
 ```
@@ -474,8 +624,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($dbcon) {
-		parent::__construct();
+	public function __construct($app, $dbcon) {
+		parent::__construct($app);
 		$this->dbcon = $dbcon;
 	}
 
@@ -491,13 +641,37 @@ class Welcome extends Controller{
 
 Cara menggunakannya pada route dengan cara sebagai berikut.
 ```php
-$app->get('/hello/:nama', new Controller\Welcome($dbcon), function($controller, $nama) {
+$app->get('/hello/:nama', new Controller\Welcome($app, $dbcon), function($controller, $nama) {
 	return $controller->index($nama);
 });
 ```
 
+Middleware
+-----------------
+[top](#kecik-framework)
+Middleware merupakan fungsi-fungsi yang akan dijalankan sebelum/setelah callback pada route di eksekusi.
+```php
+$mw1 = function() {
+	echo 'is Middleware 1 [Before]';
+};
+$mw2 = function() {
+	echo 'is Middleware 2 [Before]';
+};
+$mw3 = function() {
+	echo 'is Middleware 3 [After]';
+};
+
+$mw4 = function() {
+	echo 'is Middleware 4 [After]';
+};
+
+$app->get('middleware', array($mw1, mw2), function() {
+	return 'is Response Middleware Route';
+}, array($mw3, $mw4));
+```
+
 Model
--------
+---------
 [top](#kecik-framework)
 
 Untuk membuat model caranya cukup mudah, kita tinggal membuat file dengan nama sesuai dengan nama modelnya dan disimpan pada direktory yang sudah disetting sebelumnya melalui config, berikut ini code sederhana sebuah model
@@ -510,7 +684,7 @@ use Kecik\Model;
 
 class Data extends Model {
 
-	protected $table = 'data';
+	protected static $table = 'data';
 
 	public function __construct($id='') {
 		parent::__construct($id);
@@ -529,8 +703,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($dbcon) {
-		parent::__construct();
+	public function __construct($app, $dbcon) {
+		parent::__construct($app);
 		$this->dbcon = $dbcon;
 	}
 
@@ -544,27 +718,27 @@ class Welcome extends Controller{
 
 	public function insert() {
 		$model = new \Model\Data();
-			$model->nama = $_POST['nama'];
-			$model->email = $_POST['email'];
+			$model->nama = $this->request->post('nama');
+			$model->email = $this->request->post('email');
 		$sql = $model->save();
 	}
 
 	public function update($id) {
 		$model = new \Model\Data(array('id'=>$id));
-			$model->nama = $_POST['nama'];
-			$model->email = $_POST['email'];
+			$model->nama = $this->request->post('nama');
+			$model->email = $this->request->post('email');
 		$sql = $model->save();
 	}
 
 	public function delete($id) {
 		$model = new \Model\Data(array('id'=>$id));
-		$sql = $mode->delete();
+		$sql = $model->delete();
 	}
 }
 ```
  
  View
-------
+--------
 [top](#kecik-framework)
 
 Untuk membuat view juga cukup mudah, karena disini anda tidak perlu membuat class/objek, tapi cukup file php biasa saja yang akan dipanggil oleh controller, berikut code view.
@@ -583,8 +757,8 @@ use Kecik\Controller;
 
 class Welcome extends Controller{
 
-	public function __construct() {
-		parent::__construct();
+	public function __construct($app) {
+		parent::__construct($app);
 	}
 
 	public function welcome() {
@@ -603,8 +777,8 @@ use Kecik\Controller;
 
 class Welcome extends Controller{
 
-	public function __construct() {
-		parent::__construct();
+	public function __construct($app) {
+		parent::__construct($app);
 	}
 
 	public function welcome($nama) {
@@ -614,8 +788,19 @@ class Welcome extends Controller{
 ```
 
 ---
+Url
+----
+[top](#kecik-framework)
+####**protocol()**
+####**basePath()**
+####**baseUrl()**
+####**redirect($route)**
+####**to($route)**
+####**linkTo($route)**
 
-**Template**
+---
+
+Template
 ---------------
 [top](#kecik-framework)
 
@@ -648,14 +833,27 @@ Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat
 
 > Tanda **`{{`** dan **`}}`** hanya tag pengganti untuk tag **`<?php`** dan **`>`** ini hanya untuk kebutuhan template engine sederhana saja, tapi anda tetap bisa menggunakan tag php
 > 
-> Sedangkan **`@response`** adalah untuk meletakan hasil output dari controller.
-> Sedangkan **`@css`** or  **`@js`** adalah untuk me render assets css atau js.
+> Sedangkan **`@response`**  atau **`@yield`** adalah untuk meletakan hasil output dari controller.
+> Sedangkan **`@css`** atau  **`@js`** adalah untuk me render assets css atau js.
 > 
 Cara menggunakan template tersebut pada route adalah sebagai berikut.
 ```php
 <?php
-$app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nama) {
+$app->get('welcome/:nama', new Controller\Welcome($app), function ($controller, $nama) {
 	return $controller->welcome($nama);
 })->template('template');
 ```
 
+Mengganti Template (Replace Template)
+```php
+<?php
+$app->get('admin', function() {
+	if (!isset($_SESSION['login'])) {
+		//** Replace Template
+		$this->template('login', TRUE);
+	} else {
+		$controller = new Controller\Admin($this);
+		return $controller->index();
+	}
+})->template('template');
+```
