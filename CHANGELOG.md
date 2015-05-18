@@ -1,5 +1,20 @@
 CHANGELOG
 =========
+1.1.0
+-----
+  * Additional config variable, url, assets, requests, container and db in the controller
+  * Change $this->input into $this->request
+  * Changescontroller beresponse oryield
+  * Additional header
+  * Additional middleware Before / After
+  * Additional route group
+  * Additional method put, delete, options, patches
+  * Bug fixes encode route 64bit
+  * Additional CLI running
+  * Template execution after execution controller / route
+  * The addition of template parameters to replace forcibly
+  * Additional request for the file handle file uploads
+
 1.0.3-beta
 -----
  * bug fixes on route with get parameters

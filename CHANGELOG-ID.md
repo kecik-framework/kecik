@@ -1,5 +1,21 @@
 CHANGELOG
 =========
+1.1.0
+-----
+ * penambahan variabel config, url, assets, request, container dan db pada controller
+ * perubahan $this->input menjadi $this->request
+ * perubahan @controller menjadi @response or @yield
+ * penambahan header
+ * penambahan middleware Before/After
+ * penambahan route group
+ * penambahan method put, delete, options, patch
+ * bug untuk route 64bit encode
+ * penambahan cli
+ * eksekusi template setelah eksekusi controller/route
+ * penambahan parameter untuk replace template secara paksa
+ * penambahan request file untuk menangani upload file
+ 
+
 1.0.3-beta
 -----
  * perbaikan bug pada route dengan parameter get

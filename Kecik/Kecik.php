@@ -12,7 +12,7 @@
  * @copyright 	2015 Dony Wahyu Isp
  * @link 		http://github.com/kecik-framework/kecik
  * @license		MIT
- * @version 	1.0.4-beta
+ * @version 	1.1.0
  * @package		Kecik
  *
  *-----------------------------------------------------------
@@ -1487,9 +1487,9 @@ class Kecik {
 				self::$fullrender = str_replace(['@js', '@css'], [
 					$this->assets->js->render(), 
 					$this->assets->css->render()], self::$fullrender);
-				self::$fullrender = str_replace(['@controller', '@response'], [$response, $response], self::$fullrender);
+				self::$fullrender = str_replace(['@yield', '@response'], [$response, $response], self::$fullrender);
 				//-- END Replace Tag
-				self::$fullrender = str_replace(['@controller', '@response'], [$response, $response], self::$fullrender);
+				self::$fullrender = str_replace(['@yield', '@response'], [$response, $response], self::$fullrender);
 				eval('?>'.self::$fullrender);
 
 				//echo $result;
