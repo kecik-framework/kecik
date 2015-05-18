@@ -27,13 +27,13 @@
  *   - Custom Code  delete ......................... 147
  * 	 - Custom Fungsi Model ......................... 157
  * 	 - Custom Code Inisialisasi Model .............. 167
- * + Config Class .................................. 233
- * + AssetsBase Class .............................. 293
- * + Assets Class .................................. 383
- * + Url Class ..................................... 423
- * + Route Class ................................... 508
- * + Request Class ................................. 814
- * + Kecik Class ................................... 864
+ * + Config Class .................................. 263
+ * + AssetsBase Class .............................. 323
+ * + Assets Class .................................. 444
+ * + Url Class ..................................... 493
+ * + Route Class ................................... 578
+ * + Request Class ................................. 990
+ * + Kecik Class ................................... 1098
  **/
 
 namespace Kecik;
@@ -562,7 +562,7 @@ class Url {
 	 * @param string $link
 	 * @return string
 	 **/
-	public function linkto($link) {
+	public function linkTo($link) {
 		return $this->_base_url.$this->_index.$link;
 	}
 }
