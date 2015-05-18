@@ -401,7 +401,7 @@ Request
 -----------
 [top](#kecik-framework)
 
-Input merupakan bentuk lain dari penggunaan ``$_GET``, ``$_POST`` dan ``$_SERVER``
+Request merupakan bentuk lain dari penggunaan ``$_GET``, ``$_POST`` dan ``$_SERVER``
 
 ####**get()**
 
