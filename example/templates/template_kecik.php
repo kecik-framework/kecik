@@ -2,7 +2,7 @@
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
 <!--[if !IE]><!--> <html> <!--<![endif]-->  
     <head>
-        <title>Aplikasi Standar Satuan Harga Kota Lubuk Linggau</title>
+        <title>Example Kecik Framework</title>
         
         <meta charset="utf-8">
 		<title>Simple Template</title>
@@ -10,7 +10,7 @@
 		<meta name="description" content="overview &amp; stats" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		
-		{{ echo $this->assets->css->render() }}
+		@css
 	</head>
 	<body>
 		<nav class="navbar navbar-inverse navbar-fixed-top">
@@ -26,8 +26,8 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="{{ $this->url->to('index.php') }}">Home</a></li>
-            <li><a href="{{ $this->url->to('index.php/data') }}">Data</a></li>
+            <li class="active"><a href="{{ $this->url->to('') }}">Home</a></li>
+            <li><a href="{{ $this->url->to('data') }}">Data</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -35,11 +35,11 @@
 
     <div class="container">
 
-        @controller
+        @response
 
     </div><!-- /.container -->
 		
 
-		{{ echo $this->assets->js->render() }}
+		@js
 	</body>
 </html>

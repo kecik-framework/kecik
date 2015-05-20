@@ -5,6 +5,10 @@
 //require_once "Kecik.php";
 require_once "../Kecik/Kecik.php";
 
+$config = array(
+    'path.basepath' => __DIR__.'/'
+);
+
 $app = new \Kecik\Kecik();
 
 $app->config->set('path.assets', 'assets');
@@ -31,31 +35,38 @@ if ( mysqli_connect_errno($dbcon) ) {
 }
 
 
-$app->get('/', new Controller\Welcome($app, $dbcon), function($controller) {
+$app->get('/', function() use ($dbcon) {
+    $controller = new Controller\Welcome($this, $dbcon);
 	return $controller->index();
 })->template('template_kecik');
 
-$app->get('data', new Controller\Welcome($app, $dbcon), function($controller) {
+$app->get('data', function() use ($dbcon) {
+    $controller = new Controller\Welcome($this, $dbcon);
 	return $controller->Data();
 })->template('template_kecik');
 
-$app->get('tambah', new Controller\Welcome($app, $dbcon), function ($controller) {
+$app->get('tambah', function() use ($dbcon) {
+    $controller = new Controller\Welcome($this, $dbcon);
 	return $controller->Form();
 })->template('template_kecik');
 
-$app->get('edit/:id', new Controller\Welcome($app, $dbcon), function ($controller, $id) {
+$app->get('edit/:id', function($id) use ($dbcon) {
+    $controller = new Controller\Welcome($this, $dbcon);
 	return $controller->Form($id);
 })->template('template_kecik');
 
-$app->get('delete/:id', new Controller\Welcome($app, $dbcon), function($controller, $id) {
+$app->get('delete/:id', function($id) use ($dbcon) {
+    $controller = new Controller\Welcome($this, $dbcon);
 	$controller->delete($id);
 });
 
-$app->post('save', new Controller\Welcome($app, $dbcon), function ($controller) {
+$app->post('save', function() use ($dbcon) {
+    $controller = new Controller\Welcome($this, $dbcon);
 	$controller->save();
 });
 
-$app->post('update/:id', new Controller\Welcome($app, $dbcon), function ($controller, $id) {
+$app->post('update/:id', function($id) use ($dbcon) {
+    $controller = new Controller\Welcome($this, $dbcon);
 	$controller->update($id);
 });
 
