@@ -275,6 +275,8 @@ class Config {
 			'path.templates' => '',
 			'mod_rewrite' =>FALSE,
 			'index' => '',
+			'template.open_tag' => '{{',
+			'template.close_tag' => '}}'
 		];
 	}
 
@@ -1471,6 +1473,7 @@ class Kecik {
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
+
 				$response = (empty($response))? $result: $response.$result;
 				if(count(self::$header) > 0 && php_sapi_name() != 'cli') {
 					while(list($idx_header, $headerValue) = each(self::$header))
@@ -1483,15 +1486,38 @@ class Kecik {
 				
 				//** Replace Tag
 				ob_start();
-				include $this->config->get('path.basepath').$this->config->get('path.template').'/'.self::$fullrender.'.php';
+					include $this->config->get('path.basepath').$this->config->get('path.template').'/'.self::$fullrender.'.php';
 				self::$fullrender = ob_get_clean();
-				self::$fullrender = str_replace(['{{', '}}'], ['<?php', '?>'], self::$fullrender);
-				self::$fullrender = str_replace(['@js', '@css'], [
-					$this->assets->js->render(), 
-					$this->assets->css->render()], self::$fullrender);
+
+				$config = $this->config;
+				self::$fullrender = preg_replace_callback(array(
+					'/(\\\)?'.addslashes($this->config->get('template.open_tag')).'=?'.'/', 
+					'/(\\\)?'.addslashes($this->config->get('template.close_tag')).'/'
+				), function($s) use ($config) {
+				    if (isset($s[0])) {
+				        if (isset($s[1]) && $s[1] == '\\')
+				            return $s[0];
+				        elseif ($s[0] == $this->config->get('template.open_tag'))
+				            return '<?php ';
+				        elseif ($s[0] == '{{=')
+            				return '<?php echo ';
+				        elseif ($s[0] == $this->config->get('template.close_tag'))
+				            return '?>';
+				    }
+				}, self::$fullrender);
+
+				self::$fullrender = str_replace(
+					[
+						'@js', 
+						'@css'
+					], 
+					[
+						$this->assets->js->render(), 
+						$this->assets->css->render()
+					], self::$fullrender);
+
 				self::$fullrender = str_replace(['@yield', '@response'], [$response, $response], self::$fullrender);
 				//-- END Replace Tag
-				self::$fullrender = str_replace(['@yield', '@response'], [$response, $response], self::$fullrender);
 				eval('?>'.self::$fullrender);
 
 				//echo $result;
