@@ -105,6 +105,8 @@ Header
 ----------
 [top](#kecik-framework)
 
+Header digunakan melakukan setting header untuk sebuah response
+
 ```php
 $app->get('hello', function() {
 	$this->header(200);
