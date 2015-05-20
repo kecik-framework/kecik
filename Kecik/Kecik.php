@@ -1496,7 +1496,7 @@ class Kecik {
 				), function($s) use ($config) {
 				    if (isset($s[0])) {
 				        if (isset($s[1]) && $s[1] == '\\')
-				            return $s[0];
+				            return substr($s[0], 1);
 				        elseif ($s[0] == $this->config->get('template.open_tag'))
 				            return '<?php ';
 				        elseif ($s[0] == '{{=')

@@ -34,7 +34,7 @@
     </nav>
 
     <div class="container">
-
+        
         @response
 
     </div><!-- /.container -->
