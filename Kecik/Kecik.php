@@ -1158,11 +1158,13 @@ class Kecik {
 		if ($this->config->get('path.basepath') == '')
 			$this->config->set('path.basepath', getcwd().'/');
 		
+
 		self::$header[] = Route::$HTTP_RESPONSE[200];
 		
 
 		$this->route = new Route();
 		Route::init();
+		Route::$BASEPATH = $this->config->get('path.basepath');
 		$this->url = new Url(Route::$PROTOCOL, Route::$BASEURL, Route::$BASEPATH);
 		$this->assets = new Assets($this->url);
 		$this->request = new Request();
@@ -1568,3 +1570,4 @@ class Kecik {
 		}
 	}
 }
+?>
