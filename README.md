@@ -1,6 +1,10 @@
 **Kecik Framework**
 ===================
 
+> **PayPal**: [![](https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dony_cavalera_md%40yahoo%2ecom&lc=US&item_name=Dony%20Wahyu%20Isp&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest)
+> 
+> **Rekening Mandiri**: 113-000-6944-858, **Atas Nama**: Dony Wahyu Isprananda
+
 Is a framework with a very simple file system, so this is not a complex framework, but you can build and develop this framework to be a complex framework. This Framework support simple **MVC** where you still have to customize some code for get complex MVC, for Model just generate SQL Query for **`INSERT`, `UPDATE`** and **`DELETE`** only, so for code execution that SQL Query please make your self freely as you want or using whichever database libaries. This Framework also support Composer, so as to facilitate you for adding a library from composer. 
 
 ```
