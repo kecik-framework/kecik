@@ -108,6 +108,7 @@ Header
 ----------
 [top](#kecik-framework)
 
+Header use for do setting a response header
 ```php
 $app->get('hello', function() {
 	$this->header(200);
@@ -192,16 +193,78 @@ $app->group('book', function() {
 	});
 });
 ```
+HTML just support method `POST` and `GET`, if we want using method like `PUT`, `DELETE`, `OPTIONS`, and `PATCH` we can using do **`Override`**
+
+```html
+<form method="POST" action="<?php $this->url->to('login') ?>">
+	<label>Username</label>
+	<input type="text" name="username" />
+	
+	<label>Password</label>
+	<input type="password" name="password" />
+	
+	<input type="hidden" name="_METHOD" value="PUT">
+	
+	<input type="submit" value="LOGIN" />
+</form
+```
+
 > **Note:** Applies to the use of the post, put, delete, options, and patch to use the controller and templates there are several steps that need to be prepared
 
 ####**is()**
+Untuk mendapatkan nilai route saat ini
+```php
+<a href="<?php $this->url->to('home') ?>" <?php echo ($this->route->is() == 'home')? 'class="active"': '' ?>>Home</a>
+```
+
 ####**isPost()**
+Untuk mengecheck apakah metode request adalah `POST`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isPost() == FALSE)
+	$this->header(404);
+```
+
 ####**isGet()**
+Untuk mengecheck apakah metode request adalah `GET`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isGET() == FALSE)
+	$this->header(404);
+```
+
 ####**isPut()**
+Untuk mengecheck apakah metode request adalah `PUT`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isPut() == FALSE)
+	$this->header(404);
+```
+
 ####**isDelete()**
+Untuk mengecheck apakah metode request adalah `DELETE`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isDelete() == FALSE)
+	$this->header(404);
+```
+
 ####**isPatch()**
+Untuk mengecheck apakah metode request adalah `PATCH`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isPatch() == FALSE)
+	$this->header(404);
+```
+
 ####**isOptions()**
-####**isAjax()*
+Untuk mengecheck apakah metode request adalah `OPTIONS`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isOptions() == FALSE)
+	$this->header(404);
+```
+
+####**isAjax()**
+Untuk mengecheck apakah metode request adalah `AJAX`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isAjax() == FALSE)
+	$this->header(404);
+```
 
 **First:**
 
@@ -382,7 +445,7 @@ images($file)
 
 ####**url()**
 
-Fungsi ini digunakan untuk mendapatkan link file assets untuk gambar.
+$this function use for get link of assets file for images.
 ```php
 url()
 ```
@@ -404,8 +467,8 @@ get($var='')
 
 **Example:**
 ```php
-print_r($this->input->get());
-$x = $this->input->get('x');
+print_r($this->request->get());
+$x = $this->request->get('x');
 ```
 
 #### **post()**
@@ -419,8 +482,8 @@ post($var='')
 
 **Example:**
 ```php
-print_r($this->input->post());
-$x = $this->input->post('x');
+print_r($this->request->post());
+$x = $this->request->post('x');
 ```
 
 #### **put()**
@@ -507,8 +570,8 @@ server($var='')
 
 **Exmple:**
 ```php
-print_r($this->input->server());
-$host = $this->input->server('HTTP_HOST');
+print_r($this->request->server());
+$host = $this->request->server('HTTP_HOST');
 ```
 
 ----
@@ -639,7 +702,7 @@ $app->get('/hello/:nama', new Controller\Welcome($app, $dbcon), function($contro
 Middleware
 -----------------
 [top](#kecik-framework)
-Middleware merupakan fungsi-fungsi yang akan dijalankan sebelum/setelah callback pada route di eksekusi.
+Middleware is functions will running before/after callback execution on route.
 ```php
 $mw1 = function() {
 	echo 'is Middleware 1 [Before]';
@@ -781,12 +844,39 @@ class Welcome extends Controller{
 Url
 ----
 [top](#kecik-framework)
+
+Url is important for help jobs for get value like protocol, base path, base url, also redirect or make link to other route .
+
 ####**protocol()**
+For get Protocol value
+```php
+echo $this->url->protocol();
+```
 ####**basePath()**
+For get Base Path value
+```php
+echo $this->url->basePath();
+```
 ####**baseUrl()**
+For Get Base Url value
+```php
+echo $this->url->baseUrl();
+```
 ####**redirect($route)**
+For redirect to other route
+```php
+$this->url->redirect('login');
+```
 ####**to($route)**
+For echo url with route
+```php
+<a href="<?php $this->to('home') ?>">HOME</a>
+```
 ####**linkTo($route)**
+For Get Url with Route value
+```php
+<a href="<?php echo $this->linkTo('home') ?>">Home</a>
+```
 
 ---
 
@@ -821,7 +911,7 @@ For make template in this framework is also simple, you just create template fil
 </html>
 ```
 
-> Tanda **`{{`** dan **`}}`** hanya tag pengganti untuk tag **`<?php`** dan **`>`** ini hanya untuk kebutuhan template engine sederhana saja, tapi anda tetap bisa menggunakan tag php
+> Sign **`{{`** dan **`}}`** just subtitute tag **`<?php`** and **`>`** for echo you can use **`{{=`** it's same **`<?php echo `** while want using sign **`{{`** and **`}}`** for AngularJS you can use sign **`\`** after its, example **`\{{`** atau **`\}}`**, this just simple template engine, but you use php tags.
 > 
 > The **`@response`** atau **`@yield`** is to put the output of the controller.
 >

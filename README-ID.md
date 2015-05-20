@@ -197,7 +197,7 @@ $app->group('book', function() {
 	});
 });
 ```
-HTML mendukung method `POST` dan `GET`, dan jika kita ingin menggunakan method sepert `PUT`, `DELETE`, `OPTIONS`, dan `PATCH` kita dapat menggunakannya dengan cara melakukan **`Override`**
+HTML mendukung method `POST` dan `GET`, dan jika kita ingin menggunakan method seperti `PUT`, `DELETE`, `OPTIONS`, dan `PATCH` kita dapat menggunakannya dengan cara melakukan **`Override`**
 
 ```html
 <form method="POST" action="<?php $this->url->to('login') ?>">
@@ -857,7 +857,7 @@ Url
 ----
 [top](#kecik-framework)
 
-Url sangat diperlukan dalam mempermudah pekerjaan kita untuk mengambil nilai seperti protocol, base path, base url, bahkan untuk melakukan redirect ataupun membuat link ke route lain..
+Url sangat diperlukan dalam mempermudah pekerjaan kita untuk mengambil nilai seperti protocol, base path, base url, bahkan untuk melakukan redirect ataupun membuat link ke route lain.
 
 ####**protocol()**
 Untuk mendapatkan nilai protocol
@@ -880,7 +880,7 @@ Untuk melakukan redirect ke route lain
 $this->url->redirect('login');
 ```
 ####**to($route)**
-Untuk mencetak Url dengan route;
+Untuk mencetak Url dengan route
 ```php
 <a href="<?php $this->to('home') ?>">HOME</a>
 ```
