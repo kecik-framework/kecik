@@ -195,16 +195,79 @@ $app->group('book', function() {
 	});
 });
 ```
+HTML mendukung method `POST` dan `GET`, dan jika kita ingin menggunakan method sepert `PUT`, `DELETE`, `OPTIONS`, dan `PATCH` kita dapat menggunakannya dengan cara melakukan **`Override`**
+
+```html
+<form method="POST" action="<?php $this->url->to('login') ?>">
+	<label>Username</label>
+	<input type="text" name="username" />
+	
+	<label>Password</label>
+	<input type="password" name="password" />
+	
+	<input type="hidden" name="_METHOD" value="PUT">
+	
+	<input type="submit" value="LOGIN" />
+</form
+```
+
 > **Catatan:** Berlaku juga pada penggunaan post, put, delete, options, dan patch, untuk menggunakan controller dan template ada beberapa tahap yang perlu dipersiapkan
 
 ####**is()**
+Untuk mendapatkan nilai route saat ini
+```php
+<a href="<?php $this->url->to('home') ?>" <?php echo ($this->route->is() == 'home')? 'class="active"': '' ?>>Home</a>
+```
+
 ####**isPost()**
+Untuk mengecheck apakah metode request adalah `POST`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isPost() == FALSE)
+	$this->header(404);
+```
+
 ####**isGet()**
+Untuk mengecheck apakah metode request adalah `GET`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isGET() == FALSE)
+	$this->header(404);
+```
+
 ####**isPut()**
+Untuk mengecheck apakah metode request adalah `PUT`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isPut() == FALSE)
+	$this->header(404);
+```
+
 ####**isDelete()**
+Untuk mengecheck apakah metode request adalah `DELETE`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isDelete() == FALSE)
+	$this->header(404);
+```
+
 ####**isPatch()**
+Untuk mengecheck apakah metode request adalah `PATCH`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isPatch() == FALSE)
+	$this->header(404);
+```
+
 ####**isOptions()**
+Untuk mengecheck apakah metode request adalah `OPTIONS`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isOptions() == FALSE)
+	$this->header(404);
+```
+
 ####**isAjax()**
+Untuk mengecheck apakah metode request adalah `AJAX`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+```php
+if ($this->route->isAjax() == FALSE)
+	$this->header(404);
+```
+
 
 **Pertama:**
 
@@ -791,12 +854,39 @@ class Welcome extends Controller{
 Url
 ----
 [top](#kecik-framework)
+
+Url sangat diperlukan dalam mempermudah pekerjaan kita untuk mengambil nilai seperti protocol, base path, base url, bahkan untuk melakukan redirect ataupun membuat link ke route lain..
+
 ####**protocol()**
+Untuk mendapatkan nilai protocol
+```php
+echo $this->url->protocol();
+```
 ####**basePath()**
+Untuk mendapatkan nilai Path/Direktori Dasar
+```php
+echo $this->url->basePath();
+```
 ####**baseUrl()**
+Untuk mendapatkan nilai dasar Url
+```php
+echo $this->url->baseUrl();
+```
 ####**redirect($route)**
+Untuk melakukan redirect ke route lain
+```php
+$this->url->redirect('login');
+```
 ####**to($route)**
+Untuk mencetak Url dengan route;
+```php
+<a href="<?php $this->to('home') ?>">HOME</a>
+```
 ####**linkTo($route)**
+Untuk mendapatkan nilai Url dengan Route
+```php
+<a href="<?php echo $this->linkTo('home') ?>">Home</a>
+```
 
 ---
 
@@ -831,11 +921,12 @@ Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat
 </html>
 ```
 
-> Tanda **`{{`** dan **`}}`** hanya tag pengganti untuk tag **`<?php`** dan **`>`** ini hanya untuk kebutuhan template engine sederhana saja, tapi anda tetap bisa menggunakan tag php
+> Tanda **`{{`** dan **`}}`** hanya tag pengganti untuk tag **`<?php`** dan **`>`** untuk mencetak anda dapat menggunakan **`{{=`** ini sama dengan **`<?php echo `** sedangkan jika ingin menggunakan tanda **`{{`** dan **`}}`** untuk keperluan AngularJS anda bisa menggunakan tanda **`\`** didepan nya, contoh: **`\{{`** atau **`\}}`**, ini hanya untuk kebutuhan template engine sederhana saja, tapi anda tetap bisa menggunakan tag php
 > 
 > Sedangkan **`@response`**  atau **`@yield`** adalah untuk meletakan hasil output dari controller.
 > Sedangkan **`@css`** atau  **`@js`** adalah untuk me render assets css atau js.
 > 
+> Tag-tag tersebut hanya digunakan pada template saja, tidak berlaku pada View
 Cara menggunakan template tersebut pada route adalah sebagai berikut.
 ```php
 <?php
@@ -857,3 +948,4 @@ $app->get('admin', function() {
 	}
 })->template('template');
 ```
+
