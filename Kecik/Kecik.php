@@ -1137,7 +1137,11 @@ class Kecik {
 			else
 				$mvc_path = $this->config->get('path.mvc');
 
-			$file_load = $mvc_path.'/'.strtolower($class_array[0]).'s/'.strtolower($class_array[1]).'.php';
+			//** if count $class_array = 3 is HMVC
+			if (count($class_array) == 3)  //** Module                   Controllers/Models                Class
+				$file_load = $mvc_path.'/'.strtolower($class_array[0]).strtolower($class_array[1]).'s/'.strtolower($class_array[2]).'.php';
+			else  //**                          Controller/Models              Class
+				$file_load = $mvc_path.'/'.strtolower($class_array[0]).'s/'.strtolower($class_array[1]).'.php';
 			if (file_exists($file_load))
 				include $file_load;
 		}
