@@ -1138,10 +1138,15 @@ class Kecik {
 				$mvc_path = $this->config->get('path.mvc');
 
 			//** if count $class_array = 3 is HMVC
-			if (count($class_array) == 3)  //** Module                   Controllers/Models                Class
-				$file_load = $mvc_path.'/'.strtolower($class_array[0]).strtolower($class_array[1]).'s/'.strtolower($class_array[2]).'.php';
-			else  //**                          Controller/Models              Class
+			if (count($class_array) >= 3) {
+				$hmvc_path = '';
+				for($i=0; $i<count($class_array)-2; $i++) 
+					$hmvc_path .= $class_array[$i].'/';
+				//**                          Module                   Controllers/Models                           Class
+				$file_load = $mvc_path.'/'.$hmvc_path.strtolower($class_array[count($class_array)-2]).'s/'.strtolower($class_array[count($class_array)-1]).'.php';
+			} else  //**                          Controller/Models              Class
 				$file_load = $mvc_path.'/'.strtolower($class_array[0]).'s/'.strtolower($class_array[1]).'.php';
+			
 			if (file_exists($file_load))
 				include $file_load;
 		}
@@ -1478,7 +1483,7 @@ class Kecik {
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
 
-				$response = (empty($response))? $result: $response.$result;
+				$response = (empty($response) || is_bool($response))? $result: $response.$result;
 				if(count(self::$header) > 0 && php_sapi_name() != 'cli') {
 					while(list($idx_header, $headerValue) = each(self::$header))
 						header($headerValue);
@@ -1544,7 +1549,8 @@ class Kecik {
 				ob_start();
 				$response = call_user_func_array($this->callable, $this->route->getParams());
 				$result = ob_get_clean();
-				$response = (empty($response))? $result: $response.$result;
+				
+				$response = (empty($response) || is_bool($response))? $result: $response.$result;
 				if(count(self::$header) > 0 && php_sapi_name() != 'cli') {
 					while(list($idx_header, $headerValue) = each(self::$header))
 						header($headerValue);
