@@ -77,6 +77,12 @@ if (!class_exists('Kecik\Controller')) {
 				$this->container = $app->container;
 			if (isset($app->db))
 				$this->db = $app->db;
+			if (isset($app->session))
+				$this->session = $app->session;
+			if (isset($app->cookie))
+				$this->cookie = $app->cookie;
+			if (isset($app->language))
+				$this->language = $app->language;
 		}
 
 		//** ID: Silakan tambah fungsi controller sendiri disini
@@ -1208,8 +1214,11 @@ class Kecik {
 							while (list($key, $value) = each($params['config']) )
 								$this->config->set($library.'.'.$key, $value);
 							//** ID: untuk Library/Pustaka Database | EN: For Database Library
-							if ($library == 'database')
+							if ($library == 'database') {
 								$this->db = new Database($this);
+								if (isset(MVC))
+									MVC::setDB($this->db);
+							}
 							else //** ID: untuk Library/Pustaka lain | EN: For Other library
 								$this->$library = new $clsLibrary($this);
 						//** ID: Untuk Library/Pustaka tanpa parameter Kelas Kecik
