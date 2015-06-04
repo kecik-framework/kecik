@@ -1216,7 +1216,7 @@ class Kecik {
 							//** ID: untuk Library/Pustaka Database | EN: For Database Library
 							if ($library == 'database') {
 								$this->db = new Database($this);
-								if (isset(MVC))
+								if (class_exists('MVC'))
 									MVC::setDB($this->db);
 							}
 							else //** ID: untuk Library/Pustaka lain | EN: For Other library
