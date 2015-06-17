@@ -485,7 +485,7 @@ class Assets {
 	 * @return string
 	 **/
 	public function url() {
-		return $this->baseUrl.Config::get('path.assets');
+		return $this->baseUrl.Config::get('path.assets').'/';
 	}
 }
 
