@@ -554,6 +554,7 @@ class Url {
 	 **/
 	public function redirect($link) {
 		header('Location: '.$this->_base_url.$this->_index.$link);
+		exit();
 	}
 
 	/**
