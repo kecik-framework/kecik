@@ -69,7 +69,7 @@ if (!class_exists('Kecik\Controller')) {
 			//-- ID: Akhir tambah inisialisasi sendiri
 			//-- EN: End add your initialitation
 
-			$app = Kecik::getIntance();
+			$app = Kecik::getInstance();
 			$this->request = $app->request;
 			$this->url = $app->url;
 			$this->assets = $app->assets;
@@ -824,8 +824,15 @@ class Route {
 	 * is
 	 * @return string ID: pattern route yang cocok | EN: current pattern route
 	 **/
-	public function is() {
-		return self::$_destination;
+	public function is($route='') {
+		if ($route == '')
+			return self::$_destination;
+		else {
+			if (self::$_destination == $route)
+				return TRUE;
+			else
+				return FALSE;
+		}
 	}
 
 	/**
