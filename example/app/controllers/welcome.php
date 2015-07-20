@@ -8,7 +8,7 @@ class Welcome extends Controller{
 	var $dbcon;
 
 	public function __construct($app, $dbcon) {
-		parent::__construct($app);
+		parent::__construct();
 		$this->app = $app;
 		$this->dbcon = $dbcon;
 	}
