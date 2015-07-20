@@ -62,13 +62,14 @@ if (!class_exists('Kecik\Controller')) {
 		/**
 		 * Construtor Controller
 		 **/
-		public function __construct(Kecik $app) {
+		public function __construct() {
 			//** ID: Silakan tambah inisialisasi controller sendiri disini
 			//** EN: Please add your initialitation of controller in this
 
 			//-- ID: Akhir tambah inisialisasi sendiri
 			//-- EN: End add your initialitation
 
+			$app = Kecik::getIntance();
 			$this->request = $app->request;
 			$this->url = $app->url;
 			$this->assets = $app->assets;
@@ -98,7 +99,7 @@ if (!class_exists('Kecik\Controller')) {
 		 * @param string $file
 		 * @param array $param
 		 **/
-		protected function view($file, $param=[]) {
+		protected function view($file, $param=array()) {
 			if (php_sapi_name() == 'cli')
 				$mvc_path = Config::get('path.basepath').Config::get('path.mvc');
 			else
@@ -128,13 +129,13 @@ if (!class_exists('Kecik\Controller')) {
 if (!class_exists('Kecik\Model')) {
 
 	class Model {
-		protected $_field = [];
+		protected $_field = array();
 		protected $_where;
 		protected $add = TRUE;
 		protected $table = '';
-		protected $fields = [];
-		protected $values = [];
-		protected $updateVar = [];
+		protected $fields = array();
+		protected $values = array();
+		protected $updateVar = array();
 
 		/**
 		 * save
@@ -202,7 +203,7 @@ if (!class_exists('Kecik\Model')) {
 			$this->_where = '';
 			if ($id != '') {
 				if (is_array($id)) {
-					$and = [];
+					$and = array();
 					while(list($field, $value) = each($id)) {
 
 						if (preg_match('/<|>|!=/', $value))
@@ -238,7 +239,7 @@ if (!class_exists('Kecik\Model')) {
 			$this->fields = implode(',', $fields);
 
 			$values = array_values($this->_field);
-			$updateVar = [];
+			$updateVar = array();
 			while (list($id, $value) = each($values)){
 				$values[$id] = "'$values[$id]'";
 				$updateVar[] = "$fields[$id] = $values[$id]";
@@ -357,15 +358,15 @@ class AssetsBase {
 	public function __construct($baseUrl, $type) {
 		$this->baseurl = $baseUrl;
 		$this->type = strtolower($type);
-		$this->assets[$type] = [];
-		$this->attr[$type] = [];
+		$this->assets[$type] = array();
+		$this->attr[$type] = array();
 	}
 
 	/**
 	 * add
 	 * @param string $file
 	 **/
-	public function add($file, $attr=[]) {
+	public function add($file, $attr=array()) {
 		if (!in_array($file, $this->assets[$this->type])) {
 			$this->assets[$this->type][] = $file;
 			$this->attr[$this->type][] = $attr;
@@ -598,12 +599,12 @@ class Route {
 	/**
 	 * @var array $_params for lock params
 	 **/
-	public static $_params = [];
+	public static $_params = array();
 
 	/**
 	 * @var array $_realparams for callable
 	 **/
-	public static $_realparams = [];
+	public static $_realparams = array();
 	
 	/**
 	 * @var string $BASEURL
@@ -744,7 +745,7 @@ class Route {
 	        
 	        if ( $segments[count($segments)-1] == '' && count($segments) > 1 ) unset($segments[count($segments)-1]);
 	         
-	        $result_segment = [];
+	        $result_segment = array();
 	        while(list($key, $seg) = each($segments)) {
 	            if ($segments[$key] != $index && $seg != '' )
 	                array_push($result_segment, urldecode($seg));
@@ -1114,7 +1115,7 @@ class Kecik {
 	 * @var Closure Object $callable
 	 **/
 	private $callable;
-	private $middleware = ['before'=>[], 'after'=>[]];
+	private $middleware = ['before'=>array(), 'after'=>array()];
 	/**
 	 * @var Bool $routedStatus
 	 **/
@@ -1125,11 +1126,12 @@ class Kecik {
 	 **/
 	private static $fullrender = '';
 
-	private static $header = [];
+	private static $header = array();
 
 	private static $group = '';
 	private $group_func;
 
+	private static $instance = null;
 	/**
 	 * autoload
 	 * ID: autoload untuk MVC
@@ -1163,7 +1165,7 @@ class Kecik {
 	 * __construct
 	 * @param array $config optional
 	 **/
-	public function __construct($config=[]) {
+	public function __construct($config=array()) {
 		//** Config
 		$this->config = new Config();
 
@@ -1238,6 +1240,11 @@ class Kecik {
 
 		spl_autoload_register(array($this, 'autoload'), true, true);
 
+		self::$instance = $this;
+	}
+
+	public static function getInstance() {
+		return self::$instance;
 	}
 
 	/**
@@ -1248,7 +1255,7 @@ class Kecik {
 	 **/
 	private function setCallable($args) {
 		$route = array_shift($args);
-		$real_params = [];
+		$real_params = array();
 
 		//Before Middleware
 		if (is_array($args[0])) {
@@ -1290,7 +1297,7 @@ class Kecik {
 						elseif (isset($matches[7][0]) && !empty($matches[7][0]))
 							$real_params[$value] = explode('/', substr($matches[7][0]), 1);
 						else
-							$real_params[$value] = [];
+							$real_params[$value] = array();
 					} elseif (substr(trim($value, '/'), 0, 1) == ':') {
 						$getpos = (strpos($this->route->_getParams($key), '?') > 0)?strpos($this->route->_getParams($key), '?'):strlen($this->route->_getParams($key));
 						$real_params[$value] = substr($this->route->_getParams($key), 0, $getpos);
@@ -1323,7 +1330,7 @@ class Kecik {
 		$this->routedStatus = FALSE;
 		if (!$this->route->isGet()) return $this;
 
-		$this->middleware = ['before'=>[], 'after'=>[]];
+		$this->middleware = ['before'=>array(), 'after'=>array()];
 		if (is_callable($this->callable) ) {
 			//$this->routedStatus = FALSE;
 			return $this;
@@ -1345,7 +1352,7 @@ class Kecik {
 		$this->routedStatus = FALSE;
 		if (!$this->route->isPost()) return $this;
 
-		$this->middleware = ['before'=>[], 'after'=>[]];
+		$this->middleware = ['before'=>array(), 'after'=>array()];
 		if (is_callable($this->callable) ) {
 			//$this->routedStatus = FALSE;
 			return $this;
@@ -1367,7 +1374,7 @@ class Kecik {
 		$this->routedStatus = FALSE;
 		if (!$this->route->isPut()) return $this;
 
-		$this->middleware = ['before'=>[], 'after'=>[]];
+		$this->middleware = ['before'=>array(), 'after'=>array()];
 		if (is_callable($this->callable) ) {
 			//$this->routedStatus = FALSE;
 			return $this;
@@ -1388,7 +1395,7 @@ class Kecik {
 		$this->routedStatus = FALSE;
 		if (!$this->route->isDelete()) return $this;
 
-		$this->middleware = ['before'=>[], 'after'=>[]];
+		$this->middleware = ['before'=>array(), 'after'=>array()];
 		if (is_callable($this->callable) ) {
 			//$this->routedStatus = FALSE;
 			return $this;
@@ -1409,7 +1416,7 @@ class Kecik {
 		$this->routedStatus = FALSE;
 		if (!$this->route->isPatch()) return $this;
 
-		$this->middleware = ['before'=>[], 'after'=>[]];
+		$this->middleware = ['before'=>array(), 'after'=>array()];
 		if (is_callable($this->callable) ) {
 			//$this->routedStatus = FALSE;
 			return $this;
@@ -1430,7 +1437,7 @@ class Kecik {
 		$this->routedStatus = FALSE;
 		if (!$this->route->isOptions()) return $this;
 
-		$this->middleware = ['before'=>[], 'after'=>[]];
+		$this->middleware = ['before'=>array(), 'after'=>array()];
 		if (is_callable($this->callable) ) {
 			//$this->routedStatus = FALSE;
 			return $this;
@@ -1456,7 +1463,7 @@ class Kecik {
 
 		if (is_callable($args[1])) {
 			$this->group_func = \Closure::bind($args[1], $this, get_class());
-			call_user_func_array($this->group_func, []);
+			call_user_func_array($this->group_func, array());
 		}
 		
 		self::$group = '';	
@@ -1607,7 +1614,7 @@ class Kecik {
 
 	public function header($code=200) {
 		if (!is_array($code)) $code = [$code];
-		self::$header = [];
+		self::$header = array();
 		while(list($key, $value) = each($code)) {
 			if (is_int($value))
 				self::$header[] = $_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[$value];
