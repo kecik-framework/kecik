@@ -26,8 +26,8 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="{{ $this->url->to('') }}">Home</a></li>
-            <li><a href="{{ $this->url->to('data') }}">Data</a></li>
+            <li <?php if ($this->route->is('/')) { ?> class="active" <?php } ?> ><a href="{{ $this->url->to('') }}">Home</a></li>
+            <li <?php if ($this->route->is('data')) { ?> class="active" <?php } ?> ><a href="{{ $this->url->to('data') }}">Data</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
