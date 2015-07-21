@@ -1225,12 +1225,12 @@ class Kecik {
 								$this->config->set($library.'.'.$key, $value);
 							//** ID: untuk Library/Pustaka Database | EN: For Database Library
 							if ($library == 'database') {
-								$this->db = new Database($this);
+								$this->db = new Database();
 								if (class_exists('MVC'))
 									MVC::setDB($this->db);
 							}
 							else //** ID: untuk Library/Pustaka lain | EN: For Other library
-								$this->$library = new $clsLibrary($this);
+								$this->$library = new $clsLibrary();
 						//** ID: Untuk Library/Pustaka tanpa parameter Kelas Kecik
 						//** EN: For Library without parameter of Kecik CLass
 						} elseif (isset($params['params'])) {
