@@ -100,22 +100,40 @@ if (!class_exists('Kecik\Controller')) {
 		 * @param array $param
 		 **/
 		protected function view($file, $param=array()) {
-			if (php_sapi_name() == 'cli')
-				$mvc_path = Config::get('path.basepath').Config::get('path.mvc');
-			else
-				$mvc_path = Config::get('path.mvc');
+			extract($param);
+		
+			if (!is_array($file)) {
+				$path =  explode('\\', get_class($this));
 
-			/*ob_start();
-			extract($param);
-			$myfile = fopen(Config::get('path.mvc').'/views/'.$file.'.php', "r");
-			$view = fread($myfile,filesize(Config::get('path.mvc').'/views/'.$file.'.php'));
-			fclose($myfile);
-			//$view = file_get_contents( Config::get('path.mvc').'/views/'.$file.'.php' );
-			eval('?>'.$view);
-			$result = ob_get_clean();
-			*/
-			extract($param);
-			include $mvc_path.'/views/'.$file.'.php';
+				if (count($path) > 2) {
+					$view_path = '';
+
+					for($i=0; $i<count($path)-2; $i++) {
+						$view_path .= strtolower($path[$i]).'/';
+					}	
+
+					$view_path = Config::get('path.mvc').'/'.$view_path;
+				} else {
+					$view_path = Config::get('path.mvc');
+				}
+
+				if (php_sapi_name() == 'cli')
+					$view_path = Config::get('path.basepath').'/'.$view_path;
+			} else {
+				
+				$view_path = Config::get('path.mvc');
+				if (isset($file[1])) {
+					$view_path .= '/'.$file[0];
+					$file = $file[1];
+				} else
+					$file = $file[0];
+
+				if (php_sapi_name() == 'cli')
+					$view_path = Config::get('path.basepath').'/'.$view_path; 
+				
+			}
+			
+			include $view_path.'/views/'.$file.'.php';
 		}
 	}
 }
