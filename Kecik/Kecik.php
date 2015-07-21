@@ -1173,6 +1173,8 @@ class Kecik {
 	 * @param array $config optional
 	 **/
 	public function __construct($config=array()) {
+		self::$instance = $this;
+		
 		//** Config
 		$this->config = new Config();
 
@@ -1247,7 +1249,6 @@ class Kecik {
 
 		spl_autoload_register(array($this, 'autoload'), true, true);
 
-		self::$instance = $this;
 	}
 
 	public static function getInstance() {
