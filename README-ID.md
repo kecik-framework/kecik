@@ -761,6 +761,22 @@ class Data extends Model {
 }
 ```
 
+atau jika nama Model sama dengan nama table kita bisa membuang variable $table, syarat nama table di database harus menggunakan
+huruf kecil semua
+```php
+<?php
+//file data.php
+namespace Model;
+
+use Kecik\Model;
+
+class Data extends Model {
+	public function __construct($id='') {
+		parent::__construct($id);
+	}
+}
+```
+
 Cara penggunaan Model pada controller adalah sebagai berikut.
 ```php
 <?php
@@ -772,8 +788,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($app, $dbcon) {
-		parent::__construct($app);
+	public function __construct($dbcon) {
+		parent::__construct();
 		$this->dbcon = $dbcon;
 	}
 
@@ -826,8 +842,8 @@ use Kecik\Controller;
 
 class Welcome extends Controller{
 
-	public function __construct($app) {
-		parent::__construct($app);
+	public function __construct() {
+		parent::__construct();
 	}
 
 	public function welcome() {
@@ -846,12 +862,255 @@ use Kecik\Controller;
 
 class Welcome extends Controller{
 
-	public function __construct($app) {
-		parent::__construct($app);
+	public function __construct() {
+		parent::__construct();
 	}
 
 	public function welcome($nama) {
 		return $this->view('welcome', array('nama'=>$nama));
+	}
+}
+```
+
+
+**HMVC**
+-------------
+Kecik Framework juga mendukung HMVC bahkan HMVC dengan struktur yang lebih dinamis.
+Contoh Struktur HMVC:
+```
++--app
+|  +-- controllers --+
+|  +-- models        |-- MVC
+|  +-- views       --+
+|  +-- module           --+
+|      +-- controllers    |-- HMVC
+|      +-- models         |
+|      +-- views        --+
+|  +-- tim1  ---------------------------------------+------------+
+|      +-- module1                                  |            |
+|          +-- controllers  --+                     |            |
+|          +-- models         |-- MVC Tim1\Module1  |            |
+|          +-- views        --+                     |-- Tim1     |
+|      +-- module2                                  |            |
+|          +-- controllers  --+                     |            |
+|          +-- models         |-- MVC Tim1\Module2  |            |
+|          +-- views        --+---------------------+            |-- HMVC Dinamis
+|  +-- tim2  ---------------------------------------+            |
+|      +-- module1                                  |            |
+|          +-- controllers  --+                     |            |
+|          +-- models         |-- MVC Tim2\Module1  |            |
+|          +-- views        --+                     |-- Tim2     |
+|      +-- module2                                  |            |
+|          +-- controllers  --+                     |            |
+|          +-- models         |-- MVC Tim2\Module2  |            |
+|          +-- views        --+---------------------+------------+
+```
+
+**Controller dalam HMVC**
+Untuk Controller pada HMVC penamaan namespace harus sama dengan struktur direktori MVC nya.
+```php
+<?php
+namespace Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__contruct();
+	}
+
+	public function index() {
+		return $this->view('index');
+	}
+}
+```
+
+atau untuk HMVC Dinamis
+```php
+<?php
+namespace Tim1\Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__contruct();
+	}
+
+	public function index() {
+		return $this->view('index');
+	}
+}
+```
+
+Cara menggunakan controller HMVC pada route
+```php
+$app->get('welcome', function() {
+	$ctrl = new \Module\Controller\Welcome();
+	return $ctrl->index();
+});
+```
+Sedangkan untuk HMVC Dinamis
+```php
+$app->get('welcome', function() {
+	$ctrl = new \Tim1\Module1\Controller\Welcome();
+	return $ctrl->index();
+});
+```
+
+
+**Model dalam HMVC**
+Sama dengan Controller penamaan namespace harus sama dengan suktrur direktori MVC nya.
+```php
+<?php
+//file data.php
+namespace Module\Model;
+
+use Kecik\Model;
+
+class Data extends Model {
+
+	protected static $table = 'data';
+
+	public function __construct($id='') {
+		parent::__construct($id);
+	}
+}
+```
+atau untuk HMVC Dinamis
+```php
+<?php
+//file data.php
+namespace Tim1\Module\Model;
+
+use Kecik\Model;
+
+class Data extends Model {
+
+	protected static $table = 'data';
+
+	public function __construct($id='') {
+		parent::__construct($id);
+	}
+}
+```
+
+Dan cara pemanggilannya pada controller adalah
+```php
+<?php
+namespace Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__contruct();
+	}
+
+	public function create() {
+		$data = new \Module\Model\Data();
+			$data->name = $this->request->post('name');
+			$data->address = $this->request->post('address');
+			$data->email = $this->request->post('email');
+		$data->save();
+	}
+}
+```
+
+atau untuk HMVC Dinamis
+```php
+<?php
+namespace Tim1\Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__contruct();
+	}
+
+	public function create() {
+		$data = new \Tim1\Module\Model\Data();
+			$data->name = $this->request->post('name');
+			$data->address = $this->request->post('address');
+			$data->email = $this->request->post('email');
+		$data->save();
+	}
+}
+```
+
+Kita bisa juga menggunakan Model dari module lain ataupun dari model utama yang berada diluar direktori module
+
+**View dalam HMVC**
+Menggunakan file pada masing module tidak ada perbedaan dengan cara MVC, jadi kita tinggal memanggil nama file view nya tanpa
+disertakan dengan ekstensi .php
+```php
+<?php
+namespace Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__construct();
+	}
+
+	public function wellcome($nama) {
+		// menggunakan view dari module lain
+		return $this->view('wellcome', array('nama'=>$nama));
+	}
+}
+```
+
+Sedangkan jika kita ingin menggunakan view dari module lain atau mungkin pada view utama yang berada diluar direktori module,
+kita cukup mengubah nilai pada parameter pertama menjadi array, dimana nilai index pertama adalah nama view jika ingin 
+menggunakan view utama yang berada di luar direktori module, atau index pertama adalah nama module dan index kedua adalah
+nama view dari module yang view nya ingin digunakan.
+```php
+$this->view(array('nama_view'));  // Menggunakan view utama
+$this->view(array('nama_module', 'nama_view')); // Menggunakan view dari module lain
+```
+
+```php
+<?php
+namespace Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__construct();
+	}
+
+	public function wellcome($nama) {
+		// menggunakan view dari module lain
+		return $this->view(array('Module2', 'welcome'), array('nama'=>$nama));
+	}
+}
+```
+
+atau
+```php
+<?php
+namespace Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__construct();
+	}
+
+	public function wellcome($nama) {
+		// menggunakan view utama yang berada diluar module
+		return $this->view(array('welcome'), array('nama'=>$nama));
 	}
 }
 ```
@@ -936,7 +1195,7 @@ Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat
 Cara menggunakan template tersebut pada route adalah sebagai berikut.
 ```php
 <?php
-$app->get('welcome/:nama', new Controller\Welcome($app), function ($controller, $nama) {
+$app->get('welcome/:nama', new Controller\Welcome(), function ($controller, $nama) {
 	return $controller->welcome($nama);
 })->template('template');
 ```
@@ -949,7 +1208,7 @@ $app->get('admin', function() {
 		//** Replace Template
 		$this->template('login', TRUE);
 	} else {
-		$controller = new Controller\Admin($this);
+		$controller = new Controller\Admin();
 		return $controller->index();
 	}
 })->template('template');
