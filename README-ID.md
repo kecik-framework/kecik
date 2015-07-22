@@ -1061,7 +1061,7 @@ class Welcome extends Controller {
 	}
 
 	public function wellcome($nama) {
-		// menggunakan view dari module lain
+		// menggunakan view pada module
 		return $this->view('wellcome', array('nama'=>$nama));
 	}
 }
