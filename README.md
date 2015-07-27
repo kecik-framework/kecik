@@ -34,7 +34,7 @@ Install composer in your opration system, if not installed you can download it f
 ```javascript
 {
     "require": {
-        "dnaextrim/kecik": "1.1.*@dev"
+        "kecik/kecik": "1.1.*@dev"
     }
 }
 ```
