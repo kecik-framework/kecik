@@ -1503,12 +1503,14 @@ class Kecik {
 	public function template($template, $replace=FALSE) {
 		if ($this->routedStatus || $replace === TRUE) 
 			self::$fullrender = $template;
+
+		return $this;
 	}
 
 	/**
 	 * run
 	 **/
-	public function run() {
+	public function run($yield=null) {
 		if (php_sapi_name() == 'cli-server')  {
 			if( is_file(route::$BASEPATH.str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'])) && file_exists( route::$BASEPATH.str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'] ) ) && substr(strtolower($_SERVER['REQUEST_URI']), -4) != '.php' ) {
 				readfile(route::$BASEPATH.str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'] ));
@@ -1516,6 +1518,10 @@ class Kecik {
 			}
 		}
 		
+		if (is_callable($yield)) {
+			$this->callable = \Closure::bind($yield, $this, get_class());
+		}
+
 		if (self::$fullrender != '') {
 			if (is_callable($this->callable)) {
 				//** Run Middleware Before
