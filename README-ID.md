@@ -513,8 +513,8 @@ put($var='')
 
 **Contoh:**
 ```php
-print_r($this->request->post());
-$x = $this->request->post('x');
+print_r($this->request->put());
+$x = $this->request->put('x');
 ```
 
 #### **delete()**
@@ -612,15 +612,15 @@ use Kecik\Controller;
 
 class Welcome extends Controller{
 
-	public function __construct($app) {
-		parent::__construct($app);
+	public function __construct() {
+		parent::__construct();
 	}
 }
 ```
 
 Cara menggunakan controller tersebut pada route adalah sebagai berikut
 ```php
-$app->get('/', new Controller\Welcome($app), function($controller) {
+$app->get('/', new Controller\Welcome(), function($controller) {
 
 });
 ```
@@ -637,8 +637,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($app, $dbcon) {
-		parent::__construct($app);
+	public function __construct($dbcon) {
+		parent::__construct();
 		$this->dbcon = $dbcon;
 	}
 }
@@ -646,7 +646,7 @@ class Welcome extends Controller{
 
 Selanjutnya cara menggunakannya pada route sebagai berikut:
 ```php
-$app->get('/', new Controller\Welcome($app, $dbcon), function($controller) {
+$app->get('/', new Controller\Welcome($dbcon), function($controller) {
 
 });
 ```
@@ -663,8 +663,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($app, $dbcon) {
-		parent::__construct($app);
+	public function __construct($dbcon) {
+		parent::__construct();
 		$this->dbcon = $dbcon;
 	}
 
@@ -676,7 +676,7 @@ class Welcome extends Controller{
 
 Selanjutnya cara menggunakan method atau fungsi tersebut pada route adalah sebagai berikut.
 ```php
-$app->get('/', new Controller\Welcome($app, $dbcon), function($controller) {
+$app->get('/', new Controller\Welcome($dbcon), function($controller) {
 	return $controller->index();
 });
 ```
@@ -693,8 +693,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($app, $dbcon) {
-		parent::__construct($app);
+	public function __construct($dbcon) {
+		parent::__construct();
 		$this->dbcon = $dbcon;
 	}
 
@@ -710,7 +710,7 @@ class Welcome extends Controller{
 
 Cara menggunakannya pada route dengan cara sebagai berikut.
 ```php
-$app->get('/hello/:nama', new Controller\Welcome($app, $dbcon), function($controller, $nama) {
+$app->get('/hello/:nama', new Controller\Welcome($dbcon), function($controller, $nama) {
 	return $controller->index($nama);
 });
 ```
@@ -734,7 +734,7 @@ $mw4 = function() {
 	echo 'is Middleware 4 [After]';
 };
 
-$app->get('middleware', array($mw1, mw2), function() {
+$app->get('middleware', array($mw1, $mw2), function() {
 	return 'is Response Middleware Route';
 }, array($mw3, $mw4));
 ```
@@ -1061,7 +1061,7 @@ class Welcome extends Controller {
 	}
 
 	public function wellcome($nama) {
-		// menggunakan view pada module
+		// menggunakan view dari module lain
 		return $this->view('wellcome', array('nama'=>$nama));
 	}
 }
@@ -1213,4 +1213,3 @@ $app->get('admin', function() {
 	}
 })->template('template');
 ```
-

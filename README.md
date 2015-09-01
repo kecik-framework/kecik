@@ -168,7 +168,7 @@ $app->get('welcome/:name', function($name) {
 ```
 
 ####**Group**
-Kecik Framework juga mendukung pengelompokan route.
+Kecik Framework also supports grouping route.
 ```php
 $app->group('book', function() {
 	$this->post('insert', function() {
@@ -197,7 +197,7 @@ $app->group('book', function() {
 	});
 });
 ```
-HTML just support method `POST` and `GET`, if we want using method like `PUT`, `DELETE`, `OPTIONS`, and `PATCH` we can using do **`Override`**
+HTML just support method ``POST`` and ``GET``, if we want using method like ``PUT``, ``DELETE``, ``OPTIONS``, and ``PATCH`` we can using do **`Override`**
 
 ```html
 <form method="POST" action="<?php $this->url->to('login') ?>">
@@ -216,55 +216,55 @@ HTML just support method `POST` and `GET`, if we want using method like `PUT`, `
 > **Note:** Applies to the use of the post, put, delete, options, and patch to use the controller and templates there are several steps that need to be prepared
 
 ####**is()**
-Untuk mendapatkan nilai route saat ini
+To get current value of the route
 ```php
 <a href="<?php $this->url->to('home') ?>" <?php echo ($this->route->is() == 'home')? 'class="active"': '' ?>>Home</a>
 ```
 
 ####**isPost()**
-Untuk mengecheck apakah metode request adalah `POST`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+To perform a check whether the request method is ``POST``, if true then the value is ``TRUE`` if one then the value is ``FALSE``.
 ```php
 if ($this->route->isPost() == FALSE)
 	$this->header(404);
 ```
 
 ####**isGet()**
-Untuk mengecheck apakah metode request adalah `GET`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+To perform a check whether the request method is ``GET``, if true then the value is ``TRUE`` if one then the value is ``FALSE``.
 ```php
 if ($this->route->isGET() == FALSE)
 	$this->header(404);
 ```
 
 ####**isPut()**
-Untuk mengecheck apakah metode request adalah `PUT`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+To perform a check whether the request method is `PUT`, if true then the value is` TRUE` if one then the value is `FALSE`.
 ```php
 if ($this->route->isPut() == FALSE)
 	$this->header(404);
 ```
 
 ####**isDelete()**
-Untuk mengecheck apakah metode request adalah `DELETE`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+To perform a check whether the request method is ``DELETE``, if true then the value is ``TRUE`` if one then the value is ``FALSE``.
 ```php
 if ($this->route->isDelete() == FALSE)
 	$this->header(404);
 ```
 
 ####**isPatch()**
-Untuk mengecheck apakah metode request adalah `PATCH`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+To perform a check whether the request method is ``PATCH``, if true then the value is ``TRUE`` if one then the value is ``FALSE``.
 ```php
 if ($this->route->isPatch() == FALSE)
 	$this->header(404);
 ```
 
 ####**isOptions()**
-Untuk mengecheck apakah metode request adalah `OPTIONS`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+To perform a check whether the request method is ``OPTIONS``, if true then the value is ``TRUE`` if one then the value is ``FALSE``.
 ```php
 if ($this->route->isOptions() == FALSE)
 	$this->header(404);
 ```
 
 ####**isAjax()**
-Untuk mengecheck apakah metode request adalah `AJAX`, jika benar maka nilai adalah `TRUE` jika salah maka nilai adalah `FALSE`
+To perform a check whether the request method is ``AJAX``, if true then the value is ``TRUE`` if one then the value is ``FALSE``.
 ```php
 if ($this->route->isAjax() == FALSE)
 	$this->header(404);
@@ -449,7 +449,7 @@ images($file)
 
 ####**url()**
 
-$this function use for get link of assets file for images.
+This function use for get link of assets file for images.
 ```php
 url()
 ```
@@ -462,7 +462,7 @@ Request is other use from  ``$_GET``, ``$_POST`` and ``$_SERVER``
 
 ####**get()**
 
-You can use get function to get value from ``$_GET``
+You can use get function to get value from ``$_GET``.
 ```php
 get($var='')
 ```
@@ -477,12 +477,12 @@ $x = $this->request->get('x');
 
 #### **post()**
 
-You can use post function to get value from ``$_POST``
+You can use `post` function to get value from ``$_POST``.
 ```php
 post($var='')
 ```
 
-> paramater **``$var``** containt name from post variable
+> paramater **``$_var``** containt name from post variable
 
 **Example:**
 ```php
@@ -492,27 +492,27 @@ $x = $this->request->post('x');
 
 #### **put()**
 
-Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method `put`
+You can use `put` function to get value from ``PUT``.
 ```php
 put($var='')
 ```
 
-> paramater **``$var``** berisikan nama dari variabel post
+> parameters **``$var``** contains name from put variable.
 
-**Contoh:**
+**Example:**
 ```php
-print_r($this->request->post());
-$x = $this->request->post('x');
+print_r($this->request->put());
+$x = $this->request->put('x');
 ```
 
 #### **delete()**
 
-Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method `delete`
+You can use `delete` function to get value from ``DELETE``.
 ```php
 delete($var='')
 ```
 
-> paramater **``$var``** berisikan nama dari variabel post
+> parameters **``$var``** contains name from delete variable.
 
 **Contoh:**
 ```php
@@ -522,7 +522,7 @@ $x = $this->request->delete('x');
 
 #### **options()**
 
-Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method `options`
+You can use `options` function to get value from ``OPTIONS``.
 ```php
 options($var='')
 ```
@@ -537,7 +537,7 @@ $x = $this->request->options('x');
 
 #### **patch()**
 
-Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method `patch`
+You can use `patch` function to get value from ``PATCH``.
 ```php
 patch($var='')
 ```
@@ -551,12 +551,12 @@ $x = $this->request->patch('x');
 ```
 
 ####**file()**
-Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method `file`
+You can use `file` function to get value from ``$_FILE``
 ```php
 file($file)
 ```
 
-> paramater **``$file``** berisikan nama dari variabel FILES
+> parameters **``$file``** contains the name of the variable ``FILES``
 
 **Contoh:**
 ```php
@@ -600,15 +600,15 @@ use Kecik\Controller;
 
 class Welcome extends Controller{
 
-	public function __construct($app) {
-		parent::__construct($app);
+	public function __construct() {
+		parent::__construct();
 	}
 }
 ```
 
 How to use the controller on the route is as follows:
 ```php
-$app->get('/', new Controller\Welcome($app), function($controller) {
+$app->get('/', new Controller\Welcome(), function($controller) {
 
 });
 ```
@@ -625,8 +625,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($app, $dbcon) {
-		parent::__construct($app);
+	public function __construct($dbcon) {
+		parent::__construct();
 		$this->dbcon = $dbcon;
 	}
 }
@@ -634,7 +634,7 @@ class Welcome extends Controller{
 
 Next how to use at route as follow:
 ```php
-$app->get('/', new Controller\Welcome($app, $dbcon), function($controller) {
+$app->get('/', new Controller\Welcome($dbcon), function($controller) {
 
 });
 ```
@@ -651,8 +651,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($app, $dbcon) {
-		parent::__construct($app);
+	public function __construct($dbcon) {
+		parent::__construct();
 		$this->dbcon = $dbcon;
 	}
 
@@ -664,7 +664,7 @@ class Welcome extends Controller{
 
 Next use method/function in route is as follow.
 ```php
-$app->get('/', new Controller\Welcome($app, $dbcon), function($controller) {
+$app->get('/', new Controller\Welcome($dbcon), function($controller) {
 	return $controller->index();
 });
 ```
@@ -681,8 +681,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($app, $dbcon) {
-		parent::__construct($app);
+	public function __construct($dbcon) {
+		parent::__construct();
 		$this->dbcon = $dbcon;
 	}
 
@@ -698,7 +698,7 @@ class Welcome extends Controller{
 
 How to use in route as follow.
 ```php
-$app->get('/hello/:nama', new Controller\Welcome($app, $dbcon), function($controller, $nama) {
+$app->get('/hello/:nama', new Controller\Welcome($dbcon), function($controller, $nama) {
 	return $controller->index($nama);
 });
 ```
@@ -722,7 +722,7 @@ $mw4 = function() {
 	echo 'is Middleware 4 [After]';
 };
 
-$app->get('middleware', array($mw1, mw2), function() {
+$app->get('middleware', array($mw1, $mw2), function() {
 	return 'is Response Middleware Route';
 }, array($mw3, $mw4));
 ```
@@ -760,8 +760,8 @@ use Kecik\Controller;
 class Welcome extends Controller{
 	var $dbcon;
 
-	public function __construct($app, $dbcon) {
-		parent::__construct($app);
+	public function __construct($dbcon) {
+		parent::__construct();
 		$this->dbcon = $dbcon;
 	}
 
@@ -814,8 +814,8 @@ use Kecik\Controller;
 
 class Welcome extends Controller{
 
-	public function __construct($app) {
-		parent::__construct($app);
+	public function __construct() {
+		parent::__construct();
 	}
 
 	public function welcome() {
@@ -834,8 +834,8 @@ use Kecik\Controller;
 
 class Welcome extends Controller{
 
-	public function __construct($app) {
-		parent::__construct($app);
+	public function __construct() {
+		parent::__construct();
 	}
 
 	public function welcome($nama) {
