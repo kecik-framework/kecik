@@ -844,6 +844,248 @@ class Welcome extends Controller{
 }
 ```
 
+**HMVC**
+-------------
+Kecik Framework juga mendukung HMVC bahkan HMVC dengan struktur yang lebih dinamis.
+Contoh Struktur HMVC:
+```
++--app
+|  +-- controllers --+
+|  +-- models        |-- MVC
+|  +-- views       --+
+|  +-- module           --+
+|      +-- controllers    |-- HMVC
+|      +-- models         |
+|      +-- views        --+
+|  +-- tim1  ---------------------------------------+------------+
+|      +-- module1                                  |            |
+|          +-- controllers  --+                     |            |
+|          +-- models         |-- MVC Tim1\Module1  |            |
+|          +-- views        --+                     |-- Tim1     |
+|      +-- module2                                  |            |
+|          +-- controllers  --+                     |            |
+|          +-- models         |-- MVC Tim1\Module2  |            |
+|          +-- views        --+---------------------+            |-- HMVC Dinamis
+|  +-- tim2  ---------------------------------------+            |
+|      +-- module1                                  |            |
+|          +-- controllers  --+                     |            |
+|          +-- models         |-- MVC Tim2\Module1  |            |
+|          +-- views        --+                     |-- Tim2     |
+|      +-- module2                                  |            |
+|          +-- controllers  --+                     |            |
+|          +-- models         |-- MVC Tim2\Module2  |            |
+|          +-- views        --+---------------------+------------+
+```
+
+**Controller dalam HMVC**
+Untuk Controller pada HMVC penamaan namespace harus sama dengan struktur direktori MVC nya.
+```php
+<?php
+namespace Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__contruct();
+	}
+
+	public function index() {
+		return $this->view('index');
+	}
+}
+```
+
+atau untuk HMVC Dinamis
+```php
+<?php
+namespace Tim1\Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__contruct();
+	}
+
+	public function index() {
+		return $this->view('index');
+	}
+}
+```
+
+Cara menggunakan controller HMVC pada route
+```php
+$app->get('welcome', function() {
+	$ctrl = new \Module\Controller\Welcome();
+	return $ctrl->index();
+});
+```
+Sedangkan untuk HMVC Dinamis
+```php
+$app->get('welcome', function() {
+	$ctrl = new \Tim1\Module1\Controller\Welcome();
+	return $ctrl->index();
+});
+```
+
+
+**Model dalam HMVC**
+Sama dengan Controller penamaan namespace harus sama dengan suktrur direktori MVC nya.
+```php
+<?php
+//file data.php
+namespace Module\Model;
+
+use Kecik\Model;
+
+class Data extends Model {
+
+	protected static $table = 'data';
+
+	public function __construct($id='') {
+		parent::__construct($id);
+	}
+}
+```
+atau untuk HMVC Dinamis
+```php
+<?php
+//file data.php
+namespace Tim1\Module\Model;
+
+use Kecik\Model;
+
+class Data extends Model {
+
+	protected static $table = 'data';
+
+	public function __construct($id='') {
+		parent::__construct($id);
+	}
+}
+```
+
+Dan cara pemanggilannya pada controller adalah
+```php
+<?php
+namespace Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__contruct();
+	}
+
+	public function create() {
+		$data = new \Module\Model\Data();
+			$data->name = $this->request->post('name');
+			$data->address = $this->request->post('address');
+			$data->email = $this->request->post('email');
+		$data->save();
+	}
+}
+```
+
+atau untuk HMVC Dinamis
+```php
+<?php
+namespace Tim1\Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__contruct();
+	}
+
+	public function create() {
+		$data = new \Tim1\Module\Model\Data();
+			$data->name = $this->request->post('name');
+			$data->address = $this->request->post('address');
+			$data->email = $this->request->post('email');
+		$data->save();
+	}
+}
+```
+
+Kita bisa juga menggunakan Model dari module lain ataupun dari model utama yang berada diluar direktori module
+
+**View dalam HMVC**
+Menggunakan file pada masing module tidak ada perbedaan dengan cara MVC, jadi kita tinggal memanggil nama file view nya tanpa
+disertakan dengan ekstensi .php
+```php
+<?php
+namespace Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__construct();
+	}
+
+	public function wellcome($nama) {
+		// menggunakan view dari module lain
+		return $this->view('wellcome', array('nama'=>$nama));
+	}
+}
+```
+
+Sedangkan jika kita ingin menggunakan view dari module lain atau mungkin pada view utama yang berada diluar direktori module,
+kita cukup mengubah nilai pada parameter pertama menjadi array, dimana nilai index pertama adalah nama view jika ingin 
+menggunakan view utama yang berada di luar direktori module, atau index pertama adalah nama module dan index kedua adalah
+nama view dari module yang view nya ingin digunakan.
+```php
+$this->view(array('nama_view'));  // Menggunakan view utama
+$this->view(array('nama_module', 'nama_view')); // Menggunakan view dari module lain
+```
+
+```php
+<?php
+namespace Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__construct();
+	}
+
+	public function wellcome($nama) {
+		// menggunakan view dari module lain
+		return $this->view(array('Module2', 'welcome'), array('nama'=>$nama));
+	}
+}
+```
+
+atau
+```php
+<?php
+namespace Module\Controller;
+
+use Kecik\Controller;
+
+class Welcome extends Controller {
+
+	public function __construct() {
+		parent::__construct();
+	}
+
+	public function wellcome($nama) {
+		// menggunakan view utama yang berada diluar module
+		return $this->view(array('welcome'), array('nama'=>$nama));
+	}
+}
+```
+
 ---
 Url
 ----
