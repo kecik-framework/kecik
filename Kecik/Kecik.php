@@ -56,6 +56,7 @@ if (!class_exists('Kecik\Controller')) {
 		protected $url = '';
 		protected $assets = '';
 		protected $config = '';
+		protected $route = '';
 		//protected $container = '';
 		//protected $db = '';
 
@@ -74,7 +75,15 @@ if (!class_exists('Kecik\Controller')) {
 			$this->url = $app->url;
 			$this->assets = $app->assets;
 			$this->config = $app->config;
-			if (isset($app->container))
+			$this->route = $app->route;
+
+			$libraries = $app->getLibrariesEnabled();
+			while(list($idx, $library) = each($libraries)) {
+				$lib = $library[0];
+				if (isset($app->$lib))
+				$this->$Lib = $app->$lib;
+			}
+			/*if (isset($app->container))
 				$this->container = $app->container;
 			if (isset($app->db))
 				$this->db = $app->db;
@@ -83,7 +92,7 @@ if (!class_exists('Kecik\Controller')) {
 			if (isset($app->cookie))
 				$this->cookie = $app->cookie;
 			if (isset($app->language))
-				$this->language = $app->language;
+				$this->language = $app->language;*/
 		}
 
 		//** ID: Silakan tambah fungsi controller sendiri disini
@@ -1140,7 +1149,7 @@ class Kecik {
 	 * @var Closure Object $callable
 	 **/
 	private $callable;
-	private $middleware = ['before'=>array(), 'after'=>array()];
+	private $middleware = array('before'=>array(), 'after'=>array());
 	/**
 	 * @var Bool $routedStatus
 	 **/
@@ -1156,6 +1165,7 @@ class Kecik {
 	private static $group = '';
 	private $group_func;
 
+	private $libraries_enabled = array();
 	private static $instance = null;
 	/**
 	 * autoload
@@ -1229,13 +1239,17 @@ class Kecik {
 						//** EN: For Library without parameter
 						if (!isset($params['config']) && !isset($params['params'])) {
 							//** ID: Untuk Library/Pustaka DIC | EN: For DIC Library
-							if ($library == 'dic')
+							if ($library == 'dic') {
 								$this->container = new DIC();
-							elseif ($library == 'mvc') {
+								$this->libraries_enabled[] = array('DIC','container');
+							} elseif ($library == 'mvc') {
+								$this->libraries_enabled[] = array('MVC');
 								if (isset($this->db))
 									MVC::setDB($this->db);
-							} else // ID: Untuk Library/Pustaka lain | EN: Other Library
+							} else { // ID: Untuk Library/Pustaka lain | EN: Other Library
 								$this->$library = new $clsLibrary();
+								$this->libraries_enabled[] = array($library, $library);
+							}
 						//** ID: Untuk Library/Pustaka dengan parameter Kelas Kecik
 						//** EN: For Library with parameter of Kecik CLass
 						} elseif (isset($params['config'])) {
@@ -1246,16 +1260,19 @@ class Kecik {
 							//** ID: untuk Library/Pustaka Database | EN: For Database Library
 							if ($library == 'database') {
 								$this->db = new Database();
+								$this->libraries_enabled[] = array('Database', 'db');
 								if (class_exists('MVC'))
 									MVC::setDB($this->db);
 							}
-							else //** ID: untuk Library/Pustaka lain | EN: For Other library
+							else { //** ID: untuk Library/Pustaka lain | EN: For Other library
 								$this->$library = new $clsLibrary();
+								$this->libraries_enabled[] = array($library, $library);
+							}
 						//** ID: Untuk Library/Pustaka tanpa parameter Kelas Kecik
 						//** EN: For Library without parameter of Kecik CLass
 						} elseif (isset($params['params'])) {
 							$this->$library = new $clsLibrary($params['params']);
-
+							$this->libraries_enabled[] = array($library, $library);
 						}
 					}
 
@@ -1653,6 +1670,10 @@ class Kecik {
 			else
 				self::$header[] = $value;
 		}
+	}
+
+	public function getLibrariesEnabled() {
+		return $this->libraries_enabled;
 	}
 }
 ?>
