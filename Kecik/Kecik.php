@@ -79,9 +79,10 @@ if (!class_exists('Kecik\Controller')) {
 
 			$libraries = $app->getLibrariesEnabled();
 			while(list($idx, $library) = each($libraries)) {
-				$lib = $library[0];
-				if (isset($app->$lib))
-				$this->$Lib = $app->$lib;
+				if (isset($library[1]) && !empty($library[1])) {
+					$lib = $library[1];
+					$this->$lib = $app->$lib;
+				}
 			}
 			/*if (isset($app->container))
 				$this->container = $app->container;
