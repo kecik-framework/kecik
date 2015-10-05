@@ -1216,8 +1216,8 @@ class Kecik {
 		if ($this->config->get('path.basepath') == '')
 			$this->config->set('path.basepath', getcwd().'/');
 		
-
-		self::$header[] = $_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[200];
+		if (isset($_SERVER["SERVER_PROTOCOL"]))
+			self::$header[] = $_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[200];
 		
 
 		$this->route = new Route();
