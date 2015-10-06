@@ -109,24 +109,44 @@ if (!class_exists('Kecik\Controller')) {
 		 * @param array $param
 		 **/
 		protected function view($file, $param = array()) {
-			if (php_sapi_name() == 'cli') {
-				$mvc_path = Config::get('path.basepath').Config::get('path.mvc');
+			extract($param);
+
+			if (!is_array($file)) {
+				$path = explode('\\', get_class($this));
+
+				if (count($path) > 2) {
+					$view_path = '';
+
+					for ($i = 0; $i < count($path)-2; $i++) {
+						$view_path .= strtolower($path[$i]).'/';
+					}
+
+					$view_path = Config::get('path.mvc').'/'.$view_path;
+				} else {
+					$view_path = Config::get('path.mvc');
+				}
+
+				if (php_sapi_name() == 'cli') {
+					$view_path = Config::get('path.basepath').'/'.$view_path;
+				}
 			} else {
 
-				$mvc_path = Config::get('path.mvc');
+				$view_path = Config::get('path.mvc');
+				if (isset($file[1])) {
+					$view_path .= '/'.$file[0];
+					$file = $file[1];
+				} else {
+
+					$file = $file[0];
+				}
+
+				if (php_sapi_name() == 'cli') {
+					$view_path = Config::get('path.basepath').'/'.$view_path;
+
+				}
 			}
 
-			/*ob_start();
-			extract($param);
-			$myfile = fopen(Config::get('path.mvc').'/views/'.$file.'.php', "r");
-			$view = fread($myfile,filesize(Config::get('path.mvc').'/views/'.$file.'.php'));
-			fclose($myfile);
-			//$view = file_get_contents( Config::get('path.mvc').'/views/'.$file.'.php' );
-			eval('?>'.$view);
-			$result = ob_get_clean();
-			 */
-			extract($param);
-			include $mvc_path.'/views/'.$file.'.php';
+			include $view_path.'/views/'.$file.'.php';
 		}
 	}
 }
@@ -1267,6 +1287,8 @@ class Kecik {
 	 * @param array $config optional
 	 **/
 	public function __construct($config = array()) {
+		self::$instance = $this;
+
 		//** Config
 		$this->config = new Config();
 
@@ -1347,7 +1369,6 @@ class Kecik {
 
 		spl_autoload_register(array($this, 'autoload'), true, true);
 
-		self::$instance = $this;
 	}
 
 	public static function getInstance() {
@@ -1603,17 +1624,23 @@ class Kecik {
 		if ($this->routedStatus || $replace === TRUE) {
 			self::$fullrender = $template;
 		}
+
+		return $this;
 	}
 
 	/**
 	 * run
 	 **/
-	public function run() {
+	public function run($yield = null) {
 		if (php_sapi_name() == 'cli-server') {
 			if (is_file(route::$BASEPATH.str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'])) && file_exists(route::$BASEPATH.str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'])) && substr(strtolower($_SERVER['REQUEST_URI']), -4) != '.php') {
 				readfile(route::$BASEPATH.str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI']));
 				return TRUE;
 			}
+		}
+
+		if (is_callable($yield)) {
+			$this->callable = \Closure::bind($yield, $this, get_class());
 		}
 
 		if (self::$fullrender != '') {

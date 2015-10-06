@@ -582,6 +582,7 @@ class Url {
 	 * @param string link
 	 **/
 	public function redirect($link) {
+		if ($link == '/') $link='';
 		header('Location: '.$this->_base_url.$this->_index.$link);
 		exit();
 	}
@@ -592,6 +593,7 @@ class Url {
 	 * @return echo link
 	 **/
 	public function to($link) {
+		if ($link == '/') $link='';
 		echo $this->_base_url.$this->_index.$link;
 	}
 
@@ -601,6 +603,7 @@ class Url {
 	 * @return string
 	 **/
 	public function linkTo($link) {
+		if ($link == '/') $link='';
 		return $this->_base_url.$this->_index.$link;
 	}
 }
