@@ -997,8 +997,8 @@ class UploadFile extends \SplFileInfo {
 	private $file;
 
 	public function __construct($file) {
-		if (isset($file['tmp_name'])) {
-			parent::__construct($file['tmp_name']);
+		if (isset($file['name'])) {
+			parent::__construct($file['name']);
 			$this->file = $file;
 		}
 	}
