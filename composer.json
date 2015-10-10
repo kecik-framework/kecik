@@ -1,6 +1,6 @@
 {
     "name": "kecik/kecik",
-    "description": "Single File Micro Framework",
+    "description": "Kecik Framework, micro framework",
     "keywords": ["kecik", "framework", "micro", "single"],
     "license": "MIT",
     "authors": [
