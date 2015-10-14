@@ -1715,7 +1715,7 @@ class Kecik {
 			$this->assets->css->render()
 		], self::$fullrender);
 
-		if (empty($response))
+		if (!empty($response))
 			self::$fullrender = str_replace(['@yield', '@response'], [$response, $response], self::$fullrender);
 		//-- END Replace Tag
 		ob_start();
