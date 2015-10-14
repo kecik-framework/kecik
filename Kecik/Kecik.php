@@ -768,7 +768,9 @@ class Route {
             self::$_paramsStr = implode('/', $result_segment);
         } else {
 		    $path = str_replace( self::$PROTOCOL.$_SERVER['HTTP_HOST'].'/', '', self::$BASEURL );
-	        
+	        if (strpos($_SERVER['REQUEST_URI'], $index)) {
+	     		$_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '/'.$index)+strlen($index)+1);
+	     	}
 	        $path = str_replace($path, '', $_SERVER['REQUEST_URI']);
 	        if (substr($path, 0, 1) == '/' ) $path=substr($path, 1);
 
