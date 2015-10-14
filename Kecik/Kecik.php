@@ -1564,7 +1564,8 @@ class Kecik {
 					$middleware($this, $this->request);
 				
 				//** Replace Tag
-				ob_start();
+				echo self::$fullrender = $this->render($this->config->get('path.basepath').$this->config->get('path.template').'/'.self::$fullrender.'.php', $response);
+				/*ob_start();
 					include $this->config->get('path.basepath').$this->config->get('path.template').'/'.self::$fullrender.'.php';
 				self::$fullrender = ob_get_clean();
 
@@ -1598,7 +1599,7 @@ class Kecik {
 				self::$fullrender = str_replace(['@yield', '@response'], [$response, $response], self::$fullrender);
 				//-- END Replace Tag
 				eval('?>'.self::$fullrender);
-
+				*/
 				//echo $result;
 			} else {
 				if(php_sapi_name() != 'cli')
@@ -1637,7 +1638,7 @@ class Kecik {
 					header($_SERVER["SERVER_PROTOCOL"].' '.Route::$HTTP_RESPONSE[404]);
 				
 				if ($this->config->get('error.404') != '') {
-					include($this->config->get('path.template').'/'.$this->config->get('error.404').'.php');
+					echo $this->render($this->config->get('path.template').'/'.$this->config->get('error.404').'.php');
 				} else
 					die(Route::$HTTP_RESPONSE[404]); 
 			}
@@ -1653,7 +1654,7 @@ class Kecik {
 	public function error($code) {
 		header($_SERVER["SERVER_PROTOCOL"].Route::$HTTP_RESPONSE[$code]);
 		if ($this->config->get("error.$code") != '') {
-			include($this->config->get('path.template').'/'.$this->config->get("error.$code").'.php');
+			echo $this->render($this->config->get('path.template').'/'.$this->config->get("error.$code").'.php');
 		} else
 			die(Route::$HTTP_RESPONSE[$code]); 
 	}
@@ -1678,6 +1679,47 @@ class Kecik {
 
 	public function getLibrariesEnabled() {
 		return $this->libraries_enabled;
+	}
+
+	public function render($file, $response="") {
+		ob_start();
+			include($file);
+		self::$fullrender = ob_get_clean();
+			
+		$config = $this->config;
+		self::$fullrender = preg_replace_callback(array(
+			'/(\\\)?'.addslashes($this->config->get('template.open_tag')).'=?'.'/', 
+			'/(\\\)?'.addslashes($this->config->get('template.close_tag')).'/'
+		), function($s) use ($config) {
+		    if (isset($s[0])) {
+		        if (isset($s[1]) && $s[1] == '\\')
+		            return substr($s[0], 1);
+		        elseif ($s[0] == $this->config->get('template.open_tag'))
+		            return '<?php ';
+		        elseif ($s[0] == '{{=')
+    				return '<?php echo ';
+		        elseif ($s[0] == $this->config->get('template.close_tag'))
+		            return '?>';
+		    }
+		}, self::$fullrender);
+
+		self::$fullrender = str_replace(
+		[
+			'@js', 
+			'@css'
+		], 
+		[
+			$this->assets->js->render(), 
+			$this->assets->css->render()
+		], self::$fullrender);
+
+		if (empty($response))
+			self::$fullrender = str_replace(['@yield', '@response'], [$response, $response], self::$fullrender);
+		//-- END Replace Tag
+		ob_start();
+			eval('?>'.self::$fullrender);
+		self::$fullrender = ob_get_clean();
+		return self::$fullrender;
 	}
 }
 ?>
