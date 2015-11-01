@@ -306,8 +306,10 @@ class Kecik {
 		self::$fullrender = '';
 		$args = func_get_args();
 		if (!empty(self::$group)) {
-			$args[0] = ($args[0] == '/')?'':$args[0];
-			$args[0] = self::$group.$args[0];
+			if ($args[0] == '/') {
+				$args[0] = substr(self::$group, 0, -1).$args[0];
+			} else
+				$args[0] = self::$group.$args[0];
 		}
 		
 		array_push(Route::$_list, $args[0]);
@@ -332,8 +334,10 @@ class Kecik {
 		self::$fullrender = '';
 		$args = func_get_args();
 		if (!empty(self::$group)) {
-			$args[0] = ($args[0] == '/')?'':$args[0];
-			$args[0] = self::$group.$args[0];
+			if ($args[0] == '/') {
+				$args[0] = substr(self::$group, 0, -1).$args[0];
+			} else
+				$args[0] = self::$group.$args[0];
 		}
 
 		array_push(Route::$_list, $args[0]);
@@ -358,8 +362,10 @@ class Kecik {
 		self::$fullrender = '';
 		$args = func_get_args();
 		if (!empty(self::$group)) {
-			$args[0] = ($args[0] == '/')?'':$args[0];
-			$args[0] = self::$group.$args[0];
+			if ($args[0] == '/') {
+				$args[0] = substr(self::$group, 0, -1).$args[0];
+			} else
+				$args[0] = self::$group.$args[0];
 		}
 
 		array_push(Route::$_list, $args[0]);
@@ -384,8 +390,10 @@ class Kecik {
 		self::$fullrender = '';
 		$args = func_get_args();
 		if (!empty(self::$group)) {
-			$args[0] = ($args[0] == '/')?'':$args[0];
-			$args[0] = self::$group.$args[0];
+			if ($args[0] == '/') {
+				$args[0] = substr(self::$group, 0, -1).$args[0];
+			} else
+				$args[0] = self::$group.$args[0];
 		}
 
 		array_push(Route::$_list, $args[0]);
@@ -410,8 +418,10 @@ class Kecik {
 		self::$fullrender = '';
 		$args = func_get_args();
 		if (!empty(self::$group)) {
-			$args[0] = ($args[0] == '/')?'':$args[0];
-			$args[0] = self::$group.$args[0];
+			if ($args[0] == '/') {
+				$args[0] = substr(self::$group, 0, -1).$args[0];
+			} else
+				$args[0] = self::$group.$args[0];
 		}
 
 		array_push(Route::$_list, $args[0]);
@@ -436,8 +446,10 @@ class Kecik {
 		self::$fullrender = '';
 		$args = func_get_args();
 		if (!empty(self::$group)) {
-			$args[0] = ($args[0] == '/')?'':$args[0];
-			$args[0] = self::$group.$args[0];
+			if ($args[0] == '/') {
+				$args[0] = substr(self::$group, 0, -1).$args[0];
+			} else
+				$args[0] = self::$group.$args[0];
 		}
 
 		array_push(Route::$_list, $args[0]);
