@@ -307,7 +307,7 @@ class Kecik {
 		$args = func_get_args();
 		if (!empty(self::$group)) {
 			if ($args[0] == '/') {
-				$args[0] = substr(self::$group, 0, -1).$args[0];
+				$args[0] = substr(self::$group, 0, -1);
 			} else
 				$args[0] = self::$group.$args[0];
 		}
@@ -335,7 +335,7 @@ class Kecik {
 		$args = func_get_args();
 		if (!empty(self::$group)) {
 			if ($args[0] == '/') {
-				$args[0] = substr(self::$group, 0, -1).$args[0];
+				$args[0] = substr(self::$group, 0, -1);
 			} else
 				$args[0] = self::$group.$args[0];
 		}
@@ -363,7 +363,7 @@ class Kecik {
 		$args = func_get_args();
 		if (!empty(self::$group)) {
 			if ($args[0] == '/') {
-				$args[0] = substr(self::$group, 0, -1).$args[0];
+				$args[0] = substr(self::$group, 0, -1);
 			} else
 				$args[0] = self::$group.$args[0];
 		}
@@ -391,7 +391,7 @@ class Kecik {
 		$args = func_get_args();
 		if (!empty(self::$group)) {
 			if ($args[0] == '/') {
-				$args[0] = substr(self::$group, 0, -1).$args[0];
+				$args[0] = substr(self::$group, 0, -1);
 			} else
 				$args[0] = self::$group.$args[0];
 		}
@@ -419,7 +419,7 @@ class Kecik {
 		$args = func_get_args();
 		if (!empty(self::$group)) {
 			if ($args[0] == '/') {
-				$args[0] = substr(self::$group, 0, -1).$args[0];
+				$args[0] = substr(self::$group, 0, -1);
 			} else
 				$args[0] = self::$group.$args[0];
 		}
@@ -447,7 +447,7 @@ class Kecik {
 		$args = func_get_args();
 		if (!empty(self::$group)) {
 			if ($args[0] == '/') {
-				$args[0] = substr(self::$group, 0, -1).$args[0];
+				$args[0] = substr(self::$group, 0, -1);
 			} else
 				$args[0] = self::$group.$args[0];
 		}
