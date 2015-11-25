@@ -126,7 +126,7 @@ class Route {
             self::$PROTOCOL = "https://";
         else
             self::$PROTOCOL = "http://";
-
+        print_r($_SERVER);
         $pathinfo = pathinfo($_SERVER['PHP_SELF']);
 
         $index = basename($_SERVER["SCRIPT_FILENAME"], '.php').'.php';
