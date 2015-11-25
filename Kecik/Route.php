@@ -122,7 +122,7 @@ class Route {
         else
             self::$BASEPATH  = str_replace('/', DIRECTORY_SEPARATOR, realpath( dirname( __FILE__ ) )."/");
 
-        if ( isset($_SERVER['HTTPS']) )
+        if ( isset($_SERVER['HTTPS']) || $_SERVER['SERVER_PORT'] == 443 )
             self::$PROTOCOL = "https://";
         else
             self::$PROTOCOL = "http://";
