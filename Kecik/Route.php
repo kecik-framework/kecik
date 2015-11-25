@@ -122,11 +122,11 @@ class Route {
         else
             self::$BASEPATH  = str_replace('/', DIRECTORY_SEPARATOR, realpath( dirname( __FILE__ ) )."/");
 
-        if ( isset($_SERVER['HTTPS']) || $_SERVER['SERVER_PORT'] == 443 )
+        if ( isset($_SERVER['HTTPS']) || $_SERVER['SERVER_PORT'] == 443 || $_SERVER['HTTP_X_FORWARDED_PORT'] == 443 )
             self::$PROTOCOL = "https://";
         else
             self::$PROTOCOL = "http://";
-        print_r($_SERVER);
+        
         $pathinfo = pathinfo($_SERVER['PHP_SELF']);
 
         $index = basename($_SERVER["SCRIPT_FILENAME"], '.php').'.php';
