@@ -7,8 +7,9 @@
  **/
 namespace Kecik;
 
-if (!class_exists('Kecik\Controller')) {
-    class Controller {
+if (! class_exists('Kecik\Controller')) {
+    class Controller 
+    {
         protected $request = '';
         protected $url = '';
         protected $assets = '';
@@ -20,7 +21,8 @@ if (!class_exists('Kecik\Controller')) {
         /**
          * Construtor Controller
          **/
-        public function __construct() {
+        public function __construct() 
+        {
             //** ID: Silakan tambah inisialisasi controller sendiri disini
             //** EN: Please add your initialitation of controller in this
 
@@ -35,12 +37,16 @@ if (!class_exists('Kecik\Controller')) {
             $this->route = $app->route;
 
             $libraries = $app->getLibrariesEnabled();
+
             while(list($idx, $library) = each($libraries)) {
+
                 if (isset($library[1]) && !empty($library[1])) {
                     $lib = $library[1];
                     $this->$lib = $app->$lib;
                 }
+
             }
+
             /*if (isset($app->container))
                 $this->container = $app->container;
             if (isset($app->db))
@@ -66,16 +72,17 @@ if (!class_exists('Kecik\Controller')) {
          * @param string $file
          * @param array $param
          **/
-        protected function view($file, $param=array()) {
+        protected function view($file, $param=array()) 
+        {
             extract($param);
         
-            if (!is_array($file)) {
+            if (! is_array($file)) {
                 $path =  explode('\\', get_class($this));
 
                 if (count($path) > 2) {
                     $view_path = '';
 
-                    for($i=0; $i<count($path)-2; $i++) {
+                    for($i = 0; $i < count($path)-2; $i++) {
                         $view_path .= strtolower($path[$i]).'/';
                     }   
 
@@ -84,20 +91,22 @@ if (!class_exists('Kecik\Controller')) {
                     $view_path = Config::get('path.mvc');
                 }
 
-                if (php_sapi_name() == 'cli')
+                if (php_sapi_name() == 'cli') {
                     $view_path = Config::get('path.basepath').'/'.$view_path;
+                }
             } else {
-                
                 $view_path = Config::get('path.mvc');
+
                 if (isset($file[1])) {
                     $view_path .= '/'.$file[0];
                     $file = $file[1];
-                } else
+                } else {
                     $file = $file[0];
+                }
 
-                if (php_sapi_name() == 'cli')
+                if (php_sapi_name() == 'cli') {
                     $view_path = Config::get('path.basepath').'/'.$view_path; 
-                
+                }
             }
             
             ob_start();

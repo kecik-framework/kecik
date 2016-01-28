@@ -7,7 +7,8 @@
  **/
 namespace Kecik;
 
-class Url {
+class Url 
+{
     /**
      * @var string $_protocol, $_base_url, $_base_path, $_index
      **/

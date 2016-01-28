@@ -7,11 +7,12 @@
  **/
 namespace Kecik;
 
-if (!class_exists('Kecik\Model')) {
+if (! class_exists('Kecik\Model')) {
+    class Model 
+    {
+        protected $field = array();
+        protected $where;
 
-    class Model {
-        protected $_field = array();
-        protected $_where;
         protected $add = TRUE;
         protected $table = '';
         protected $fields = array();
@@ -24,16 +25,18 @@ if (!class_exists('Kecik\Model')) {
          * EN: Function for adding/updating record (Insert/Update)
          * @return string SQL Query
          **/
-        public function save() {
+        public function save() 
+        {
             $this->setFieldsValues();
 
             if ($this->table != '') {
+
                 //** ID: Untuk menambah record | EN: For adding record
                 if ($this->add == TRUE) {
                     $sql ="INSERT INTO $this->table ($this->fields) VALUES ($this->values)";
                 //** ID: Untuk mengupdate record | EN: For updating record
                 } else {
-                    $sql ="UPDATE $this->table SET $this->updateVar $this->_where";
+                    $sql ="UPDATE $this->table SET $this->updateVar $this->where";
                 }
 
                 //** ID: silakan tambah code database sendiri disini
@@ -43,7 +46,7 @@ if (!class_exists('Kecik\Model')) {
                 //-- EN: End of add your database code
             }
 
-            return (isset($sql))?$sql:'';
+            return (isset($sql))? $sql : '';
         }
 
         /**
@@ -52,12 +55,14 @@ if (!class_exists('Kecik\Model')) {
          * EN: Function for deleting record
          * @return string SQL Query
          **/
-        public function delete() {
+        public function delete() 
+        {
             $this->setFieldsValues();
 
             if ($this->table != '') {
-                if ($this->_where != '') {
-                    $sql = "DELETE FROM $this->table $this->_where";
+
+                if ($this->where != '') {
+                    $sql = "DELETE FROM $this->table $this->where";
                 }
 
                 //** ID: silakan tambah code database sendiri disini
@@ -67,7 +72,7 @@ if (!class_exists('Kecik\Model')) {
                 //-- EN: End of add your database code
             }
 
-            return (isset($sql))?$sql:'';
+            return (isset($sql))? $sql : '';
         }
 
         //** ID: Silakan tambah fungsi model sendiri disini
@@ -80,21 +85,28 @@ if (!class_exists('Kecik\Model')) {
          * Model Constructor
          * @param mixed $id
          **/
-        public function __construct($id='') {
-            $this->_where = '';
+        public function __construct($id='') 
+        {
+            $this->where = '';
+
             if ($id != '') {
+
                 if (is_array($id)) {
                     $and = array();
+
                     while(list($field, $value) = each($id)) {
 
-                        if (preg_match('/<|>|!=/', $value))
+                        if (preg_match('/<|>|!=/', $value)) {
                             $and[] = "$field$value";
-                        else
+                        } else {
                             $and[] = "$field='$value'";
+                        }
+
                     }
-                    $this->_where .= implode(' AND ', $and);
+
+                    $this->where .= implode(' AND ', $and);
                 } else {
-                    $this->_where .= "id='".$id."'";
+                    $this->where .= "id='".$id."'";
                 }
 
                 $this->add = FALSE;
@@ -112,31 +124,38 @@ if (!class_exists('Kecik\Model')) {
          * ID: Fungsi untuk menyetting Variable Fields dan Values
          * EN: Function/Method for setting fields and values variable
          **/
-        private function setFieldsValues() {
-            $fields = array_keys($this->_field);
-            while(list($id, $field) = each($fields))
+        private function setFieldsValues() 
+        {
+            $fields = array_keys($this->field);
+            
+            while(list($id, $field) = each($fields)) {
                 $fields[$id] = "$fields[$id]";
+            }
             
             $this->fields = implode(',', $fields);
 
-            $values = array_values($this->_field);
+            $values = array_values($this->field);
             $updateVar = array();
+            
             while (list($id, $value) = each($values)){
                 $values[$id] = "'$values[$id]'";
                 $updateVar[] = "$fields[$id] = $values[$id]";
             }
+
             $this->values = implode(',', $values);
             $this->updateVar = implode(',', $updateVar);
 
-            $this->_where = ($this->_where != '')?' WHERE '.$this->_where:'';
+            $this->where = ($this->where != '')?' WHERE '.$this->where : '';
         }
 
-        public function __set($var, $value) {
-            $this->_field[$var] = addslashes($value);
+        public function __set($var, $value) 
+        {
+            $this->field[$var] = addslashes($value);
         }
 
-        public function __get($var) {
-            return stripslashes($this->_field[$var]);
+        public function __get($var) 
+        {
+            return stripslashes($this->field[$var]);
         }
     } 
 }

@@ -3,29 +3,33 @@ namespace Controller;
 
 use Kecik\Controller;
 
-class Welcome extends Controller{
-	var $app;
-	var $dbcon;
+class Welcome extends Controller
+{
+	public $dbcon;
 
-	public function __construct($app, $dbcon) {
+	public function __construct($dbcon) 
+	{
 		parent::__construct();
-		$this->app = $app;
 		$this->dbcon = $dbcon;
 	}
 
-	public function index() {
+	public function index() 
+	{
 		$this->view('index');
 	}
 
-	public function Data() {
-		$this->view('data', array('app'=>$this->app, 'dbcon'=>$this->dbcon));
+	public function Data() 
+	{
+		$this->view('data');
 	}
 
-	public function Form($id='') {
-		if ($id=='') 
+	public function Form($id='') 
+	{
+		if ($id=='') {
 			$url = $this->url->linkTo('index.php/save');
-		else
+		} else {
 			$url = $this->url->linkTo('index.php/update/'.$id);
+		}
 
 		$this->view('form', array('id'=>$id, 'url'=>$url));
 	}
@@ -40,7 +44,8 @@ class Welcome extends Controller{
 		$this->url->redirect('index.php/data');
 	}
 
-	public function update($id) {
+	public function update($id) 
+	{
 		$model = new \Model\Data(array('id'=>$id));
 			$model->nama = $this->request->post('nama');
 			$model->email = $this->request->post('email');
@@ -50,7 +55,8 @@ class Welcome extends Controller{
 		$this->url->redirect('index.php/data');
 	}
 
-	public function delete($id) {
+	public function delete($id) 
+	{
 		$model = new \Model\Data(array('id'=>$id));
 		$sql = $model->delete();
 		mysqli_query($this->dbcon, $sql);

@@ -29,46 +29,67 @@ $dbcon = @mysqli_connect(
     'kecik'
 );
 
-if ( mysqli_connect_errno($dbcon) ) {
+if (mysqli_connect_errno($dbcon)) {
     header('X-Error-Message: Fail Connecting', true, 500);
     die("Failed to connect to MySQL: " . mysqli_connect_error());
 }
 
 
-$app->get('/', function() use ($dbcon) {
-    $controller = new Controller\Welcome($this, $dbcon);
-	return $controller->index();
-})->template('template_kecik');
+$app->get(
+    '/', 
+    function() use ($dbcon) {
+        $controller = new Controller\Welcome($dbcon);
+	   return $controller->index();
+    }
+)->template('template_kecik');
 
-$app->get('data', function() use ($dbcon) {
-    $controller = new Controller\Welcome($this, $dbcon);
-	return $controller->Data();
-})->template('template_kecik');
+$app->get(
+    'data', 
+    function() use ($dbcon) {
+        $controller = new Controller\Welcome($dbcon);
+    	return $controller->Data();
+    }
+)->template('template_kecik');
 
-$app->get('tambah', function() use ($dbcon) {
-    $controller = new Controller\Welcome($this, $dbcon);
-	return $controller->Form();
-})->template('template_kecik');
+$app->get(
+    'tambah', 
+    function() use ($dbcon) {
+        $controller = new Controller\Welcome($dbcon);
+	   return $controller->Form();
+    }
+)->template('template_kecik');
 
-$app->get('edit/:id', function($id) use ($dbcon) {
-    $controller = new Controller\Welcome($this, $dbcon);
-	return $controller->Form($id);
-})->template('template_kecik');
+$app->get(
+    'edit/:id', 
+    function($id) use ($dbcon) {
+        $controller = new Controller\Welcome($dbcon);
+	   return $controller->Form($id);
+    }
+)->template('template_kecik');
 
-$app->get('delete/:id', function($id) use ($dbcon) {
-    $controller = new Controller\Welcome($this, $dbcon);
-	$controller->delete($id);
-});
+$app->get(
+    'delete/:id', 
+    function($id) use ($dbcon) {
+        $controller = new Controller\Welcome($dbcon);
+	   $controller->delete($id);
+    }
+);
 
-$app->post('save', function() use ($dbcon) {
-    $controller = new Controller\Welcome($this, $dbcon);
-	$controller->save();
-});
+$app->post(
+    'save', 
+    function() use ($dbcon) {
+        $controller = new Controller\Welcome($this, $dbcon);
+	   $controller->save();
+    }
+);
 
-$app->post('update/:id', function($id) use ($dbcon) {
-    $controller = new Controller\Welcome($this, $dbcon);
-	$controller->update($id);
-});
+$app->post(
+    'update/:id', 
+    function($id) use ($dbcon) {
+        $controller = new Controller\Welcome($dbcon);
+	   $controller->update($id);
+    }
+);
 
 
 $app->run();

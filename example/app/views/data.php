@@ -16,7 +16,8 @@
 		$sql = "SELECT * FROM data";
 		$res = mysqli_query($this->dbcon, $sql);
 		$no = 1;
-		while( $data = mysqli_fetch_object($res) ) {
+
+		while($data = mysqli_fetch_object($res)):
 		?>
 		<tr>
 			<td><?php echo $no; ?></td>
@@ -29,7 +30,7 @@
 		</tr>
 		<?php
 			$no++;
-		}
+		endwhile;
 		?>
 		
 	</tbody>

@@ -8,45 +8,46 @@
  **/
 namespace Kecik;
 
-class Route {
+class Route 
+{
     /**
-     * @var string $_paramStr
+     * @var string $paramStr
      **/
-    public static $_paramsStr = '';
+    public static $ParamsStr = '';
 
     /**
-     * @var string $_destination
+     * @var string $destination
      **/
-    public static $_destination = '';
+    public static $destination = '';
     
     /**
-     * @var array $_params for lock params
+     * @var array $params for lock params
      **/
-    public static $_params = array();
+    public static $params = array();
 
     /**
-     * @var array $_realparams for callable
+     * @var array $RealParams for callable
      **/
-    public static $_realparams = array();
+    public static $RealParams = array();
     
-    public static $_list = array();
+    public static $list = array();
 
     /**
-     * @var string $BASEURL
+     * @var string $BaseUrl
      **/
-    public static $BASEURL;
+    public static $BaseUrl;
     
     /**
-     * @var string $BASEPATH
+     * @var string $BasePath
      **/
-    public static $BASEPATH;
+    public static $BasePath;
 
     /**
-     * @var string PROTOCOL
+     * @var string protocol
      **/
-    public static $PROTOCOL;
+    public static $protocol;
 
-    public static $HTTP_RESPONSE = [
+    public static $HttpResponse = array(
         //Informational 1xx
         100 => '100 Continue',
         101 => '101 Switching Protocols',
@@ -104,9 +105,10 @@ class Route {
         506 => '506 Variant Also Negotiates',
         510 => '510 Not Extended',
         511 => '511 Network Authentication Required'
-    ];
+    );
 
-    public function __construct() {
+    public function __construct() 
+    {
         
     }
 
@@ -115,78 +117,99 @@ class Route {
      * ID: Untuk inisialisasi Kelas Route
      * EN: For initialitation Route Class
      **/
-    public static function init() {
-
-        if (php_sapi_name() == 'cli') 
-            self::$BASEPATH = str_replace('/', DIRECTORY_SEPARATOR, dirname(__FILE__).'/');
-        else
-            self::$BASEPATH  = str_replace('/', DIRECTORY_SEPARATOR, realpath( dirname( __FILE__ ) )."/");
+    public static function init() 
+    {
+        if (php_sapi_name() == 'cli') {
+            self::$BasePath = str_replace('/', DIRECTORY_SEPARATOR, dirname(__FILE__).'/');
+        } else {
+            self::$BasePath  = str_replace('/', DIRECTORY_SEPARATOR, realpath( dirname( __FILE__ ) )."/");
+        }
 
         if ( isset($_SERVER['HTTPS']) || 
             (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == 443) || 
-            (isset($_SERVER['HTTP_X_FORWARDED_PORT']) && $_SERVER['HTTP_X_FORWARDED_PORT'] == 443 )) {
-            self::$PROTOCOL = "https://";
-        } else
-            self::$PROTOCOL = "http://";
+            (isset($_SERVER['HTTP_X_FORWARDED_PORT']) && $_SERVER['HTTP_X_FORWARDED_PORT'] == 443 ) 
+        ) {
+            self::$protocol = "https://";
+        } else {
+            self::$protocol = "http://";
+        }
         
-        $pathinfo = pathinfo($_SERVER['PHP_SELF']);
+        $PathInfo = pathinfo($_SERVER['PHP_SELF']);
 
         $index = basename($_SERVER["SCRIPT_FILENAME"], '.php').'.php';
         Config::set('index', $index);
         
-        if ( strpos($pathinfo['dirname'], '/'.$index) > 0 )
-            $strlimit = strpos($pathinfo['dirname'], '/'.$index);
-        elseif ($pathinfo['dirname'] == '/'.$index)
-            $strlimit = 0;
-        else
-            $strlimit = strlen($pathinfo['dirname']);
-        
-        if (php_sapi_name() == 'cli-server') 
-            self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].'/';
-        else if (php_sapi_name() == 'cli') {
-            self::$_params= $_SERVER['argv'];
-            chdir(self::$BASEPATH);
-            self::$BASEURL = self::$BASEPATH;
+        if ( strpos($PathInfo['dirname'], '/'.$index) > 0 ) {
+            $StrLimit = strpos($PathInfo['dirname'], '/'.$index);
+        } elseif ($PathInfo['dirname'] == '/'.$index) {
+            $StrLimit = 0;
         } else {
-            //** ID: Terkadang terdapat masalah bagian base url, kamu dapat mengedit bagian ini. Biasanya masalah pada $pathinfo['dirname']
-            //** EN: Sometimes have a problem in base url section, you can editi this section. normally at $pathinfo['dirname']
-            self::$BASEURL = self::$PROTOCOL.$_SERVER['HTTP_HOST'].substr( $pathinfo['dirname'], 0, $strlimit );
-            if ( substr(self::$BASEURL, -1,1) != '/')
-                self::$BASEURL .= '/';
+            $StrLimit = strlen($PathInfo['dirname']);
+        }
+        
+        if (php_sapi_name() == 'cli-server') {
+            self::$BaseUrl = self::$protocol.$_SERVER['HTTP_HOST'].'/';
+        } else if (php_sapi_name() == 'cli') {
+            self::$params= $_SERVER['argv'];
+            chdir(self::$BasePath);
+            self::$BaseUrl = self::$BasePath;
+        } else {
+            
+            //** ID: Terkadang terdapat masalah bagian base url, kamu dapat mengedit bagian ini. Biasanya masalah pada $PathInfo['dirname']
+            //** EN: Sometimes have a problem in base url section, you can editi this section. normally at $PathInfo['dirname']
+            self::$BaseUrl = self::$protocol.$_SERVER['HTTP_HOST'].substr( $PathInfo['dirname'], 0, $StrLimit );
+            
+            if (substr(self::$BaseUrl, -1, 1) != '/') {
+                self::$BaseUrl .= '/';
+            }
+
         }
 
         if (php_sapi_name() == 'cli') {
-            $result_segment = $_SERVER['argv'];
-            array_shift($result_segment);
+            $ResultSegment = $_SERVER['argv'];
+            array_shift($ResultSegment);
 
-            self::$_params = $result_segment;
-            self::$_realparams = self::$_params;
-            self::$_paramsStr = implode('/', $result_segment);
+            self::$params = $ResultSegment;
+            self::$RealParams = self::$params;
+            self::$ParamsStr = implode('/', $ResultSegment);
         } else {
-            $path = str_replace( self::$PROTOCOL.$_SERVER['HTTP_HOST'].'/', '', self::$BASEURL );
+            $path = str_replace( self::$protocol.$_SERVER['HTTP_HOST'].'/', '', self::$BaseUrl );
+            
             if (strpos($_SERVER['REQUEST_URI'], $index)) {
-                $_SERVER['REQUEST_URI'] = substr($_SERVER['REQUEST_URI'], strpos($_SERVER['REQUEST_URI'], '/'.$index)+strlen($index)+1);
+                $_SERVER['REQUEST_URI'] = substr(
+                    $_SERVER['REQUEST_URI'], 
+                    strpos($_SERVER['REQUEST_URI'], '/'.$index) + strlen($index) + 1
+                );
             }
+
             $path = str_replace($path, '', $_SERVER['REQUEST_URI']);
-            if (substr($path, 0, 1) == '/' ) $path=substr($path, 1);
+            
+            if (substr($path, 0, 1) == '/' ) {
+                $path = substr($path, 1);
+            }
 
             $segments = explode('/', $path);
             
-            if ( $segments[count($segments)-1] == '' && count($segments) > 1 ) unset($segments[count($segments)-1]);
+            if ($segments[count($segments)-1] == '' && count($segments) > 1) {
+                unset($segments[count($segments)-1]);
+            }
              
-            $result_segment = array();
+            $ResultSegment = array();
+            
             while(list($key, $seg) = each($segments)) {
-                if ($segments[$key] != $index && $seg != '' )
-                    array_push($result_segment, urldecode($seg));
+                
+                if ($segments[$key] != $index && $seg != '' ) {
+                    array_push($ResultSegment, urldecode($seg));
+                }
             }
 
-            self::$_paramsStr = implode('/', $result_segment);
-            self::$_params = $result_segment;
-            self::$_realparams = self::$_params; 
+            self::$ParamsStr = implode('/', $ResultSegment);
+            self::$params = $ResultSegment;
+            self::$RealParams = self::$params; 
         }
 
-        unset($strlimit);
-        unset($pathinfo);
+        unset($StrLimit);
+        unset($PathInfo);
 
     }
 
@@ -195,14 +218,18 @@ class Route {
      * @param integer $key
      * @return mixed
      **/
-    public function _getParams($key=-1) {
+    public function _getParams($key = -1) {
         if ($key >= 0) {
-            if (isset(self::$_params[$key]))
-                return self::$_params[$key];
-            else
+
+            if (isset(self::$params[$key])) {
+                return self::$params[$key];
+            } else {
                 return NULL;
-        } else
-            return self::$_params;
+            }
+
+        } else {
+            return self::$params;
+        }
     }
 
     /**
@@ -210,14 +237,17 @@ class Route {
      * @param integer
      * @return mixed
      **/
-    public function getParams($key=-1) {
+    public function getParams($key = -1) {
         if ($key >= 0) {
-            if (isset(self::$_realparams[$key]))
-                return self::$_realparams[$key];
-            else
+
+            if (isset(self::$RealParams[$key])) {
+                return self::$RealParams[$key];
+            } else {
                 return NULL;
+            }
+        
         } else
-            return self::$_realparams;
+            return self::$RealParams;
     }
 
     /**
@@ -225,13 +255,15 @@ class Route {
      * @param string $key
      * @param string $value
      **/
-    public function setParams($key, $value='') {
-        //if (!isset($this->_params)) $this->_params = array();
+    public function setParams($key, $value = '') {
+        //if (!isset($this->params)) $this->params = array();
 
         if (is_array($key)) {
-            self::$_realparams = $key;
-        } else
-            self::$_realparams[$key] = $value;
+            self::$RealParams = $key;
+        } else {
+            self::$RealParams[$key] = $value;
+        }
+
     }
 
     /**
@@ -239,29 +271,34 @@ class Route {
      * @param string $params
      **/
     public function setParamStr($params) {
-        self::$_paramsStr = $params;
+        self::$ParamsStr = $params;
     }
 
     /**
      * getParamStr
      **/
     public function getParamStr() {
-        return self::$_paramsStr;
+        return self::$ParamsStr;
     }
 
     /**
      * is
      * @return string ID: pattern route yang cocok | EN: current pattern route
      **/
-    public function is($route='') {
-        if ($route == '')
-            return self::$_destination;
-        else {
-            if (self::$_destination == $route)
+    public function is($route = '') {
+
+        if ($route == '') {
+            return self::$destination;
+        } else {
+
+            if (self::$destination == $route) {
                 return TRUE;
-            else
+            } else {
                 return FALSE;
+            }
+
         }
+
     }
 
     /**
@@ -272,12 +309,16 @@ class Route {
      **/
     public function isPost() {
         if (isset($_SERVER['REQUEST_METHOD'])) {
-            if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['_METHOD'])) 
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST' && ! isset($_POST['_METHOD'])) {
                 return TRUE;
-            else
+            } else {
                 return FALSE;
-        } else
+            }
+
+        } else {
             return FALSE;
+        }
     }
 
     /**
@@ -288,12 +329,16 @@ class Route {
      **/
     public function isGet() {
         if (isset($_SERVER['REQUEST_METHOD'])) {
-            if ($_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_POST['_METHOD'])) 
+
+            if ($_SERVER['REQUEST_METHOD'] == 'GET' && ! isset($_POST['_METHOD']))  {
                 return TRUE;
-            else
+            } else {
                 return FALSE;
-        } else
+            }
+
+        } else {
             return TRUE;
+        }
     }
 
     /**
@@ -304,13 +349,19 @@ class Route {
      **/
     public function isPut() {
         if (isset($_SERVER['REQUEST_METHOD'])) {
+
             if ($_SERVER['REQUEST_METHOD'] == 'PUT' || (isset($_POST['_METHOD']) && $_POST['_METHOD'] == 'PUT')) {
                 parse_str(file_get_contents("php://input"), $vars);
-                if (isset($vars['_METHOD'])) unset($vars['_METHOD']);           
+                
+                if (isset($vars['_METHOD'])) {
+                    unset($vars['_METHOD']);    
+                }
+
                 $GLOBALS['_PUT'] = $_PUT = $vars;
                 return TRUE;
-            } else
+            } else {
                 return FALSE;
+            }
         } else 
             return FALSE;
 
@@ -325,15 +376,24 @@ class Route {
      **/
     public function isDelete() {
         if (isset($_SERVER['REQUEST_METHOD'])) {
+
             if ($_SERVER['REQUEST_METHOD'] == 'DELETE' || (isset($_POST['_METHOD']) && $_POST['_METHOD'] == 'DELETE')) {
                 parse_str(file_get_contents("php://input"), $vars);
-                if (isset($vars['_METHOD'])) unset($vars['_METHOD']);   
+                
+                if (isset($vars['_METHOD'])) {
+                    unset($vars['_METHOD']);   
+                }
+
                 $GLOBALS['_DELETE'] = $_DELETE = $vars;
                 return TRUE;
-            } else
+
+            } else {
                 return FALSE;
-        } else 
+            }
+
+        } else {
             return FALSE;
+        }
     }
 
     /**
@@ -344,15 +404,23 @@ class Route {
      **/
     public function isPatch() {
         if (isset($_SERVER['REQUEST_METHOD'])) {
+
             if ($_SERVER['REQUEST_METHOD'] == 'PATCH' || (isset($_POST['_METHOD']) && $_POST['_METHOD'] == 'PATCH')) {
                 parse_str(file_get_contents("php://input"), $vars);
-                if (isset($vars['_METHOD'])) unset($vars['_METHOD']);   
+                
+                if (isset($vars['_METHOD'])) {
+                    unset($vars['_METHOD']);   
+                }
+
                 $GLOBALS['_PATCH'] = $_PATCH = $vars;
                 return TRUE;
-            } else
+            } else {
                 return FALSE;
-        } else 
+            }
+
+        } else { 
             return FALSE;
+        }
     }
 
     /**
@@ -363,15 +431,23 @@ class Route {
      **/
     public function isOptions() {
         if (isset($_SERVER['REQUEST_METHOD'])) {
+            
             if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS' || (isset($_POST['_METHOD']) && $_POST['_METHOD'] == 'OPTIONS')) {
                 parse_str(file_get_contents("php://input"), $vars);
-                if (isset($vars['_METHOD'])) unset($vars['_METHOD']);
+                
+                if (isset($vars['_METHOD'])) {
+                    unset($vars['_METHOD']);
+                }
+
                 $GLOBALS['_OPTIONS'] = $_OPTIONS = $vars;
                 return TRUE;
-            } else
+            } else {
                 return FALSE;
-        } else 
+            }
+
+        } else {
             return FALSE;
+        }
     }
 
     /**
@@ -381,14 +457,15 @@ class Route {
      * @return Bool
      **/
     public function isAjax() {
-        if (filter_input(INPUT_SERVER, 'HTTP_X_REQUESTED_WITH') === 'xmlhttprequest')
+        if (filter_input(INPUT_SERVER, 'HTTP_X_REQUESTED_WITH') === 'xmlhttprequest') {
            return TRUE;
-        else
+        } else {
             return FALSE;
+        }
     }
 
     public function get() {
-        return self::$_list;
+        return self::$list;
     }
 
 }
