@@ -1,116 +1,140 @@
 <?php
 /**
  * AssetsBase
- * 
+ *
  * @package     Kecik
  * @author      Dony Wahyu Isp
  * @since       1.0.1-alpha
  **/
 namespace Kecik;
 
+use Kecik\Kecik;
+use Kecik\Url;
+
 /**
- * Assets
- * 
- * @package     Kecik
- * @author      Dony Wahyu Isp
- * @since       1.0.1-alpha
- **/
-class Assets 
+ * Class Assets
+ * @package Kecik
+ */
+class Assets
 {
+
     /**
-     * @var object $css, $js
-     **/
+     * @var AssetsBase
+     */
     public $css, $js;
 
     /**
-     * @var object $url
-     **/
+     * @var string
+     */
     private $BaseUrl;
 
     /**
-     * __contruct
-     * @param object $url
-     **/
-    public function __construct(Url $url) 
+     * Assets constructor.
+     *
+     * @param \Kecik\Url $url
+     */
+    public function __construct(Url $url)
     {
         $this->BaseUrl = $url->BaseUrl();
         $this->css = new AssetsBase($this->BaseUrl, 'css');
-        $this->js = new AssetsBase($this->BaseUrl, 'js'); 
+        $this->js = new AssetsBase($this->BaseUrl, 'js');
     }
 
     /**
-     * images
+     * @param        $file
+     * @param string $version
+     *
+     * @return string
+     */
+    public function images($file, $version = '')
+    {
+        if (empty($version)) {
+            $version = '?ver=' . Kecik::$version;
+        }
+
+        return $this->BaseUrl . Config::get('path.assets') . '/images/' . $file . $version;
+    }
+
+    /**
      * @param string $file
+     * @param string $version
+     *
      * @return string
-     **/
-    public function images($file) 
+     */
+    public function url($file = '', $version = '')
     {
-        return $this->BaseUrl.Config::get('path.assets').'/images/'.$file;
+        if (empty($version)) {
+            $version = '?ver=' . Kecik::$version;
+        }
+        if (!empty($file)) {
+            return $this->BaseUrl . Config::get('path.assets') . '/' . $file . $version;
+        } else {
+            return $this->BaseUrl . Config::get('path.assets') . '/';
+        }
     }
 
-    /**
-     * url
-     * Get assets URL
-     * @return string
-     **/
-    public function url() 
-    {
-        return $this->BaseUrl.Config::get('path.assets').'/';
-    }
 }
 
-class AssetsBase 
+/**
+ * Class AssetsBase
+ * @package Kecik
+ */
+class AssetsBase
 {
-    /**
-     * @var array
-     **/
+
     public $assets;
-    
-    /**
-     * @var array
-     **/
     public $attr;
+    public $versions;
 
     /**
      * @var string
-     **/
+     */
     public $type;
 
-    /**
-     * @var ID: Objek dari Url | EN: Object of Url
-     **/
     private $BaseUrl;
 
     /**
-     * __construct
-     * @param object url
-     * @param string type
-     **/
-    public function __construct($BaseUrl, $type) 
+     * AssetsBase constructor.
+     *
+     * @param $BaseUrl
+     * @param $type
+     */
+    public function __construct($BaseUrl, $type)
     {
         $this->BaseUrl = $BaseUrl;
         $this->type = strtolower($type);
         $this->assets[$type] = array();
         $this->attr[$type] = array();
+        $this->versions[$type] = array();
     }
 
     /**
-     * add
-     * @param string $file
-     **/
-    public function add($file, $attr = array()) 
+     * @param        $file
+     * @param string $version
+     * @param array $attr
+     */
+    public function add($file, $version = "", $attr = array())
     {
-        if (! in_array($file, $this->assets[$this->type])) {
+        if (count($attr) <= 0 && is_array($version)) {
+            $attr = $version;
+            $version = "";
+        }
+        if (empty($version)) {
+            $version = '?ver=' . Kecik::$version;
+        } else {
+            $version = '?ver=' . $version;
+        }
+        if (!in_array($file, $this->assets[$this->type])) {
             $this->assets[$this->type][] = $file;
             $this->attr[$this->type][] = $attr;
+            $this->versions[$this->type][] = $version;
         }
     }
 
     /**
-     * delete
      * @param $file
-     **/
-    public function delete($file) 
+     */
+    public function delete($file)
     {
         $key = array_search($file, $this->assets[$this->type]);
         unset($this->assets[$this->type][$key]);
@@ -118,39 +142,48 @@ class AssetsBase
     }
 
     /**
-     * render
-     * @param string $file optional
-     **/
-    public function render($file = '') 
+     * @param string $file
+     *
+     * @return string
+     */
+    public function render($file = '')
     {
         reset($this->assets[$this->type]);
         //reset($this->attr[$this->type]);
-        
         $attr = '';
-
         if ($this->type == 'js') {
-
             if ($file != '') {
                 $key = array_search($file, $this->assets[$this->type]);
-                
-                while(list($at, $val) = each($this->attr[$this->type][$key])) {
-                    $attr .= $at.'="'.$val.'" ';
+                $version = $this->versions[$this->type][$key];
+                $asset = $this->assets[$this->type][$key];
+                if (preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $asset)) {
+                    $asset_url = $asset;
+                } else {
+                    $asset_url = $this->BaseUrl . Config::get('path.assets') . "/$this->type/" . $asset . '.' .
+                        $this->type . $version;
                 }
-
+                while (list($at, $val) = each($this->attr[$this->type][$key])) {
+                    $attr .= $at . '="' . $val . '" ';
+                }
                 if ($key) {
-                    return '<script type="text/javascript" src="'.$this->BaseUrl.Config::get('path.assets')."/$this->type/".$this->assets[$this->type][$key].'.'.$this->type.'" '.$attr.'></script>'."\n";
+                    return '<script type="text/javascript" src="' . $asset_url . '" ' . $attr . '></script>' . "\n";
                 }
             } else {
                 $render = '';
-                
-                while(list($key, $value) = each($this->assets[$this->type])) {
-                    $attr = '';
-                    
-                    while(list($at, $val) = each($this->attr[$this->type][$key])) {
-                        $attr .= $at.'="'.$val.'" ';
+                while (list($key, $value) = each($this->assets[$this->type])) {
+                    $asset = $this->assets[$this->type][$key];
+                    $version = $this->versions[$this->type][$key];
+                    if (preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $asset)) {
+                        $asset_url = $asset;
+                    } else {
+                        $asset_url = $this->BaseUrl . Config::get('path.assets') . "/$this->type/" . $asset . '.' .
+                            $this->type . $version;
                     }
-
-                    $render .= '<script type="text/javascript" src="'.$this->BaseUrl.Config::get('path.assets')."/$this->type/".$value.'.'.$this->type.'" '.$attr.'></script>'."\n";
+                    $attr = '';
+                    while (list($at, $val) = each($this->attr[$this->type][$key])) {
+                        $attr .= $at . '="' . $val . '" ';
+                    }
+                    $render .= '<script type="text/javascript" src="' . $asset_url . '" ' . $attr . '></script>' . "\n";
                 }
 
                 return $render;
@@ -159,41 +192,60 @@ class AssetsBase
         } elseif ($this->type == 'css') {
             if ($file != '') {
                 $key = array_search($file, $this->assets[$this->type]);
-                
-                while(list($at, $val) = each($this->attr[$this->type][$key])) {
-                    $attr .= $at.'="'.$val.'" ';
+                $asset = $this->assets[$this->type][$key];
+                $version = $this->versions[$this->type][$key];
+                if (preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $asset)) {
+                    $asset_url = $asset;
+                } else {
+                    $asset_url = $this->BaseUrl . Config::get('path.assets') . "/$this->type/" . $asset . '.' .
+                        $this->type . $version;
                 }
-
+                while (list($at, $val) = each($this->attr[$this->type][$key])) {
+                    $attr .= $at . '="' . $val . '" ';
+                }
                 if ($key) {
-                    return '<link rel="stylesheet" href="'.$this->BaseUrl.Config::get('path.assets')."/$this->type/".$this->assets[$this->type][$key].'.'.$this->type.'" '.$attr.' />'."\n";
+                    return '<link rel="stylesheet" href="' . $asset_url . '" ' . $attr . ' />' . "\n";
                 }
             } else {
                 $render = '';
-                
-                while(list($key, $value) = each($this->assets[$this->type])) {
+                while (list($key, $value) = each($this->assets[$this->type])) {
                     $attr = '';
-                    
-                    while(list($at, $val) = each($this->attr[$this->type][$key])) {
-                        $attr .= $at.'="'.$val.'" ';
+                    $asset = $this->assets[$this->type][$key];
+                    $version = $this->versions[$this->type][$key];
+                    if (preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $asset)) {
+                        $asset_url = $asset;
+                    } else {
+                        $asset_url = $this->BaseUrl . Config::get('path.assets') . "/$this->type/" . $asset . '.' .
+                            $this->type . $version;
                     }
-
-                    $render .= '<link rel="stylesheet" href="'.$this->BaseUrl.Config::get('path.assets')."/$this->type/".$value.'.'.$this->type.'" '.$attr.' />'."\n";
+                    while (list($at, $val) = each($this->attr[$this->type][$key])) {
+                        $attr .= $at . '="' . $val . '" ';
+                    }
+                    $render .= '<link rel="stylesheet" href="' . $asset_url . '" ' . $attr . ' />' . "\n";
                 }
 
                 return $render;
             }
         }
-    } 
+    }
 
     /**
-     * url
-     * Get assets URL
+     * @param string $file
+     * @param string $version
+     *
      * @return string
-     **/
-    public function url() 
+     */
+    public function url($file = '', $version = '')
     {
-        return $this->BaseUrl.Config::get('path.assets')."/$this->type/";
-    }
-}
+        if (empty($version)) {
+            $version = '?ver=' . Kecik::$version;
+        }
+        if (!empty($file)) {
+            return $this->BaseUrl . Config::get('path.assets') . "/{$this->type}/{$file}{$version}";
+        } else {
+            return $this->BaseUrl . Config::get('path.assets') . "/{$this->type}/";
+        }
 
-//--
+    }
+
+}

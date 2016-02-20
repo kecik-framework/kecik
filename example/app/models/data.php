@@ -3,7 +3,11 @@ namespace Model;
 
 use Kecik\Model;
 
-class Data extends Model 
+/**
+ * Class Data
+ * @package Model
+ */
+class Data extends Model
 {
-	protected $table = 'data';
+    protected $table = 'data';
 }

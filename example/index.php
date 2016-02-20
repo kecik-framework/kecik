@@ -6,7 +6,7 @@
 require_once "../Kecik/Kecik.php";
 
 $config = array(
-    'path.basepath' => __DIR__.'/'
+    'path.basepath' => __DIR__ . '/'
 );
 
 $app = new \Kecik\Kecik();
@@ -36,58 +36,58 @@ if (mysqli_connect_errno($dbcon)) {
 
 
 $app->get(
-    '/', 
-    function() use ($dbcon) {
+    '/',
+    function () use ($dbcon) {
         $controller = new Controller\Welcome($dbcon);
-	   return $controller->index();
+        return $controller->index();
     }
 )->template('template_kecik');
 
 $app->get(
-    'data', 
-    function() use ($dbcon) {
+    'data',
+    function () use ($dbcon) {
         $controller = new Controller\Welcome($dbcon);
-    	return $controller->Data();
+        return $controller->Data();
     }
 )->template('template_kecik');
 
 $app->get(
-    'tambah', 
-    function() use ($dbcon) {
+    'tambah',
+    function () use ($dbcon) {
         $controller = new Controller\Welcome($dbcon);
-	   return $controller->Form();
+        return $controller->Form();
     }
 )->template('template_kecik');
 
 $app->get(
-    'edit/:id', 
-    function($id) use ($dbcon) {
+    'edit/:id',
+    function ($id) use ($dbcon) {
         $controller = new Controller\Welcome($dbcon);
-	   return $controller->Form($id);
+        return $controller->Form($id);
     }
 )->template('template_kecik');
 
 $app->get(
-    'delete/:id', 
-    function($id) use ($dbcon) {
+    'delete/:id',
+    function ($id) use ($dbcon) {
         $controller = new Controller\Welcome($dbcon);
-	   $controller->delete($id);
+        $controller->delete($id);
     }
 );
 
 $app->post(
-    'save', 
-    function() use ($dbcon) {
+    'save',
+    function () use ($dbcon) {
         $controller = new Controller\Welcome($this, $dbcon);
-	   $controller->save();
+        $controller->save();
     }
 );
 
 $app->post(
-    'update/:id', 
-    function($id) use ($dbcon) {
+    'update/:id',
+    function ($id) use ($dbcon) {
         $controller = new Controller\Welcome($dbcon);
-	   $controller->update($id);
+        $controller->update($id);
     }
 );
 

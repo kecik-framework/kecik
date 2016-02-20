@@ -1,1212 +1,1437 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Readme Kecik</title>
-<link rel="stylesheet" href="assets/css/base.css" />
-<script type="text/javascript" src="assets/js/MathJax.js?config=TeX-AMS_HTML"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Readme Kecik</title>
+    <link rel="stylesheet" href="assets/css/base.css"/>
+    <script type="text/javascript" src="assets/js/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
-<body><div class="container"><h1 id="kecik-framework"><strong>Kecik Framework</strong></h1>
+<body>
+<div class="container"><h1 id="kecik-framework"><strong>Kecik Framework</strong></h1>
 
-<blockquote>
-  <p><strong>PayPal</strong>: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=dony_cavalera_md%40yahoo%2ecom&amp;lc=US&amp;item_name=Dony%20Wahyu%20Isp&amp;no_note=0&amp;currency_code=USD&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest"><img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="" title=""></a></p>
-  
-  <p><strong>Rekening Mandiri</strong>: 113-000-6944-858, <strong>Atas Nama</strong>: Dony Wahyu Isprananda</p>
-</blockquote>
+    <blockquote>
+        <p><strong>PayPal</strong>: <a
+                href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&amp;business=dony_cavalera_md%40yahoo%2ecom&amp;lc=US&amp;item_name=Dony%20Wahyu%20Isp&amp;no_note=0&amp;currency_code=USD&amp;bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest"><img
+                src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" alt="" title=""></a></p>
 
-<p>Merupakan framework dengan satu file system yang sangat sederhana, jadi ini bukan merupakan sebuah framework yang kompleks, tapi anda dapat membangun dan mengembangkan framework ini untuk menjadi sebuah framework yang kompleks. Framework ini mendukung <strong>MVC</strong> sederhana dimana anda masih harus mengcustom beberapa code untuk mendapatkan MVC yang kompleks, untuk Model hanya sebatas men-generate perintah SQL untuk <strong><code>INSERT</code>, <code>UPDATE</code></strong> dan <strong><code>DELETE</code></strong> saja, jadi untuk code pengeksekusian SQL nya tersebut silakan dibuat sendiri dengan bebas mau menggunakan library database manapun. Framework ini juga mendukung Composer, jadi bisa memudahkan anda untuk menambahkan sebuah library dari composer. </p>
+        <p><strong>Rekening Mandiri</strong>: 113-000-6944-858, <strong>Atas Nama</strong>: Dony Wahyu Isprananda</p>
+    </blockquote>
 
-
-
-<pre class="prettyprint"><code class=" hljs ">Nama    : Framework Kecik
-Pembuat : Dony Wahyu Isp
-Versi   : 1.1.0
-Kota    : Palembang</code></pre>
-
-<p><strong>Cara Cepat Memulai</strong></p>
-
-<p><a href="#langkah-pertama"><strong>Langkah Pertama</strong></a> | <a href="#langkah-kedua"><strong>Langkah Kedua</strong></a> | <a href="#langkah-ketiga"><strong>Langkah Ketiga</strong></a> | <a href="#langkah-keempat"><strong>Langkah Keempat</strong></a> </p>
-
-<p><strong>Lebih Dalam</strong></p>
-
-<p><a href="#mengenal-lebih-dalam-lagi"><strong>Mengenal Lebih Dalam</strong></a> | <a href="#header"><strong>Header</strong></a> |  <a href="#route"><strong>Route</strong></a> | <a href="#config"><strong>Config</strong></a> | <a href="#assets"><strong>Assets</strong></a> | <a href="#request"><strong>Request</strong></a> | <a href="#mvc"><strong>MVC</strong></a> | <a href="#controller"><strong>Controller</strong></a> | <a href="#middleware"><strong>Middleware</strong></a> | <a href="#model"><strong>Model</strong></a> | <a href="#view"><strong>View</strong></a> | <a href="#url"><strong>Url</strong></a> | <a href="#template"><strong>Template</strong></a> </p>
-
-<hr>
+    <p>Merupakan framework dengan satu file system yang sangat sederhana, jadi ini bukan merupakan sebuah framework yang
+        kompleks, tapi anda dapat membangun dan mengembangkan framework ini untuk menjadi sebuah framework yang
+        kompleks. Framework ini mendukung <strong>MVC</strong> sederhana dimana anda masih harus mengcustom beberapa
+        code untuk mendapatkan MVC yang kompleks, untuk Model hanya sebatas men-generate perintah SQL untuk
+        <strong><code>INSERT</code>, <code>UPDATE</code></strong> dan <strong><code>DELETE</code></strong> saja, jadi
+        untuk code pengeksekusian SQL nya tersebut silakan dibuat sendiri dengan bebas mau menggunakan library database
+        manapun. Framework ini juga mendukung Composer, jadi bisa memudahkan anda untuk menambahkan sebuah library dari
+        composer. </p>
 
 
 
-<h2 id="langkah-pertama">Langkah Pertama</h2>
+<pre class="prettyprint"><code class=" hljs ">Nama : Framework Kecik
+    Pembuat : Dony Wahyu Isp
+    Versi : 1.1.0
+    Kota : Palembang</code></pre>
 
-<p><a href="#kecik-framework">top</a></p>
+    <p><strong>Cara Cepat Memulai</strong></p>
 
-<p>Install composer pada sistem operasi anda, jika belum terinstall anda dapat mendownload melalui link Composer, setelah melakukan download dan installasi, selanjutnya anda perlu membuat file composer.json dengan isi file berikut ini. </p>
+    <p><a href="#langkah-pertama"><strong>Langkah Pertama</strong></a> | <a href="#langkah-kedua"><strong>Langkah
+        Kedua</strong></a> | <a href="#langkah-ketiga"><strong>Langkah Ketiga</strong></a> | <a href="#langkah-keempat"><strong>Langkah
+        Keempat</strong></a></p>
+
+    <p><strong>Lebih Dalam</strong></p>
+
+    <p><a href="#mengenal-lebih-dalam-lagi"><strong>Mengenal Lebih Dalam</strong></a> | <a
+            href="#header"><strong>Header</strong></a> | <a href="#route"><strong>Route</strong></a> | <a
+            href="#config"><strong>Config</strong></a> | <a href="#assets"><strong>Assets</strong></a> | <a
+            href="#request"><strong>Request</strong></a> | <a href="#mvc"><strong>MVC</strong></a> | <a
+            href="#controller"><strong>Controller</strong></a> | <a href="#middleware"><strong>Middleware</strong></a> |
+        <a href="#model"><strong>Model</strong></a> | <a href="#view"><strong>View</strong></a> | <a
+                href="#url"><strong>Url</strong></a> | <a href="#template"><strong>Template</strong></a></p>
+
+    <hr>
+
+
+    <h2 id="langkah-pertama">Langkah Pertama</h2>
+
+    <p><a href="#kecik-framework">top</a></p>
+
+    <p>Install composer pada sistem operasi anda, jika belum terinstall anda dapat mendownload melalui link Composer,
+        setelah melakukan download dan installasi, selanjutnya anda perlu membuat file composer.json dengan isi file
+        berikut ini. </p>
 
 
 
 <pre class="prettyprint"><code class="language-javascript hljs ">{
     <span class="hljs-string">"require"</span>: {
-        <span class="hljs-string">"kecik/kecik"</span>: <span class="hljs-string">"1.1.*@dev"</span>
+    <span class="hljs-string">"kecik/kecik"</span>: <span class="hljs-string">"1.1.*@dev"</span>
     }
-}</code></pre>
+    }</code></pre>
 
-<p>Selanjutnya jalankan perintah berikut ini pada console/cmd</p>
-
-
-
-<pre class="prettyprint"><code class="language-shell hljs cmake">composer <span class="hljs-keyword">install</span>        </code></pre>
-
-<p>Tunggu beberapa menit hingga semua berjalan tanpa error.</p>
+    <p>Selanjutnya jalankan perintah berikut ini pada console/cmd</p>
 
 
+    <pre class="prettyprint"><code class="language-shell hljs cmake">composer <span class="hljs-keyword">install</span>
+    </code></pre>
 
-<h2 id="langkah-kedua">Langkah Kedua</h2>
+    <p>Tunggu beberapa menit hingga semua berjalan tanpa error.</p>
 
-<p><a href="#kecik-framework">top</a></p>
 
-<p>Buatlah sebuah file index.php atau apapun dengan tuliskan code dibawah ini:</p>
+    <h2 id="langkah-kedua">Langkah Kedua</h2>
+
+    <p><a href="#kecik-framework">top</a></p>
+
+    <p>Buatlah sebuah file index.php atau apapun dengan tuliskan code dibawah ini:</p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-keyword">require_once</span> <span class="hljs-string">"Kecik/Kecik.php"</span>;
-<span class="hljs-comment">// atau untuk composer</span>
-<span class="hljs-keyword">require_once</span> <span class="hljs-string">"vendor/autoload.php"</span>;</code></pre>
+    <span class="hljs-keyword">require_once</span> <span class="hljs-string">"Kecik/Kecik.php"</span>;
+    <span class="hljs-comment">// atau untuk composer</span>
+    <span class="hljs-keyword">require_once</span> <span class="hljs-string">"vendor/autoload.php"</span>;</code></pre>
 
-<p><strong><code>require "Kecik\Kecik.php"</code></strong> untuk memasukan file system framework ke project yang ingin kita buat. <br>
-Lalu coba jalankan, jika hanya menampilkan halaman kosong tanpa pesan error berarti sudah berhasil. </p>
+    <p><strong><code>require "Kecik\Kecik.php"</code></strong> untuk memasukan file system framework ke project yang
+        ingin kita buat. <br>
+        Lalu coba jalankan, jika hanya menampilkan halaman kosong tanpa pesan error berarti sudah berhasil. </p>
 
-<p>Untuk cara penggunaan composer tidak akan dibahas disini, anda dapat mempelajarinya dari dokumentasi yang disedia di website composer, baik secara online maupun offline. </p>
-
-
-
-<h2 id="langkah-ketiga">Langkah Ketiga</h2>
-
-<p><a href="#kecik-framework">top</a></p>
-
-<p>Buat variabel dari Class Framework Kecik seperti dibawah ini</p>
+    <p>Untuk cara penggunaan composer tidak akan dibahas disini, anda dapat mempelajarinya dari dokumentasi yang disedia
+        di website composer, baik secara online maupun offline. </p>
 
 
+    <h2 id="langkah-ketiga">Langkah Ketiga</h2>
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span> = <span class="hljs-keyword">new</span> Kecik\Kecik();  </code></pre>
+    <p><a href="#kecik-framework">top</a></p>
 
-<p>Lalu coba jalankan kembali, jika tidak terdapat error berarti anda sudah sukses sampai tahap ini. </p>
-
-
-
-<h2 id="langkah-keempat">Langkah Keempat</h2>
-
-<p><a href="#kecik-framework">top</a></p>
-
-<p>Langkah selanjutnya adalah membuat Route untuk index dan menjalankan framework, berikut code nya:</p>
+    <p>Buat variabel dari Class Framework Kecik seperti dibawah ini</p>
 
 
+    <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span> = <span
+            class="hljs-keyword">new</span> Kecik\Kecik(); </code></pre>
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <p>Lalu coba jalankan kembali, jika tidak terdapat error berarti anda sudah sukses sampai tahap ini. </p>
+
+
+    <h2 id="langkah-keempat">Langkah Keempat</h2>
+
+    <p><a href="#kecik-framework">top</a></p>
+
+    <p>Langkah selanjutnya adalah membuat Route untuk index dan menjalankan framework, berikut code nya:</p>
+
+
+
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span
+        class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span
+        class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello Kecik'</span>;
-});
+    });
 
-<span class="hljs-variable">$app</span>-&gt;run();
+    <span class="hljs-variable">$app</span>-&gt;run();
 </code></pre>
 
-<p>Setelah code ditulis coba jalankan, maka akan tampil tulisan <strong>“Hello Kecik”</strong> itu berarti anda telah berhasil membuat tampilan untuk route index/halaman utama project anda.</p>
+    <p>Setelah code ditulis coba jalankan, maka akan tampil tulisan <strong>“Hello Kecik”</strong> itu berarti anda
+        telah berhasil membuat tampilan untuk route index/halaman utama project anda.</p>
 
-<p>Tampilan kesuluruhan code:</p>
+    <p>Tampilan kesuluruhan code:</p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-comment">//require_once "Kecik/Kecik.php";</span>
-<span class="hljs-comment">// atau untuk composer</span>
-<span class="hljs-keyword">require_once</span> <span class="hljs-string">"vendor/autoload.php"</span>
+    <span class="hljs-comment">//require_once "Kecik/Kecik.php";</span>
+    <span class="hljs-comment">// atau untuk composer</span>
+    <span class="hljs-keyword">require_once</span> <span class="hljs-string">"vendor/autoload.php"</span>
 
-<span class="hljs-variable">$app</span> = <span class="hljs-keyword">new</span> Kecik\Kecik();
+    <span class="hljs-variable">$app</span> = <span class="hljs-keyword">new</span> Kecik\Kecik();
 
-<span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'/'</span>, <span
+            class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello Kecik'</span>;
-});
+    });
 
-<span class="hljs-variable">$app</span>-&gt;run();</code></pre>
+    <span class="hljs-variable">$app</span>-&gt;run();</code></pre>
 
-<hr>
-
-
-
-<h2 id="mengenal-lebih-dalam-lagi"><strong>Mengenal Lebih Dalam Lagi</strong></h2>
+    <hr>
 
 
+    <h2 id="mengenal-lebih-dalam-lagi"><strong>Mengenal Lebih Dalam Lagi</strong></h2>
 
-<h2 id="header">Header</h2>
 
-<p><a href="#kecik-framework">top</a></p>
+    <h2 id="header">Header</h2>
 
-<p>Header digunakan melakukan setting header untuk sebuah response</p>
+    <p><a href="#kecik-framework">top</a></p>
+
+    <p>Header digunakan melakukan setting header untuk sebuah response</p>
 
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'hello'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span
+        class="hljs-string">'hello'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span
+        class="hljs-params">()</span> {</span>
     <span class="hljs-variable">$this</span>-&gt;header(<span class="hljs-number">200</span>);
     <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello Kecik'</span>;
-});</code></pre>
+    });</code></pre>
 
-<hr>
-
-
-
-<h2 id="route">Route</h2>
-
-<p><a href="#kecik-framework">top</a></p>
-
-<p>Route yang terdapat pada framework kecik saat ini adalah get, post, put, delete, options, dan patch, dimana get, post, put, delete, options, dan patch adalah sumber request dan artinya route tersebut hanya akan diproses pada request yang sesuai. Untuk penggunaannya terdapat beberapa, dan paling sederhana adalah tanpa menggunakan Controller, variabel eksternal dan template, seperti berikut ini:</p>
+    <hr>
 
 
+    <h2 id="route">Route</h2>
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <p><a href="#kecik-framework">top</a></p>
+
+    <p>Route yang terdapat pada framework kecik saat ini adalah get, post, put, delete, options, dan patch, dimana get,
+        post, put, delete, options, dan patch adalah sumber request dan artinya route tersebut hanya akan diproses pada
+        request yang sesuai. Untuk penggunaannya terdapat beberapa, dan paling sederhana adalah tanpa menggunakan
+        Controller, variabel eksternal dan template, seperti berikut ini:</p>
+
+
+
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span
+        class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span
+        class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello Kecik'</span>;
-});</code></pre>
+    });</code></pre>
 
-<p>Dengan menggunakan parameter:</p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'hello/:nama'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$nama</span>)</span> {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello '</span>.<span class="hljs-variable">$nama</span>;
-});</code></pre>
-
-<p>Parameter pada route menggunakan <code>:</code> pada bagian depannya, sedangkan untuk parameter yang bersifat optional bisa menggunakan <code>(:)</code></p>
-
-<blockquote>
-  <p><strong>contoh:</strong> hello/(:nama)</p>
-</blockquote>
-
-<p>Dengan menggunakan Controller:</p>
+    <p>Dengan menggunakan parameter:</p>
 
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'selamat_datang/:nama'</span>, <span class="hljs-keyword">new</span> Controller\Welcome(<span class="hljs-variable">$app</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$controller</span>, <span class="hljs-variable">$nama</span>)</span>  {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index(<span class="hljs-variable">$nama</span>);
-});</code></pre>
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span
+        class="hljs-string">'hello/:nama'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span
+        class="hljs-params">(<span class="hljs-variable">$nama</span>)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello '</span>.<span
+            class="hljs-variable">$nama</span>;
+    });</code></pre>
 
-<p>atau</p>
+    <p>Parameter pada route menggunakan <code>:</code> pada bagian depannya, sedangkan untuk parameter yang bersifat
+        optional bisa menggunakan <code>(:)</code></p>
 
+    <blockquote>
+        <p><strong>contoh:</strong> hello/(:nama)</p>
+    </blockquote>
 
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'selamat_datang/:nama'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(<span class="hljs-variable">$nama</span>)</span> {</span>
-    <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Welcome(<span class="hljs-variable">$this</span>);
-    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index(<span class="hljs-variable">$nama</span>);
-});</code></pre>
-
-<p>Pastikan sebelumnya sudah membuat Controller yang ingin digunakan pada route tersebut.</p>
-
-<p>Dengan menggunakan Template:</p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'hello/:nama'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$nama</span>)</span> {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello '</span>.<span class="hljs-variable">$nama</span>;
-})-&gt;template(<span class="hljs-string">'template_kecik'</span>);
-
-<span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'selamat_datang/:nama'</span>, <span class="hljs-keyword">new</span> Controller\Welcome(<span class="hljs-variable">$app</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$controller</span>, <span class="hljs-variable">$nama</span>)</span> {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index(<span class="hljs-variable">$nama</span>);
-})-&gt;template(<span class="hljs-string">'template_kecik'</span>);
-
-<span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'welcome/:nama'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(<span class="hljs-variable">$nama</span>)</span> {</span>
-    <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Welcome(<span class="hljs-variable">$this</span>);
-    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index(<span class="hljs-variable">$nama</span>);
-})-&gt;template(<span class="hljs-string">'template_kecik'</span>);</code></pre>
+    <p>Dengan menggunakan Controller:</p>
 
 
 
-<h4 id="group"><strong>Group</strong></h4>
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span
+        class="hljs-string">'selamat_datang/:nama'</span>, <span class="hljs-keyword">new</span>
+    Controller\Welcome(<span class="hljs-variable">$app</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span
+            class="hljs-params">(<span class="hljs-variable">$controller</span>, <span
+            class="hljs-variable">$nama</span>)</span>  {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index(<span
+            class="hljs-variable">$nama</span>);
+    });</code></pre>
 
-<p>Kecik Framework juga mendukung pengelompokan route.</p>
+    <p>atau</p>
 
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;group(<span class="hljs-string">'book'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
-    <span class="hljs-variable">$this</span>-&gt;post(<span class="hljs-string">'insert'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
-        <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Book(<span class="hljs-variable">$this</span>);
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;insert();
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span
+        class="hljs-string">'selamat_datang/:nama'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span
+        class="hljs-params">(<span class="hljs-variable">$nama</span>)</span> {</span>
+    <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Welcome(<span
+            class="hljs-variable">$this</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index(<span
+            class="hljs-variable">$nama</span>);
+    });</code></pre>
+
+    <p>Pastikan sebelumnya sudah membuat Controller yang ingin digunakan pada route tersebut.</p>
+
+    <p>Dengan menggunakan Template:</p>
+
+
+
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span
+        class="hljs-string">'hello/:nama'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span
+        class="hljs-params">(<span class="hljs-variable">$nama</span>)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello '</span>.<span
+            class="hljs-variable">$nama</span>;
+    })-&gt;template(<span class="hljs-string">'template_kecik'</span>);
+
+    <span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'selamat_datang/:nama'</span>, <span
+            class="hljs-keyword">new</span> Controller\Welcome(<span class="hljs-variable">$app</span>), <span
+            class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span
+            class="hljs-variable">$controller</span>, <span class="hljs-variable">$nama</span>)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index(<span
+            class="hljs-variable">$nama</span>);
+    })-&gt;template(<span class="hljs-string">'template_kecik'</span>);
+
+    <span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'welcome/:nama'</span>, <span
+            class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(<span
+            class="hljs-variable">$nama</span>)</span> {</span>
+    <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Welcome(<span
+            class="hljs-variable">$this</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index(<span
+            class="hljs-variable">$nama</span>);
+    })-&gt;template(<span class="hljs-string">'template_kecik'</span>);</code></pre>
+
+
+    <h4 id="group"><strong>Group</strong></h4>
+
+    <p>Kecik Framework juga mendukung pengelompokan route.</p>
+
+
+
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;group(<span
+        class="hljs-string">'book'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span
+        class="hljs-params">()</span> {</span>
+    <span class="hljs-variable">$this</span>-&gt;post(<span class="hljs-string">'insert'</span>, <span
+            class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Book(<span
+            class="hljs-variable">$this</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;insert();
     });
 
-    <span class="hljs-variable">$this</span>-&gt;get(<span class="hljs-string">'get'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
-        <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Book(<span class="hljs-variable">$this</span>);
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;get();
+    <span class="hljs-variable">$this</span>-&gt;get(<span class="hljs-string">'get'</span>, <span
+            class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Book(<span
+            class="hljs-variable">$this</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;get();
     });
 
-    <span class="hljs-variable">$this</span>-&gt;post(<span class="hljs-string">'update'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
-        <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Book(<span class="hljs-variable">$this</span>);
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;update();
+    <span class="hljs-variable">$this</span>-&gt;post(<span class="hljs-string">'update'</span>, <span
+            class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Book(<span
+            class="hljs-variable">$this</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;update();
     });
 
-    <span class="hljs-variable">$this</span>-&gt;post(<span class="hljs-string">'delete'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
-        <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Book(<span class="hljs-variable">$this</span>);
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;delete();
+    <span class="hljs-variable">$this</span>-&gt;post(<span class="hljs-string">'delete'</span>, <span
+            class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Book(<span
+            class="hljs-variable">$this</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;delete();
     });
 
-    <span class="hljs-variable">$this</span>-&gt;post(<span class="hljs-string">'find'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
-        <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Book(<span class="hljs-variable">$this</span>);
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;find();
+    <span class="hljs-variable">$this</span>-&gt;post(<span class="hljs-string">'find'</span>, <span
+            class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Book(<span
+            class="hljs-variable">$this</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;find();
     });
-});</code></pre>
+    });</code></pre>
 
-<p>HTML mendukung method <code>POST</code> dan <code>GET</code>, dan jika kita ingin menggunakan method seperti <code>PUT</code>, <code>DELETE</code>, <code>OPTIONS</code>, dan <code>PATCH</code> kita dapat menggunakannya dengan cara melakukan <strong><code>Override</code></strong></p>
-
-
-
-<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span class="hljs-title">form</span> <span class="hljs-attribute">method</span>=<span class="hljs-value">"POST"</span> <span class="hljs-attribute">action</span>=<span class="hljs-value">"&lt;?php $this-&gt;url-&gt;to('login') ?&gt;"</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Username<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"text"</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"username"</span> /&gt;</span>
-
-    <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Password<span class="hljs-tag">&lt;/<span class="hljs-title">label</span>&gt;</span>
-    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"password"</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"password"</span> /&gt;</span>
-
-    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"hidden"</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"_METHOD"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"PUT"</span>&gt;</span>
-
-    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span class="hljs-value">"submit"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"LOGIN"</span> /&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">form</span></span></code></pre>
-
-<blockquote>
-  <p><strong>Catatan:</strong> Berlaku juga pada penggunaan post, put, delete, options, dan patch, untuk menggunakan controller dan template ada beberapa tahap yang perlu dipersiapkan</p>
-</blockquote>
+    <p>HTML mendukung method <code>POST</code> dan <code>GET</code>, dan jika kita ingin menggunakan method seperti
+        <code>PUT</code>, <code>DELETE</code>, <code>OPTIONS</code>, dan <code>PATCH</code> kita dapat menggunakannya
+        dengan cara melakukan <strong><code>Override</code></strong></p>
 
 
 
-<h4 id="is"><strong>is()</strong></h4>
+<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-tag">&lt;<span
+        class="hljs-title">form</span> <span class="hljs-attribute">method</span>=<span class="hljs-value">"POST"</span> <span
+        class="hljs-attribute">action</span>=<span
+        class="hljs-value">"&lt;?php $this-&gt;url-&gt;to('login') ?&gt;"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Username<span class="hljs-tag">&lt;/<span
+            class="hljs-title">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span
+            class="hljs-value">"text"</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"username"</span> /&gt;</span>
 
-<p>Untuk mendapatkan nilai route saat ini</p>
+    <span class="hljs-tag">&lt;<span class="hljs-title">label</span>&gt;</span>Password<span class="hljs-tag">&lt;/<span
+            class="hljs-title">label</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span
+            class="hljs-value">"password"</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"password"</span> /&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span
+            class="hljs-value">"hidden"</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"_METHOD"</span> <span
+            class="hljs-attribute">value</span>=<span class="hljs-value">"PUT"</span>&gt;</span>
+
+    <span class="hljs-tag">&lt;<span class="hljs-title">input</span> <span class="hljs-attribute">type</span>=<span
+            class="hljs-value">"submit"</span> <span class="hljs-attribute">value</span>=<span class="hljs-value">"LOGIN"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">form</span></span></code></pre>
+
+    <blockquote>
+        <p><strong>Catatan:</strong> Berlaku juga pada penggunaan post, put, delete, options, dan patch, untuk
+            menggunakan controller dan template ada beberapa tahap yang perlu dipersiapkan</p>
+    </blockquote>
+
+
+    <h4 id="is"><strong>is()</strong></h4>
+
+    <p>Untuk mendapatkan nilai route saat ini</p>
+
+
+    <pre class="prettyprint"><code class="language-php hljs ">&lt;a href=<span class="hljs-string">"&lt;?php $this-&gt;url-&gt;to('home') ?&gt;"</span>
+        <span class="hljs-preprocessor">&lt;?php</span> <span class="hljs-keyword">echo</span> (<span
+                class="hljs-variable">$this</span>-&gt;route-&gt;is() == <span class="hljs-string">'home'</span>)? <span
+                class="hljs-string">'class="active"'</span>: <span class="hljs-string">''</span> <span
+                class="hljs-preprocessor">?&gt;</span>&gt;Home&lt;/a&gt;</code></pre>
+
+
+    <h4 id="ispost"><strong>isPost()</strong></h4>
+
+    <p>Untuk mengecheck apakah metode request adalah <code>POST</code>, jika benar maka nilai adalah <code>TRUE</code>
+        jika salah maka nilai adalah <code>FALSE</code></p>
 
 
 
-<pre class="prettyprint"><code class="language-php hljs ">&lt;a href=<span class="hljs-string">"&lt;?php $this-&gt;url-&gt;to('home') ?&gt;"</span> <span class="hljs-preprocessor">&lt;?php</span> <span class="hljs-keyword">echo</span> (<span class="hljs-variable">$this</span>-&gt;route-&gt;is() == <span class="hljs-string">'home'</span>)? <span class="hljs-string">'class="active"'</span>: <span class="hljs-string">''</span> <span class="hljs-preprocessor">?&gt;</span>&gt;Home&lt;/a&gt;</code></pre>
-
-
-
-<h4 id="ispost"><strong>isPost()</strong></h4>
-
-<p>Untuk mengecheck apakah metode request adalah <code>POST</code>, jika benar maka nilai adalah <code>TRUE</code> jika salah maka nilai adalah <code>FALSE</code></p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span class="hljs-variable">$this</span>-&gt;route-&gt;isPost() == <span class="hljs-keyword">FALSE</span>)
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span
+        class="hljs-variable">$this</span>-&gt;route-&gt;isPost() == <span class="hljs-keyword">FALSE</span>)
     <span class="hljs-variable">$this</span>-&gt;header(<span class="hljs-number">404</span>);</code></pre>
 
 
+    <h4 id="isget"><strong>isGet()</strong></h4>
 
-<h4 id="isget"><strong>isGet()</strong></h4>
-
-<p>Untuk mengecheck apakah metode request adalah <code>GET</code>, jika benar maka nilai adalah <code>TRUE</code> jika salah maka nilai adalah <code>FALSE</code></p>
-
+    <p>Untuk mengecheck apakah metode request adalah <code>GET</code>, jika benar maka nilai adalah <code>TRUE</code>
+        jika salah maka nilai adalah <code>FALSE</code></p>
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span class="hljs-variable">$this</span>-&gt;route-&gt;isGET() == <span class="hljs-keyword">FALSE</span>)
+
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span
+        class="hljs-variable">$this</span>-&gt;route-&gt;isGET() == <span class="hljs-keyword">FALSE</span>)
     <span class="hljs-variable">$this</span>-&gt;header(<span class="hljs-number">404</span>);</code></pre>
 
 
+    <h4 id="isput"><strong>isPut()</strong></h4>
 
-<h4 id="isput"><strong>isPut()</strong></h4>
-
-<p>Untuk mengecheck apakah metode request adalah <code>PUT</code>, jika benar maka nilai adalah <code>TRUE</code> jika salah maka nilai adalah <code>FALSE</code></p>
-
+    <p>Untuk mengecheck apakah metode request adalah <code>PUT</code>, jika benar maka nilai adalah <code>TRUE</code>
+        jika salah maka nilai adalah <code>FALSE</code></p>
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span class="hljs-variable">$this</span>-&gt;route-&gt;isPut() == <span class="hljs-keyword">FALSE</span>)
+
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span
+        class="hljs-variable">$this</span>-&gt;route-&gt;isPut() == <span class="hljs-keyword">FALSE</span>)
     <span class="hljs-variable">$this</span>-&gt;header(<span class="hljs-number">404</span>);</code></pre>
 
 
+    <h4 id="isdelete"><strong>isDelete()</strong></h4>
 
-<h4 id="isdelete"><strong>isDelete()</strong></h4>
-
-<p>Untuk mengecheck apakah metode request adalah <code>DELETE</code>, jika benar maka nilai adalah <code>TRUE</code> jika salah maka nilai adalah <code>FALSE</code></p>
-
+    <p>Untuk mengecheck apakah metode request adalah <code>DELETE</code>, jika benar maka nilai adalah <code>TRUE</code>
+        jika salah maka nilai adalah <code>FALSE</code></p>
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span class="hljs-variable">$this</span>-&gt;route-&gt;isDelete() == <span class="hljs-keyword">FALSE</span>)
+
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span
+        class="hljs-variable">$this</span>-&gt;route-&gt;isDelete() == <span class="hljs-keyword">FALSE</span>)
     <span class="hljs-variable">$this</span>-&gt;header(<span class="hljs-number">404</span>);</code></pre>
 
 
+    <h4 id="ispatch"><strong>isPatch()</strong></h4>
 
-<h4 id="ispatch"><strong>isPatch()</strong></h4>
-
-<p>Untuk mengecheck apakah metode request adalah <code>PATCH</code>, jika benar maka nilai adalah <code>TRUE</code> jika salah maka nilai adalah <code>FALSE</code></p>
-
+    <p>Untuk mengecheck apakah metode request adalah <code>PATCH</code>, jika benar maka nilai adalah <code>TRUE</code>
+        jika salah maka nilai adalah <code>FALSE</code></p>
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span class="hljs-variable">$this</span>-&gt;route-&gt;isPatch() == <span class="hljs-keyword">FALSE</span>)
+
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span
+        class="hljs-variable">$this</span>-&gt;route-&gt;isPatch() == <span class="hljs-keyword">FALSE</span>)
     <span class="hljs-variable">$this</span>-&gt;header(<span class="hljs-number">404</span>);</code></pre>
 
 
+    <h4 id="isoptions"><strong>isOptions()</strong></h4>
 
-<h4 id="isoptions"><strong>isOptions()</strong></h4>
-
-<p>Untuk mengecheck apakah metode request adalah <code>OPTIONS</code>, jika benar maka nilai adalah <code>TRUE</code> jika salah maka nilai adalah <code>FALSE</code></p>
-
+    <p>Untuk mengecheck apakah metode request adalah <code>OPTIONS</code>, jika benar maka nilai adalah
+        <code>TRUE</code> jika salah maka nilai adalah <code>FALSE</code></p>
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span class="hljs-variable">$this</span>-&gt;route-&gt;isOptions() == <span class="hljs-keyword">FALSE</span>)
+
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span
+        class="hljs-variable">$this</span>-&gt;route-&gt;isOptions() == <span class="hljs-keyword">FALSE</span>)
     <span class="hljs-variable">$this</span>-&gt;header(<span class="hljs-number">404</span>);</code></pre>
 
 
+    <h4 id="isajax"><strong>isAjax()</strong></h4>
 
-<h4 id="isajax"><strong>isAjax()</strong></h4>
-
-<p>Untuk mengecheck apakah metode request adalah <code>AJAX</code>, jika benar maka nilai adalah <code>TRUE</code> jika salah maka nilai adalah <code>FALSE</code></p>
-
+    <p>Untuk mengecheck apakah metode request adalah <code>AJAX</code>, jika benar maka nilai adalah <code>TRUE</code>
+        jika salah maka nilai adalah <code>FALSE</code></p>
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span class="hljs-variable">$this</span>-&gt;route-&gt;isAjax() == <span class="hljs-keyword">FALSE</span>)
+
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">if</span> (<span
+        class="hljs-variable">$this</span>-&gt;route-&gt;isAjax() == <span class="hljs-keyword">FALSE</span>)
     <span class="hljs-variable">$this</span>-&gt;header(<span class="hljs-number">404</span>);</code></pre>
 
-<p><strong>Pertama:</strong></p>
+    <p><strong>Pertama:</strong></p>
 
-<p>Setting path atau lokasi untuk assets, applikasi(MVC), dan template, berikut cara setting:</p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;config-&gt;set(<span class="hljs-string">'path.assets'</span>, <span class="hljs-string">'assets'</span>);
-<span class="hljs-variable">$app</span>-&gt;config-&gt;set(<span class="hljs-string">'path.mvc'</span>, <span class="hljs-string">'app'</span>);
-<span class="hljs-variable">$app</span>-&gt;config-&gt;set(<span class="hljs-string">'path.template'</span>, <span class="hljs-string">'templates'</span>);</code></pre>
-
-<p><strong>Kedua:</strong></p>
-
-<p>Buatlah folder/direktori berdasarkan settingan path sebelumnya.</p>
-
-<p><strong>Ketiga:</strong></p>
-
-<p>Untuk folder/direktori assets dan applikasi pastikan didalamnya terdapat sub folder/direktori</p>
+    <p>Setting path atau lokasi untuk assets, applikasi(MVC), dan template, berikut cara setting:</p>
 
 
 
-<pre class="prettyprint"><code class=" hljs brainfuck"><span class="hljs-literal">+</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">assets</span>
-<span class="hljs-comment">|</span>   <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">css</span>
-<span class="hljs-comment">|</span>   <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">js</span>
-<span class="hljs-comment">|</span>   <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">images</span>
+<pre class="prettyprint"><code class="language-php hljs "><span
+        class="hljs-variable">$app</span>-&gt;config-&gt;set(<span class="hljs-string">'path.assets'</span>, <span
+        class="hljs-string">'assets'</span>);
+    <span class="hljs-variable">$app</span>-&gt;config-&gt;set(<span class="hljs-string">'path.mvc'</span>, <span
+            class="hljs-string">'app'</span>);
+    <span class="hljs-variable">$app</span>-&gt;config-&gt;set(<span class="hljs-string">'path.template'</span>, <span
+            class="hljs-string">'templates'</span>);</code></pre>
 
-<span class="hljs-literal">+</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span><span class="hljs-comment">app</span>
-<span class="hljs-comment">|</span>  <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">controllers</span>
-<span class="hljs-comment">|</span>  <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">models</span>
-<span class="hljs-comment">|</span>  <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">views</span></code></pre>
+    <p><strong>Kedua:</strong></p>
 
+    <p>Buatlah folder/direktori berdasarkan settingan path sebelumnya.</p>
 
+    <p><strong>Ketiga:</strong></p>
 
-<h2 id="config">Config</h2>
-
-<p><a href="#kecik-framework">top</a></p>
-
-<p>Untuk project yang besar dan tidak sederhana kita memerlukan beberapa setting/konfigurasi, untuk melakukan setting/konfigurasi framework ini juga dilengkapi config, baik untuk menyetting ataupun untuk membaca settingan</p>
+    <p>Untuk folder/direktori assets dan applikasi pastikan didalamnya terdapat sub folder/direktori</p>
 
 
 
-<h4 id="set"><strong>set()</strong></h4>
+<pre class="prettyprint"><code class=" hljs brainfuck"><span class="hljs-literal">+</span><span
+        class="hljs-literal">-</span><span class="hljs-literal">-</span> <span class="hljs-comment">assets</span>
+    <span class="hljs-comment">|</span> <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span
+            class="hljs-literal">-</span> <span class="hljs-comment">css</span>
+    <span class="hljs-comment">|</span> <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span
+            class="hljs-literal">-</span> <span class="hljs-comment">js</span>
+    <span class="hljs-comment">|</span> <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span
+            class="hljs-literal">-</span> <span class="hljs-comment">images</span>
 
-<p>Gunakan fungsi set pada config untuk melakukan settingan nilai/menambah settingan</p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs ">set(<span class="hljs-variable">$key</span>, <span class="hljs-variable">$value</span>)</code></pre>
-
-<blockquote>
-  <p>paramater <strong><code>$key</code></strong> merupakan parameter kunci untuk sebuah settingan</p>
-  
-  <p>paramater <strong><code>$value</code></strong> merupakan parameter nilai dari sebuah settingan</p>
-</blockquote>
-
-<p><strong>Contoh:</strong></p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;config-&gt;set(<span class="hljs-string">'path.assets'</span>, <span class="hljs-string">'assets'</span>);</code></pre>
+    <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span class="hljs-literal">-</span><span
+            class="hljs-comment">app</span>
+    <span class="hljs-comment">|</span> <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span
+            class="hljs-literal">-</span> <span class="hljs-comment">controllers</span>
+    <span class="hljs-comment">|</span> <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span
+            class="hljs-literal">-</span> <span class="hljs-comment">models</span>
+    <span class="hljs-comment">|</span> <span class="hljs-literal">+</span><span class="hljs-literal">-</span><span
+            class="hljs-literal">-</span> <span class="hljs-comment">views</span></code></pre>
 
 
+    <h2 id="config">Config</h2>
 
-<h4 id="get"><strong>get()</strong></h4>
+    <p><a href="#kecik-framework">top</a></p>
 
-<p>Gunakan fungsi get untuk mendapatkan nilai dari suatu settingan</p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs ">get(<span class="hljs-variable">$key</span>)</code></pre>
-
-<blockquote>
-  <p>parameter <strong><code>$key</code></strong> merupakan parameter kunci untuk sebuah settingan yang ingin diambil nilainya</p>
-</blockquote>
-
-<p><strong>Contoh:</strong></p>
+    <p>Untuk project yang besar dan tidak sederhana kita memerlukan beberapa setting/konfigurasi, untuk melakukan
+        setting/konfigurasi framework ini juga dilengkapi config, baik untuk menyetting ataupun untuk membaca
+        settingan</p>
 
 
+    <h4 id="set"><strong>set()</strong></h4>
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$asset_path</span> = <span class="hljs-variable">$app</span>-&gt;config-&gt;get(<span class="hljs-string">'path.assets'</span>);</code></pre>
+    <p>Gunakan fungsi set pada config untuk melakukan settingan nilai/menambah settingan</p>
 
 
+    <pre class="prettyprint"><code class="language-php hljs ">set(<span class="hljs-variable">$key</span>, <span
+            class="hljs-variable">$value</span>)</code></pre>
 
-<h2 id="konfigurasi-saat-instance-kecik-dibuat"><strong>Konfigurasi Saat Instance Kecik Dibuat</strong></h2>
+    <blockquote>
+        <p>paramater <strong><code>$key</code></strong> merupakan parameter kunci untuk sebuah settingan</p>
+
+        <p>paramater <strong><code>$value</code></strong> merupakan parameter nilai dari sebuah settingan</p>
+    </blockquote>
+
+    <p><strong>Contoh:</strong></p>
+
+
+    <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;config-&gt;set(<span
+            class="hljs-string">'path.assets'</span>, <span class="hljs-string">'assets'</span>);</code></pre>
+
+
+    <h4 id="get"><strong>get()</strong></h4>
+
+    <p>Gunakan fungsi get untuk mendapatkan nilai dari suatu settingan</p>
+
+
+    <pre class="prettyprint"><code class="language-php hljs ">get(<span class="hljs-variable">$key</span>)</code></pre>
+
+    <blockquote>
+        <p>parameter <strong><code>$key</code></strong> merupakan parameter kunci untuk sebuah settingan yang ingin
+            diambil nilainya</p>
+    </blockquote>
+
+    <p><strong>Contoh:</strong></p>
+
+
+    <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$asset_path</span> = <span
+            class="hljs-variable">$app</span>-&gt;config-&gt;get(<span class="hljs-string">'path.assets'</span>);</code></pre>
+
+
+    <h2 id="konfigurasi-saat-instance-kecik-dibuat"><strong>Konfigurasi Saat Instance Kecik Dibuat</strong></h2>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$config</span> = [
-    <span class="hljs-string">'path.assets'</span>   =&gt; <span class="hljs-string">'assets'</span>,
-    <span class="hljs-string">'path.mvc'</span>      =&gt; <span class="hljs-string">'app'</span>,
+    <span class="hljs-string">'path.assets'</span> =&gt; <span class="hljs-string">'assets'</span>,
+    <span class="hljs-string">'path.mvc'</span> =&gt; <span class="hljs-string">'app'</span>,
     <span class="hljs-string">'path.template'</span> =&gt; <span class="hljs-string">'templates'</span>,
-    <span class="hljs-string">'error.404'</span>     =&gt; <span class="hljs-string">'kecik_template/404'</span>,
-    <span class="hljs-string">'mod_rewrite'</span>   =&gt; <span class="hljs-keyword">TRUE</span>,
+    <span class="hljs-string">'error.404'</span> =&gt; <span class="hljs-string">'kecik_template/404'</span>,
+    <span class="hljs-string">'mod_rewrite'</span> =&gt; <span class="hljs-keyword">TRUE</span>,
 
     <span class="hljs-string">'libraries'</span> =&gt; [
-        <span class="hljs-string">'DIC'</span> =&gt; [<span class="hljs-string">'enable'</span>=&gt;<span class="hljs-keyword">TRUE</span>],
-        <span class="hljs-string">'Session'</span> =&gt; [
-            <span class="hljs-string">'enable'</span> =&gt; <span class="hljs-keyword">TRUE</span>,
-            <span class="hljs-string">'config'</span> =&gt; [<span class="hljs-string">'encrypt'</span> =&gt; <span class="hljs-keyword">TRUE</span>]
-        ],
-        <span class="hljs-string">'Cookie'</span> =&gt; [
-            <span class="hljs-string">'enable'</span> =&gt; <span class="hljs-keyword">TRUE</span>,
-            <span class="hljs-string">'config'</span> =&gt; [<span class="hljs-string">'encrypt'</span> =&gt; <span class="hljs-keyword">TRUE</span>]
-        ],
-        <span class="hljs-string">'Database'</span> =&gt; [
-            <span class="hljs-string">'enable'</span> =&gt; <span class="hljs-keyword">TRUE</span>,
-            <span class="hljs-string">'config'</span> =&gt; [
-                <span class="hljs-string">'driver'</span> =&gt; <span class="hljs-string">'mysqli'</span>,
-                <span class="hljs-string">'hostname'</span> =&gt; <span class="hljs-string">'localhost'</span>,
-                <span class="hljs-string">'username'</span> =&gt; <span class="hljs-string">'root'</span>,
-                <span class="hljs-string">'password'</span> =&gt; <span class="hljs-string">''</span>,
-                <span class="hljs-string">'dbname'</span> =&gt; <span class="hljs-string">'kecik'</span>
-            ]
-        ],
-        <span class="hljs-string">'MVC'</span> =&gt; [<span class="hljs-string">'enable'</span> =&gt; <span class="hljs-keyword">TRUE</span>],
-        <span class="hljs-string">'Language'</span> =&gt; [
-            <span class="hljs-string">'enable'</span> =&gt; <span class="hljs-keyword">TRUE</span>,
-            <span class="hljs-string">'params'</span> =&gt; [
-                <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'language/lang_id.json'</span>,
-                <span class="hljs-string">'us'</span> =&gt; <span class="hljs-string">'language/lang_us.json'</span>
-            ]
-        ]
+    <span class="hljs-string">'DIC'</span> =&gt; [<span class="hljs-string">'enable'</span>=&gt;<span
+            class="hljs-keyword">TRUE</span>],
+    <span class="hljs-string">'Session'</span> =&gt; [
+    <span class="hljs-string">'enable'</span> =&gt; <span class="hljs-keyword">TRUE</span>,
+    <span class="hljs-string">'config'</span> =&gt; [<span class="hljs-string">'encrypt'</span> =&gt; <span
+            class="hljs-keyword">TRUE</span>]
+    ],
+    <span class="hljs-string">'Cookie'</span> =&gt; [
+    <span class="hljs-string">'enable'</span> =&gt; <span class="hljs-keyword">TRUE</span>,
+    <span class="hljs-string">'config'</span> =&gt; [<span class="hljs-string">'encrypt'</span> =&gt; <span
+            class="hljs-keyword">TRUE</span>]
+    ],
+    <span class="hljs-string">'Database'</span> =&gt; [
+    <span class="hljs-string">'enable'</span> =&gt; <span class="hljs-keyword">TRUE</span>,
+    <span class="hljs-string">'config'</span> =&gt; [
+    <span class="hljs-string">'driver'</span> =&gt; <span class="hljs-string">'mysqli'</span>,
+    <span class="hljs-string">'hostname'</span> =&gt; <span class="hljs-string">'localhost'</span>,
+    <span class="hljs-string">'username'</span> =&gt; <span class="hljs-string">'root'</span>,
+    <span class="hljs-string">'password'</span> =&gt; <span class="hljs-string">''</span>,
+    <span class="hljs-string">'dbname'</span> =&gt; <span class="hljs-string">'kecik'</span>
     ]
-];
+    ],
+    <span class="hljs-string">'MVC'</span> =&gt; [<span class="hljs-string">'enable'</span> =&gt; <span
+            class="hljs-keyword">TRUE</span>],
+    <span class="hljs-string">'Language'</span> =&gt; [
+    <span class="hljs-string">'enable'</span> =&gt; <span class="hljs-keyword">TRUE</span>,
+    <span class="hljs-string">'params'</span> =&gt; [
+    <span class="hljs-string">'id'</span> =&gt; <span class="hljs-string">'language/lang_id.json'</span>,
+    <span class="hljs-string">'us'</span> =&gt; <span class="hljs-string">'language/lang_us.json'</span>
+    ]
+    ]
+    ]
+    ];
 
-<span class="hljs-variable">$app</span> = <span class="hljs-keyword">new</span> Kecik\Kecik(<span class="hljs-variable">$config</span>);
+    <span class="hljs-variable">$app</span> = <span class="hljs-keyword">new</span> Kecik\Kecik(<span
+            class="hljs-variable">$config</span>);
 
-    <span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'/'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello Kecik'</span>;
+    <span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'/'</span>, <span
+            class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Hello Kecik'</span>;
     });
 
-<span class="hljs-variable">$app</span>-&gt;run();</code></pre>
+    <span class="hljs-variable">$app</span>-&gt;run();</code></pre>
 
 
+    <h2 id="assets">Assets</h2>
 
-<h2 id="assets">Assets</h2>
+    <p><a href="#kecik-framework">top</a></p>
 
-<p><a href="#kecik-framework">top</a></p>
+    <p>Assets sangat diperlukan dalam mempermudah pekerjaan kita untuk menambahkan atau menghilangkan assets seperti
+        css, js dan images, sangat berguna juga untuk membuat template, dan assets juga bisa disesuaikan bedasarkan
+        controller yang digunakan. Assets css dan js memiliki struktur yang sama sedangkan untuk images berbeda.</p>
 
-<p>Assets sangat diperlukan dalam mempermudah pekerjaan kita untuk menambahkan atau menghilangkan assets seperti css, js dan images, sangat berguna juga untuk membuat template, dan assets juga bisa disesuaikan bedasarkan controller yang digunakan. Assets css dan js memiliki struktur yang sama sedangkan untuk images berbeda.</p>
 
+    <h4 id="add"><strong>add()</strong></h4>
 
+    <p>Fungsi ini digunakan untuk menambahkan sebuah file assets baik css maupun js.</p>
 
-<h4 id="add"><strong>add()</strong></h4>
 
-<p>Fungsi ini digunakan untuk menambahkan sebuah file assets baik css maupun js.</p>
+    <pre class="prettyprint"><code class="language-php hljs ">add(<span class="hljs-variable">$file</span>=<span
+            class="hljs-string">''</span>)</code></pre>
 
+    <blockquote>
+        <p>paramater <strong><code>$file</code></strong> berisikan nama file assets yang ingin diload, tuliskan tanpa
+            menggunakan extension</p>
+    </blockquote>
 
+    <p><strong>Contoh:</strong></p>
 
-<pre class="prettyprint"><code class="language-php hljs ">add(<span class="hljs-variable">$file</span>=<span class="hljs-string">''</span>)</code></pre>
 
-<blockquote>
-  <p>paramater <strong><code>$file</code></strong> berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension</p>
-</blockquote>
 
-<p><strong>Contoh:</strong></p>
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;assets-&gt;css-&gt;add(<span
+        class="hljs-string">'boostrap'</span>);
+    <span class="hljs-variable">$app</span>-&gt;assets-&gt;js-&gt;add(<span
+            class="hljs-string">'jquery.min'</span>);</code></pre>
 
 
+    <h4 id="delete"><strong>delete()</strong></h4>
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;assets-&gt;css-&gt;add(<span class="hljs-string">'boostrap'</span>);
-<span class="hljs-variable">$app</span>-&gt;assets-&gt;js-&gt;add(<span class="hljs-string">'jquery.min'</span>);</code></pre>
+    <p>Fungsi ini digunakan untuk menghapus sebuah file assets yang ingin diload baik css maupun js.</p>
 
 
+    <pre class="prettyprint"><code class="language-php hljs ">delete(<span class="hljs-variable">$file</span>=<span
+            class="hljs-string">''</span>)</code></pre>
 
-<h4 id="delete"><strong>delete()</strong></h4>
+    <blockquote>
+        <p>paramater <strong><code>$file</code></strong> berisikan nama file assets yang ingin diload, tuliskan tanpa
+            menggunakan extension</p>
+    </blockquote>
 
-<p>Fungsi ini digunakan untuk menghapus sebuah file assets yang ingin diload baik css maupun js.</p>
+    <p><strong>Contoh:</strong></p>
 
 
 
-<pre class="prettyprint"><code class="language-php hljs ">delete(<span class="hljs-variable">$file</span>=<span class="hljs-string">''</span>)</code></pre>
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;assets-&gt;css-&gt;delete(<span
+        class="hljs-string">'boostrap'</span>);
+    <span class="hljs-variable">$app</span>-&gt;assets-&gt;js-&gt;delete(<span class="hljs-string">'jquery.min'</span>);</code></pre>
 
-<blockquote>
-  <p>paramater <strong><code>$file</code></strong> berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension</p>
-</blockquote>
 
-<p><strong>Contoh:</strong></p>
+    <h4 id="render"><strong>render()</strong></h4>
 
+    <p>Fungsi ini digunakan untu merender sebuah daftar asset atau salah satu asset yang ingin diload baik css maupun
+        js</p>
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;assets-&gt;css-&gt;delete(<span class="hljs-string">'boostrap'</span>);
-<span class="hljs-variable">$app</span>-&gt;assets-&gt;js-&gt;delete(<span class="hljs-string">'jquery.min'</span>);</code></pre>
+    <pre class="prettyprint"><code class="language-php hljs ">render(<span class="hljs-variable">$file</span>=<span
+            class="hljs-string">''</span>)</code></pre>
 
+    <blockquote>
+        <p>paramater <strong><code>$file</code></strong> berisikan nama file assets yang ingin diload, tuliskan tanpa
+            menggunakan extension</p>
+    </blockquote>
 
+    <p><strong>Contoh:</strong></p>
 
-<h4 id="render"><strong>render()</strong></h4>
 
-<p>Fungsi ini digunakan untu merender sebuah daftar asset atau salah satu asset yang ingin diload baik css maupun js</p>
 
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">echo</span> <span
+        class="hljs-variable">$app</span>-&gt;assets-&gt;css-&gt;render();
+    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$app</span>-&gt;assets-&gt;js-&gt;render();
+    <span class="hljs-comment">// atau spesifik render</span>
+    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$app</span>-&gt;assets-&gt;css-&gt;render(<span
+            class="hljs-string">'boostrap'</span>);
+    <span class="hljs-keyword">echo</span> <span class="hljs-variable">$app</span>-&gt;assets-&gt;js-&gt;render(<span
+            class="hljs-string">'boostrap.min'</span>);</code></pre>
 
 
-<pre class="prettyprint"><code class="language-php hljs ">render(<span class="hljs-variable">$file</span>=<span class="hljs-string">''</span>)</code></pre>
+    <h4 id="images"><strong>images()</strong></h4>
 
-<blockquote>
-  <p>paramater <strong><code>$file</code></strong> berisikan nama file assets yang ingin diload, tuliskan tanpa menggunakan extension</p>
-</blockquote>
+    <p>Fungsi ini digunakan untuk mendapatkan link file assets untuk gambar.</p>
 
-<p><strong>Contoh:</strong></p>
 
+    <pre class="prettyprint"><code class="language-php hljs ">images(<span
+            class="hljs-variable">$file</span>)</code></pre>
 
+    <blockquote>
+        <p>paramater <strong><code>$file</code></strong> berisikan nama file assets gambar yang ingin digunakan.</p>
+    </blockquote>
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">echo</span> <span class="hljs-variable">$app</span>-&gt;assets-&gt;css-&gt;render();
-<span class="hljs-keyword">echo</span> <span class="hljs-variable">$app</span>-&gt;assets-&gt;js-&gt;render();
-<span class="hljs-comment">// atau spesifik render</span>
-<span class="hljs-keyword">echo</span> <span class="hljs-variable">$app</span>-&gt;assets-&gt;css-&gt;render(<span class="hljs-string">'boostrap'</span>);
-<span class="hljs-keyword">echo</span> <span class="hljs-variable">$app</span>-&gt;assets-&gt;js-&gt;render(<span class="hljs-string">'boostrap.min'</span>);</code></pre>
+    <p><strong>Contoh:</strong></p>
 
 
+    <pre class="prettyprint"><code class="language-php hljs ">&lt;img src=<span class="hljs-string">"&lt;?php echo $app-&gt;assets-&gt;images('kecik.jpg'); ?&gt;"</span>
+        /&gt;</code></pre>
 
-<h4 id="images"><strong>images()</strong></h4>
 
-<p>Fungsi ini digunakan untuk mendapatkan link file assets untuk gambar.</p>
+    <h4 id="url"><strong>url()</strong></h4>
 
+    <p>Fungsi ini digunakan untuk mendapatkan link file assets untuk gambar.</p>
 
 
-<pre class="prettyprint"><code class="language-php hljs ">images(<span class="hljs-variable">$file</span>)</code></pre>
+    <pre class="prettyprint"><code class="language-php hljs ">url()</code></pre>
 
-<blockquote>
-  <p>paramater <strong><code>$file</code></strong> berisikan nama file assets gambar yang ingin digunakan.</p>
-</blockquote>
+    <blockquote>
+        <p>paramater <strong><code>$file</code></strong> berisikan nama file assets gambar yang ingin digunakan.</p>
+    </blockquote>
 
-<p><strong>Contoh:</strong></p>
+    <p><strong>Contoh:</strong></p>
 
 
+    <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">echo</span> <span
+            class="hljs-variable">$app</span>-&gt;assets-&gt;url().<span
+            class="hljs-string">"fonts/"</span>;</code></pre>
 
-<pre class="prettyprint"><code class="language-php hljs ">&lt;img src=<span class="hljs-string">"&lt;?php echo $app-&gt;assets-&gt;images('kecik.jpg'); ?&gt;"</span> /&gt;</code></pre>
 
+    <h2 id="request">Request</h2>
 
+    <p><a href="#kecik-framework">top</a></p>
 
-<h4 id="url"><strong>url()</strong></h4>
+    <p>Request merupakan bentuk lain dari penggunaan <code>$_GET</code>, <code>$_POST</code> dan <code>$_SERVER</code>
+    </p>
 
-<p>Fungsi ini digunakan untuk mendapatkan link file assets untuk gambar.</p>
 
+    <h4 id="get-1"><strong>get()</strong></h4>
 
+    <p>Anda dapat menggunakan fungsi get untuk mendapatkan nilai dari <code>$_GET</code></p>
 
-<pre class="prettyprint"><code class="language-php hljs ">url()</code></pre>
 
-<blockquote>
-  <p>paramater <strong><code>$file</code></strong> berisikan nama file assets gambar yang ingin digunakan.</p>
-</blockquote>
+    <pre class="prettyprint"><code class="language-php hljs ">get(<span class="hljs-variable">$var</span>=<span
+            class="hljs-string">''</span>)</code></pre>
 
-<p><strong>Contoh:</strong></p>
+    <blockquote>
+        <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel get</p>
+    </blockquote>
 
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">echo</span> <span class="hljs-variable">$app</span>-&gt;assets-&gt;url().<span class="hljs-string">"fonts/"</span>;</code></pre>
-
-
-
-<h2 id="request">Request</h2>
-
-<p><a href="#kecik-framework">top</a></p>
-
-<p>Request merupakan bentuk lain dari penggunaan <code>$_GET</code>, <code>$_POST</code> dan <code>$_SERVER</code></p>
-
-
-
-<h4 id="get-1"><strong>get()</strong></h4>
-
-<p>Anda dapat menggunakan fungsi get untuk mendapatkan nilai dari <code>$_GET</code></p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs ">get(<span class="hljs-variable">$var</span>=<span class="hljs-string">''</span>)</code></pre>
-
-<blockquote>
-  <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel get</p>
-</blockquote>
-
-<p><strong>Contoh:</strong></p>
+    <p><strong>Contoh:</strong></p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs ">print_r(<span class="hljs-variable">$this</span>-&gt;request-&gt;get());
-<span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;get(<span class="hljs-string">'x'</span>);</code></pre>
+    <span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;get(<span
+            class="hljs-string">'x'</span>);</code></pre>
 
 
+    <h4 id="post"><strong>post()</strong></h4>
 
-<h4 id="post"><strong>post()</strong></h4>
-
-<p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari <code>$_POST</code></p>
-
+    <p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari <code>$_POST</code></p>
 
 
-<pre class="prettyprint"><code class="language-php hljs ">post(<span class="hljs-variable">$var</span>=<span class="hljs-string">''</span>)</code></pre>
+    <pre class="prettyprint"><code class="language-php hljs ">post(<span class="hljs-variable">$var</span>=<span
+            class="hljs-string">''</span>)</code></pre>
 
-<blockquote>
-  <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel post</p>
-</blockquote>
+    <blockquote>
+        <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel post</p>
+    </blockquote>
 
-<p><strong>Contoh:</strong></p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs ">print_r(<span class="hljs-variable">$this</span>-&gt;request-&gt;post());
-<span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;post(<span class="hljs-string">'x'</span>);</code></pre>
-
-
-
-<h4 id="put"><strong>put()</strong></h4>
-
-<p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method <code>put</code></p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs ">put(<span class="hljs-variable">$var</span>=<span class="hljs-string">''</span>)</code></pre>
-
-<blockquote>
-  <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel post</p>
-</blockquote>
-
-<p><strong>Contoh:</strong></p>
+    <p><strong>Contoh:</strong></p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs ">print_r(<span class="hljs-variable">$this</span>-&gt;request-&gt;post());
-<span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;post(<span class="hljs-string">'x'</span>);</code></pre>
+    <span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;post(<span
+            class="hljs-string">'x'</span>);</code></pre>
+
+
+    <h4 id="put"><strong>put()</strong></h4>
+
+    <p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method <code>put</code></p>
+
+
+    <pre class="prettyprint"><code class="language-php hljs ">put(<span class="hljs-variable">$var</span>=<span
+            class="hljs-string">''</span>)</code></pre>
+
+    <blockquote>
+        <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel post</p>
+    </blockquote>
+
+    <p><strong>Contoh:</strong></p>
 
 
 
-<h4 id="delete-1"><strong>delete()</strong></h4>
+<pre class="prettyprint"><code class="language-php hljs ">print_r(<span class="hljs-variable">$this</span>-&gt;request-&gt;post());
+    <span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;post(<span
+            class="hljs-string">'x'</span>);</code></pre>
 
-<p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method <code>delete</code></p>
+
+    <h4 id="delete-1"><strong>delete()</strong></h4>
+
+    <p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method <code>delete</code></p>
 
 
+    <pre class="prettyprint"><code class="language-php hljs ">delete(<span class="hljs-variable">$var</span>=<span
+            class="hljs-string">''</span>)</code></pre>
 
-<pre class="prettyprint"><code class="language-php hljs ">delete(<span class="hljs-variable">$var</span>=<span class="hljs-string">''</span>)</code></pre>
+    <blockquote>
+        <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel post</p>
+    </blockquote>
 
-<blockquote>
-  <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel post</p>
-</blockquote>
-
-<p><strong>Contoh:</strong></p>
+    <p><strong>Contoh:</strong></p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs ">print_r(<span class="hljs-variable">$this</span>-&gt;request-&gt;delete());
-<span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;delete(<span class="hljs-string">'x'</span>);</code></pre>
+    <span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;delete(<span
+            class="hljs-string">'x'</span>);</code></pre>
 
 
+    <h4 id="options"><strong>options()</strong></h4>
 
-<h4 id="options"><strong>options()</strong></h4>
-
-<p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method <code>options</code></p>
-
+    <p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method <code>options</code></p>
 
 
-<pre class="prettyprint"><code class="language-php hljs ">options(<span class="hljs-variable">$var</span>=<span class="hljs-string">''</span>)</code></pre>
+    <pre class="prettyprint"><code class="language-php hljs ">options(<span class="hljs-variable">$var</span>=<span
+            class="hljs-string">''</span>)</code></pre>
 
-<blockquote>
-  <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel post</p>
-</blockquote>
+    <blockquote>
+        <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel post</p>
+    </blockquote>
 
-<p><strong>Contoh:</strong></p>
+    <p><strong>Contoh:</strong></p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs ">print_r(<span class="hljs-variable">$this</span>-&gt;request-&gt;options());
-<span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;options(<span class="hljs-string">'x'</span>);</code></pre>
+    <span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;options(<span
+            class="hljs-string">'x'</span>);</code></pre>
 
 
+    <h4 id="patch"><strong>patch()</strong></h4>
 
-<h4 id="patch"><strong>patch()</strong></h4>
-
-<p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method <code>patch</code></p>
-
+    <p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method <code>patch</code></p>
 
 
-<pre class="prettyprint"><code class="language-php hljs ">patch(<span class="hljs-variable">$var</span>=<span class="hljs-string">''</span>)</code></pre>
+    <pre class="prettyprint"><code class="language-php hljs ">patch(<span class="hljs-variable">$var</span>=<span
+            class="hljs-string">''</span>)</code></pre>
 
-<blockquote>
-  <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel post</p>
-</blockquote>
+    <blockquote>
+        <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel post</p>
+    </blockquote>
 
-<p><strong>Contoh:</strong></p>
+    <p><strong>Contoh:</strong></p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs ">print_r(<span class="hljs-variable">$this</span>-&gt;request-&gt;patch());
-<span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;patch(<span class="hljs-string">'x'</span>);</code></pre>
+    <span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;patch(<span
+            class="hljs-string">'x'</span>);</code></pre>
 
 
+    <h4 id="file"><strong>file()</strong></h4>
 
-<h4 id="file"><strong>file()</strong></h4>
-
-<p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method <code>file</code></p>
-
+    <p>Anda dapat menggunakan fungsi post untuk mendapatkan nilai dari method <code>file</code></p>
 
 
-<pre class="prettyprint"><code class="language-php hljs ">file(<span class="hljs-variable">$file</span>)</code></pre>
+    <pre class="prettyprint"><code class="language-php hljs ">file(<span
+            class="hljs-variable">$file</span>)</code></pre>
 
-<blockquote>
-  <p>paramater <strong><code>$file</code></strong> berisikan nama dari variabel FILES</p>
-</blockquote>
+    <blockquote>
+        <p>paramater <strong><code>$file</code></strong> berisikan nama dari variabel FILES</p>
+    </blockquote>
 
-<p><strong>Contoh:</strong></p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$x</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;file(<span class="hljs-string">'photo'</span>)-&gt;move(<span class="hljs-variable">$source</span>, <span class="hljs-variable">$destination</span>);</code></pre>
+    <p><strong>Contoh:</strong></p>
 
 
+    <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$x</span> = <span
+            class="hljs-variable">$this</span>-&gt;request-&gt;file(<span
+            class="hljs-string">'photo'</span>)-&gt;move(<span class="hljs-variable">$source</span>, <span
+            class="hljs-variable">$destination</span>);</code></pre>
 
-<h4 id="server"><strong>server()</strong></h4>
 
-<p>Anda dapat menggunakan fungsi server untuk mendapatkan nilai dari <code>$_SERVER</code></p>
+    <h4 id="server"><strong>server()</strong></h4>
+
+    <p>Anda dapat menggunakan fungsi server untuk mendapatkan nilai dari <code>$_SERVER</code></p>
 
 
+    <pre class="prettyprint"><code class="language-php hljs ">server(<span class="hljs-variable">$var</span>=<span
+            class="hljs-string">''</span>)</code></pre>
 
-<pre class="prettyprint"><code class="language-php hljs ">server(<span class="hljs-variable">$var</span>=<span class="hljs-string">''</span>)</code></pre>
+    <blockquote>
+        <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel server</p>
+    </blockquote>
 
-<blockquote>
-  <p>paramater <strong><code>$var</code></strong> berisikan nama dari variabel server</p>
-</blockquote>
-
-<p><strong>Contoh:</strong></p>
+    <p><strong>Contoh:</strong></p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs ">print_r(<span class="hljs-variable">$this</span>-&gt;request-&gt;server());
-<span class="hljs-variable">$host</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;server(<span class="hljs-string">'HTTP_HOST'</span>);</code></pre>
+    <span class="hljs-variable">$host</span> = <span class="hljs-variable">$this</span>-&gt;request-&gt;server(<span
+            class="hljs-string">'HTTP_HOST'</span>);</code></pre>
 
-<hr>
-
-
-
-<h2 id="mvc"><strong>MVC</strong></h2>
-
-<p>Framework ini juga mendukung MVC sederhana, dimana route akan memanggil Controller dan Controller akan memanggil Model atau/dan View.</p>
+    <hr>
 
 
+    <h2 id="mvc"><strong>MVC</strong></h2>
 
-<h2 id="controller">Controller</h2>
+    <p>Framework ini juga mendukung MVC sederhana, dimana route akan memanggil Controller dan Controller akan memanggil
+        Model atau/dan View.</p>
 
-<p><a href="#kecik-framework">top</a></p>
 
-<p>Untuk membuat controller caranya cukup mudah, kita tinggal membuat file dengan nama sesuai dengan nama controllernya dan disimpan pada direktory yang sudah disetting sebelumnya melalui config, berikut ini code sederhana sebuah controller</p>
+    <h2 id="controller">Controller</h2>
+
+    <p><a href="#kecik-framework">top</a></p>
+
+    <p>Untuk membuat controller caranya cukup mudah, kita tinggal membuat file dengan nama sesuai dengan nama
+        controllernya dan disimpan pada direktory yang sudah disetting sebelumnya melalui config, berikut ini code
+        sederhana sebuah controller</p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-comment">// file welcome.php</span>
-<span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
+    <span class="hljs-comment">// file welcome.php</span>
+    <span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
 
-<span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span class="hljs-title">Controller</span>;
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span
+            class="hljs-title">Controller</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span
+            class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(<span class="hljs-variable">$app</span>)</span> {</span>
-        <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span
+            class="hljs-params">(<span class="hljs-variable">$app</span>)</span> {</span>
+    <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
     }
-}</code></pre>
+    }</code></pre>
 
-<p>Cara menggunakan controller tersebut pada route adalah sebagai berikut</p>
+    <p>Cara menggunakan controller tersebut pada route adalah sebagai berikut</p>
 
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'/'</span>, <span class="hljs-keyword">new</span> Controller\Welcome(<span class="hljs-variable">$app</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(<span class="hljs-variable">$controller</span>)</span> {</span>
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span
+        class="hljs-string">'/'</span>, <span class="hljs-keyword">new</span> Controller\Welcome(<span
+        class="hljs-variable">$app</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span
+        class="hljs-params">(<span class="hljs-variable">$controller</span>)</span> {</span>
 
-});</code></pre>
+    });</code></pre>
 
-<ul>
-<li><strong>Menggunakan Parameter</strong> <br>
-Untuk menggunakan parameter pada controller caranya juga cukup mudah, tinggal tambah parameter pada constructor dan pada saat controller dibuat tinggal masukan parameter contructornya</li>
-</ul>
+    <ul>
+        <li><strong>Menggunakan Parameter</strong> <br>
+            Untuk menggunakan parameter pada controller caranya juga cukup mudah, tinggal tambah parameter pada
+            constructor dan pada saat controller dibuat tinggal masukan parameter contructornya
+        </li>
+    </ul>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-comment">// file welcome.php</span>
-<span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
+    <span class="hljs-comment">// file welcome.php</span>
+    <span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
 
-<span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span class="hljs-title">Controller</span>;
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span
+            class="hljs-title">Controller</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span
+            class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
     <span class="hljs-keyword">var</span> <span class="hljs-variable">$dbcon</span>;
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(<span class="hljs-variable">$app</span>, <span class="hljs-variable">$dbcon</span>)</span> {</span>
-        <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
-        <span class="hljs-variable">$this</span>-&gt;dbcon = <span class="hljs-variable">$dbcon</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span
+            class="hljs-params">(<span class="hljs-variable">$app</span>, <span
+            class="hljs-variable">$dbcon</span>)</span> {</span>
+    <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
+    <span class="hljs-variable">$this</span>-&gt;dbcon = <span class="hljs-variable">$dbcon</span>;
     }
-}</code></pre>
+    }</code></pre>
 
-<p>Selanjutnya cara menggunakannya pada route sebagai berikut:</p>
+    <p>Selanjutnya cara menggunakannya pada route sebagai berikut:</p>
 
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'/'</span>, <span class="hljs-keyword">new</span> Controller\Welcome(<span class="hljs-variable">$app</span>, <span class="hljs-variable">$dbcon</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(<span class="hljs-variable">$controller</span>)</span> {</span>
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span
+        class="hljs-string">'/'</span>, <span class="hljs-keyword">new</span> Controller\Welcome(<span
+        class="hljs-variable">$app</span>, <span class="hljs-variable">$dbcon</span>), <span class="hljs-function"><span
+        class="hljs-keyword">function</span><span class="hljs-params">(<span
+        class="hljs-variable">$controller</span>)</span> {</span>
 
-});</code></pre>
+    });</code></pre>
 
-<ul>
-<li><strong>Menggunakan Method/Fungsi</strong> <br>
-Untuk menggunakan method/fungsi pada controller juga cukup mudah caranya, tinggal di panggil pada bagian callback route. Berikut ini cara penulisan code controller mennggunakan method/fungsi.</li>
-</ul>
+    <ul>
+        <li><strong>Menggunakan Method/Fungsi</strong> <br>
+            Untuk menggunakan method/fungsi pada controller juga cukup mudah caranya, tinggal di panggil pada bagian
+            callback route. Berikut ini cara penulisan code controller mennggunakan method/fungsi.
+        </li>
+    </ul>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-comment">// file welcome.php</span>
-<span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
+    <span class="hljs-comment">// file welcome.php</span>
+    <span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
 
-<span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span class="hljs-title">Controller</span>;
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span
+            class="hljs-title">Controller</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span
+            class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
     <span class="hljs-keyword">var</span> <span class="hljs-variable">$dbcon</span>;
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(<span class="hljs-variable">$app</span>, <span class="hljs-variable">$dbcon</span>)</span> {</span>
-        <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
-        <span class="hljs-variable">$this</span>-&gt;dbcon = <span class="hljs-variable">$dbcon</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span
+            class="hljs-params">(<span class="hljs-variable">$app</span>, <span
+            class="hljs-variable">$dbcon</span>)</span> {</span>
+    <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
+    <span class="hljs-variable">$this</span>-&gt;dbcon = <span class="hljs-variable">$dbcon</span>;
     }
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span><span class="hljs-params">()</span> {</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-string">'Kecik berkata: Controler-&gt;index()'</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">index</span><span
+            class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Kecik berkata: Controler-&gt;index()'</span>;
     }
-}</code></pre>
+    }</code></pre>
 
-<p>Selanjutnya cara menggunakan method atau fungsi tersebut pada route adalah sebagai berikut.</p>
+    <p>Selanjutnya cara menggunakan method atau fungsi tersebut pada route adalah sebagai berikut.</p>
 
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'/'</span>, <span class="hljs-keyword">new</span> Controller\Welcome(<span class="hljs-variable">$app</span>, <span class="hljs-variable">$dbcon</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(<span class="hljs-variable">$controller</span>)</span> {</span>
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span
+        class="hljs-string">'/'</span>, <span class="hljs-keyword">new</span> Controller\Welcome(<span
+        class="hljs-variable">$app</span>, <span class="hljs-variable">$dbcon</span>), <span class="hljs-function"><span
+        class="hljs-keyword">function</span><span class="hljs-params">(<span
+        class="hljs-variable">$controller</span>)</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index();
-});</code></pre>
+    });</code></pre>
 
-<ul>
-<li><strong>Menggunakan parameter pada Method/Fungsi</strong> <br>
-Untuk memberikan paramter pada Method/Fungsi dalam controller dapat kita berikan pada saat pemanggilan method pada callback route, berikut ini contoh code controller dengan method/fungsi berparameter.</li>
-</ul>
+    <ul>
+        <li><strong>Menggunakan parameter pada Method/Fungsi</strong> <br>
+            Untuk memberikan paramter pada Method/Fungsi dalam controller dapat kita berikan pada saat pemanggilan
+            method pada callback route, berikut ini contoh code controller dengan method/fungsi berparameter.
+        </li>
+    </ul>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-comment">// file welcome.php</span>
-<span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
+    <span class="hljs-comment">// file welcome.php</span>
+    <span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
 
-<span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span class="hljs-title">Controller</span>;
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span
+            class="hljs-title">Controller</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span
+            class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
     <span class="hljs-keyword">var</span> <span class="hljs-variable">$dbcon</span>;
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(<span class="hljs-variable">$app</span>, <span class="hljs-variable">$dbcon</span>)</span> {</span>
-        <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
-        <span class="hljs-variable">$this</span>-&gt;dbcon = <span class="hljs-variable">$dbcon</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span
+            class="hljs-params">(<span class="hljs-variable">$app</span>, <span
+            class="hljs-variable">$dbcon</span>)</span> {</span>
+    <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
+    <span class="hljs-variable">$this</span>-&gt;dbcon = <span class="hljs-variable">$dbcon</span>;
     }
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span><span class="hljs-params">()</span> {</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-string">'Kecik berkata: Controler-&gt;index()'</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">index</span><span
+            class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Kecik berkata: Controler-&gt;index()'</span>;
     }
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hello</span><span class="hljs-params">(<span class="hljs-variable">$nama</span>)</span> {</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-string">"Hello, $nama"</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">hello</span><span class="hljs-params">(<span
+            class="hljs-variable">$nama</span>)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"Hello, $nama"</span>;
     }
-}</code></pre>
+    }</code></pre>
 
-<p>Cara menggunakannya pada route dengan cara sebagai berikut.</p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'/hello/:nama'</span>, <span class="hljs-keyword">new</span> Controller\Welcome(<span class="hljs-variable">$app</span>, <span class="hljs-variable">$dbcon</span>), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">(<span class="hljs-variable">$controller</span>, <span class="hljs-variable">$nama</span>)</span> {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index(<span class="hljs-variable">$nama</span>);
-});</code></pre>
+    <p>Cara menggunakannya pada route dengan cara sebagai berikut.</p>
 
 
 
-<h2 id="middleware">Middleware</h2>
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$app</span>-&gt;get(<span
+        class="hljs-string">'/hello/:nama'</span>, <span class="hljs-keyword">new</span> Controller\Welcome(<span
+        class="hljs-variable">$app</span>, <span class="hljs-variable">$dbcon</span>), <span class="hljs-function"><span
+        class="hljs-keyword">function</span><span class="hljs-params">(<span
+        class="hljs-variable">$controller</span>, <span class="hljs-variable">$nama</span>)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index(<span
+            class="hljs-variable">$nama</span>);
+    });</code></pre>
 
-<p><a href="#kecik-framework">top</a> <br>
-Middleware merupakan fungsi-fungsi yang akan dijalankan sebelum/setelah callback pada route di eksekusi.</p>
+
+    <h2 id="middleware">Middleware</h2>
+
+    <p><a href="#kecik-framework">top</a> <br>
+        Middleware merupakan fungsi-fungsi yang akan dijalankan sebelum/setelah callback pada route di eksekusi.</p>
 
 
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$mw1</span> = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$mw1</span> = <span
+        class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">echo</span> <span class="hljs-string">'is Middleware 1 [Before]'</span>;
-};
-<span class="hljs-variable">$mw2</span> = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    };
+    <span class="hljs-variable">$mw2</span> = <span class="hljs-function"><span
+            class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">echo</span> <span class="hljs-string">'is Middleware 2 [Before]'</span>;
-};
-<span class="hljs-variable">$mw3</span> = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    };
+    <span class="hljs-variable">$mw3</span> = <span class="hljs-function"><span
+            class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">echo</span> <span class="hljs-string">'is Middleware 3 [After]'</span>;
-};
+    };
 
-<span class="hljs-variable">$mw4</span> = <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-variable">$mw4</span> = <span class="hljs-function"><span
+            class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">echo</span> <span class="hljs-string">'is Middleware 4 [After]'</span>;
-};
+    };
 
-<span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'middleware'</span>, <span class="hljs-keyword">array</span>(<span class="hljs-variable">$mw1</span>, mw2), <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'middleware'</span>, <span
+            class="hljs-keyword">array</span>(<span class="hljs-variable">$mw1</span>, mw2), <span
+            class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
     <span class="hljs-keyword">return</span> <span class="hljs-string">'is Response Middleware Route'</span>;
-}, <span class="hljs-keyword">array</span>(<span class="hljs-variable">$mw3</span>, <span class="hljs-variable">$mw4</span>));</code></pre>
+    }, <span class="hljs-keyword">array</span>(<span class="hljs-variable">$mw3</span>, <span
+            class="hljs-variable">$mw4</span>));</code></pre>
 
 
+    <h2 id="model">Model</h2>
 
-<h2 id="model">Model</h2>
+    <p><a href="#kecik-framework">top</a></p>
 
-<p><a href="#kecik-framework">top</a></p>
-
-<p>Untuk membuat model caranya cukup mudah, kita tinggal membuat file dengan nama sesuai dengan nama modelnya dan disimpan pada direktory yang sudah disetting sebelumnya melalui config, berikut ini code sederhana sebuah model</p>
+    <p>Untuk membuat model caranya cukup mudah, kita tinggal membuat file dengan nama sesuai dengan nama modelnya dan
+        disimpan pada direktory yang sudah disetting sebelumnya melalui config, berikut ini code sederhana sebuah
+        model</p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-comment">//file data.php</span>
-<span class="hljs-keyword">namespace</span> <span class="hljs-title">Model</span>;
+    <span class="hljs-comment">//file data.php</span>
+    <span class="hljs-keyword">namespace</span> <span class="hljs-title">Model</span>;
 
-<span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span class="hljs-title">Model</span>;
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span class="hljs-title">Model</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Data</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Model</span> {</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Data</span> <span
+            class="hljs-keyword">extends</span> <span class="hljs-title">Model</span> {</span>
 
-    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">static</span> <span class="hljs-variable">$table</span> = <span class="hljs-string">'data'</span>;
+    <span class="hljs-keyword">protected</span> <span class="hljs-keyword">static</span> <span class="hljs-variable">$table</span>
+    = <span class="hljs-string">'data'</span>;
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(<span class="hljs-variable">$id</span>=<span class="hljs-string">''</span>)</span> {</span>
-        <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$id</span>);
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span
+            class="hljs-params">(<span class="hljs-variable">$id</span>=<span
+            class="hljs-string">''</span>)</span> {</span>
+    <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$id</span>);
     }
-}</code></pre>
+    }</code></pre>
 
-<p>Cara penggunaan Model pada controller adalah sebagai berikut.</p>
+    <p>Cara penggunaan Model pada controller adalah sebagai berikut.</p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-comment">// file welcome.php</span>
-<span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
+    <span class="hljs-comment">// file welcome.php</span>
+    <span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
 
-<span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span class="hljs-title">Controller</span>;
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span
+            class="hljs-title">Controller</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span
+            class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
     <span class="hljs-keyword">var</span> <span class="hljs-variable">$dbcon</span>;
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(<span class="hljs-variable">$app</span>, <span class="hljs-variable">$dbcon</span>)</span> {</span>
-        <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
-        <span class="hljs-variable">$this</span>-&gt;dbcon = <span class="hljs-variable">$dbcon</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span
+            class="hljs-params">(<span class="hljs-variable">$app</span>, <span
+            class="hljs-variable">$dbcon</span>)</span> {</span>
+    <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
+    <span class="hljs-variable">$this</span>-&gt;dbcon = <span class="hljs-variable">$dbcon</span>;
     }
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">index</span><span class="hljs-params">()</span> {</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-string">'Kecik berkata: Controler-&gt;index()'</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">index</span><span
+            class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">'Kecik berkata: Controler-&gt;index()'</span>;
     }
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">hello</span><span class="hljs-params">(<span class="hljs-variable">$nama</span>)</span> {</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-string">"Hello, $nama"</span>;
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">hello</span><span class="hljs-params">(<span
+            class="hljs-variable">$nama</span>)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-string">"Hello, $nama"</span>;
     }
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">insert</span><span class="hljs-params">()</span> {</span>
-        <span class="hljs-variable">$model</span> = <span class="hljs-keyword">new</span> \Model\Data();
-            <span class="hljs-variable">$model</span>-&gt;nama = <span class="hljs-variable">$this</span>-&gt;request-&gt;post(<span class="hljs-string">'nama'</span>);
-            <span class="hljs-variable">$model</span>-&gt;email = <span class="hljs-variable">$this</span>-&gt;request-&gt;post(<span class="hljs-string">'email'</span>);
-        <span class="hljs-variable">$sql</span> = <span class="hljs-variable">$model</span>-&gt;save();
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">insert</span><span
+            class="hljs-params">()</span> {</span>
+    <span class="hljs-variable">$model</span> = <span class="hljs-keyword">new</span> \Model\Data();
+    <span class="hljs-variable">$model</span>-&gt;nama = <span
+            class="hljs-variable">$this</span>-&gt;request-&gt;post(<span class="hljs-string">'nama'</span>);
+    <span class="hljs-variable">$model</span>-&gt;email = <span class="hljs-variable">$this</span>-&gt;request-&gt;post(<span
+            class="hljs-string">'email'</span>);
+    <span class="hljs-variable">$sql</span> = <span class="hljs-variable">$model</span>-&gt;save();
     }
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">update</span><span class="hljs-params">(<span class="hljs-variable">$id</span>)</span> {</span>
-        <span class="hljs-variable">$model</span> = <span class="hljs-keyword">new</span> \Model\Data(<span class="hljs-keyword">array</span>(<span class="hljs-string">'id'</span>=&gt;<span class="hljs-variable">$id</span>));
-            <span class="hljs-variable">$model</span>-&gt;nama = <span class="hljs-variable">$this</span>-&gt;request-&gt;post(<span class="hljs-string">'nama'</span>);
-            <span class="hljs-variable">$model</span>-&gt;email = <span class="hljs-variable">$this</span>-&gt;request-&gt;post(<span class="hljs-string">'email'</span>);
-        <span class="hljs-variable">$sql</span> = <span class="hljs-variable">$model</span>-&gt;save();
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">update</span><span class="hljs-params">(<span
+            class="hljs-variable">$id</span>)</span> {</span>
+    <span class="hljs-variable">$model</span> = <span class="hljs-keyword">new</span> \Model\Data(<span
+            class="hljs-keyword">array</span>(<span class="hljs-string">'id'</span>=&gt;<span
+            class="hljs-variable">$id</span>));
+    <span class="hljs-variable">$model</span>-&gt;nama = <span
+            class="hljs-variable">$this</span>-&gt;request-&gt;post(<span class="hljs-string">'nama'</span>);
+    <span class="hljs-variable">$model</span>-&gt;email = <span class="hljs-variable">$this</span>-&gt;request-&gt;post(<span
+            class="hljs-string">'email'</span>);
+    <span class="hljs-variable">$sql</span> = <span class="hljs-variable">$model</span>-&gt;save();
     }
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">delete</span><span class="hljs-params">(<span class="hljs-variable">$id</span>)</span> {</span>
-        <span class="hljs-variable">$model</span> = <span class="hljs-keyword">new</span> \Model\Data(<span class="hljs-keyword">array</span>(<span class="hljs-string">'id'</span>=&gt;<span class="hljs-variable">$id</span>));
-        <span class="hljs-variable">$sql</span> = <span class="hljs-variable">$model</span>-&gt;delete();
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">delete</span><span class="hljs-params">(<span
+            class="hljs-variable">$id</span>)</span> {</span>
+    <span class="hljs-variable">$model</span> = <span class="hljs-keyword">new</span> \Model\Data(<span
+            class="hljs-keyword">array</span>(<span class="hljs-string">'id'</span>=&gt;<span
+            class="hljs-variable">$id</span>));
+    <span class="hljs-variable">$sql</span> = <span class="hljs-variable">$model</span>-&gt;delete();
     }
-}</code></pre>
+    }</code></pre>
 
 
+    <h2 id="view"> View</h2>
 
-<h2 id="view"> View</h2>
+    <p><a href="#kecik-framework">top</a></p>
 
-<p><a href="#kecik-framework">top</a></p>
-
-<p>Untuk membuat view juga cukup mudah, karena disini anda tidak perlu membuat class/objek, tapi cukup file php biasa saja yang akan dipanggil oleh controller, berikut code view.</p>
+    <p>Untuk membuat view juga cukup mudah, karena disini anda tidak perlu membuat class/objek, tapi cukup file php
+        biasa saja yang akan dipanggil oleh controller, berikut code view.</p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs ">&lt;!-- file welcome.php --&gt;
-<span class="hljs-preprocessor">&lt;?php</span> <span class="hljs-keyword">echo</span> <span class="hljs-string">'Ini dari View'</span> <span class="hljs-preprocessor">?&gt;</span></code></pre>
+    <span class="hljs-preprocessor">&lt;?php</span> <span class="hljs-keyword">echo</span> <span class="hljs-string">'Ini dari View'</span>
+    <span class="hljs-preprocessor">?&gt;</span></code></pre>
 
-<p>Cara menggunakan file view dari controller adalah sebagai berikut.</p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-comment">// file welcome.php</span>
-<span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
-
-<span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span class="hljs-title">Controller</span>;
-
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
-
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(<span class="hljs-variable">$app</span>)</span> {</span>
-        <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
-    }
-
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">welcome</span><span class="hljs-params">()</span> {</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$this</span>-&gt;view(<span class="hljs-string">'welcome'</span>);
-    }
-}</code></pre>
-
-<p>Cara mengirimkan variable ke view adalah sebagai berikut</p>
+    <p>Cara menggunakan file view dari controller adalah sebagai berikut.</p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-comment">// file welcome.php</span>
-<span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
+    <span class="hljs-comment">// file welcome.php</span>
+    <span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
 
-<span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span class="hljs-title">Controller</span>;
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span
+            class="hljs-title">Controller</span>;
 
-<span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span
+            class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span class="hljs-params">(<span class="hljs-variable">$app</span>)</span> {</span>
-        <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span
+            class="hljs-params">(<span class="hljs-variable">$app</span>)</span> {</span>
+    <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
     }
 
-    <span class="hljs-keyword">public</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">welcome</span><span class="hljs-params">(<span class="hljs-variable">$nama</span>)</span> {</span>
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$this</span>-&gt;view(<span class="hljs-string">'welcome'</span>, <span class="hljs-keyword">array</span>(<span class="hljs-string">'nama'</span>=&gt;<span class="hljs-variable">$nama</span>));
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">welcome</span><span
+            class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$this</span>-&gt;view(<span
+            class="hljs-string">'welcome'</span>);
     }
-}</code></pre>
+    }</code></pre>
 
-<hr>
-
-
-
-<h2 id="url-1">Url</h2>
-
-<p><a href="#kecik-framework">top</a></p>
-
-<p>Url sangat diperlukan dalam mempermudah pekerjaan kita untuk mengambil nilai seperti protocol, base path, base url, bahkan untuk melakukan redirect ataupun membuat link ke route lain.</p>
+    <p>Cara mengirimkan variable ke view adalah sebagai berikut</p>
 
 
 
-<h4 id="protocol"><strong>protocol()</strong></h4>
+<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
+    <span class="hljs-comment">// file welcome.php</span>
+    <span class="hljs-keyword">namespace</span> <span class="hljs-title">Controller</span>;
 
-<p>Untuk mendapatkan nilai protocol</p>
+    <span class="hljs-keyword">use</span> <span class="hljs-title">Kecik</span>\<span
+            class="hljs-title">Controller</span>;
 
+    <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-title">Welcome</span> <span
+            class="hljs-keyword">extends</span> <span class="hljs-title">Controller</span>{</span>
 
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">__construct</span><span
+            class="hljs-params">(<span class="hljs-variable">$app</span>)</span> {</span>
+    <span class="hljs-keyword">parent</span>::__construct(<span class="hljs-variable">$app</span>);
+    }
 
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">echo</span> <span class="hljs-variable">$this</span>-&gt;url-&gt;protocol();</code></pre>
+    <span class="hljs-keyword">public</span> <span class="hljs-function"><span
+            class="hljs-keyword">function</span> <span class="hljs-title">welcome</span><span class="hljs-params">(<span
+            class="hljs-variable">$nama</span>)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$this</span>-&gt;view(<span
+            class="hljs-string">'welcome'</span>, <span class="hljs-keyword">array</span>(<span class="hljs-string">'nama'</span>=&gt;<span
+            class="hljs-variable">$nama</span>));
+    }
+    }</code></pre>
 
-
-
-<h4 id="basepath"><strong>basePath()</strong></h4>
-
-<p>Untuk mendapatkan nilai Path/Direktori Dasar</p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">echo</span> <span class="hljs-variable">$this</span>-&gt;url-&gt;basePath();</code></pre>
-
-
-
-<h4 id="baseurl"><strong>baseUrl()</strong></h4>
-
-<p>Untuk mendapatkan nilai dasar Url</p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">echo</span> <span class="hljs-variable">$this</span>-&gt;url-&gt;baseUrl();</code></pre>
-
+    <hr>
 
 
-<h4 id="redirectroute"><strong>redirect($route)</strong></h4>
+    <h2 id="url-1">Url</h2>
 
-<p>Untuk melakukan redirect ke route lain</p>
+    <p><a href="#kecik-framework">top</a></p>
 
-
-
-<pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$this</span>-&gt;url-&gt;redirect(<span class="hljs-string">'login'</span>);</code></pre>
-
+    <p>Url sangat diperlukan dalam mempermudah pekerjaan kita untuk mengambil nilai seperti protocol, base path, base
+        url, bahkan untuk melakukan redirect ataupun membuat link ke route lain.</p>
 
 
-<h4 id="toroute"><strong>to($route)</strong></h4>
+    <h4 id="protocol"><strong>protocol()</strong></h4>
 
-<p>Untuk mencetak Url dengan route</p>
-
-
-
-<pre class="prettyprint"><code class="language-php hljs ">&lt;a href=<span class="hljs-string">"&lt;?php $this-&gt;to('home') ?&gt;"</span>&gt;HOME&lt;/a&gt;</code></pre>
+    <p>Untuk mendapatkan nilai protocol</p>
 
 
-
-<h4 id="linktoroute"><strong>linkTo($route)</strong></h4>
-
-<p>Untuk mendapatkan nilai Url dengan Route</p>
+    <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">echo</span> <span
+            class="hljs-variable">$this</span>-&gt;url-&gt;protocol();</code></pre>
 
 
+    <h4 id="basepath"><strong>basePath()</strong></h4>
 
-<pre class="prettyprint"><code class="language-php hljs ">&lt;a href=<span class="hljs-string">"&lt;?php echo $this-&gt;linkTo('home') ?&gt;"</span>&gt;Home&lt;/a&gt;</code></pre>
-
-<hr>
-
+    <p>Untuk mendapatkan nilai Path/Direktori Dasar</p>
 
 
-<h2 id="template">Template</h2>
-
-<p><a href="#kecik-framework">top</a></p>
-
-<p>Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat file template pada direktori yang telah anda setting sebelumnya pada config. Berikut ini adalah contoh sederhana dari code template</p>
+    <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">echo</span> <span
+            class="hljs-variable">$this</span>-&gt;url-&gt;basePath();</code></pre>
 
 
+    <h4 id="baseurl"><strong>baseUrl()</strong></h4>
 
-<pre class="prettyprint"><code class="language-html hljs "><span class="hljs-comment">&lt;!-- file template.php --&gt;</span>
-<span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">lang</span>=<span class="hljs-value">"en"</span>&gt;</span>
+    <p>Untuk mendapatkan nilai dasar Url</p>
+
+
+    <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-keyword">echo</span> <span
+            class="hljs-variable">$this</span>-&gt;url-&gt;baseUrl();</code></pre>
+
+
+    <h4 id="redirectroute"><strong>redirect($route)</strong></h4>
+
+    <p>Untuk melakukan redirect ke route lain</p>
+
+
+    <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-variable">$this</span>-&gt;url-&gt;redirect(<span
+            class="hljs-string">'login'</span>);</code></pre>
+
+
+    <h4 id="toroute"><strong>to($route)</strong></h4>
+
+    <p>Untuk mencetak Url dengan route</p>
+
+
+    <pre class="prettyprint"><code class="language-php hljs ">&lt;a href=<span class="hljs-string">"&lt;?php $this-&gt;to('home') ?&gt;"</span>&gt;HOME&lt;/a&gt;
+    </code></pre>
+
+
+    <h4 id="linktoroute"><strong>linkTo($route)</strong></h4>
+
+    <p>Untuk mendapatkan nilai Url dengan Route</p>
+
+
+    <pre class="prettyprint"><code class="language-php hljs ">&lt;a href=<span class="hljs-string">"&lt;?php echo $this-&gt;linkTo('home') ?&gt;"</span>&gt;Home&lt;/a&gt;
+    </code></pre>
+
+    <hr>
+
+
+    <h2 id="template">Template</h2>
+
+    <p><a href="#kecik-framework">top</a></p>
+
+    <p>Untuk membuat template pada framework ini juga cukup mudah, anda tinggal membuat file template pada direktori
+        yang telah anda setting sebelumnya pada config. Berikut ini adalah contoh sederhana dari code template</p>
+
+
+
+<pre class="prettyprint"><code class="language-html hljs "><span
+        class="hljs-comment">&lt;!-- file template.php --&gt;</span>
+    <span class="hljs-doctype">&lt;!DOCTYPE html&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">html</span> <span class="hljs-attribute">lang</span>=<span
+            class="hljs-value">"en"</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">head</span>&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span class="hljs-value">"utf-8"</span> /&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>Simple Template<span class="hljs-tag">&lt;/<span class="hljs-title">title</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">charset</span>=<span
+            class="hljs-value">"utf-8"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">title</span>&gt;</span>Simple Template<span class="hljs-tag">&lt;/<span
+            class="hljs-title">title</span>&gt;</span>
 
-        <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"description"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"overview &amp;amp; stats"</span> /&gt;</span>
-        <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span class="hljs-value">"viewport"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"width=device-width, initial-scale=1.0"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span
+            class="hljs-value">"description"</span> <span class="hljs-attribute">content</span>=<span
+            class="hljs-value">"overview &amp;amp; stats"</span> /&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">meta</span> <span class="hljs-attribute">name</span>=<span
+            class="hljs-value">"viewport"</span> <span class="hljs-attribute">content</span>=<span class="hljs-value">"width=device-width, initial-scale=1.0"</span> /&gt;</span>
 
-        @css
+    @css
     <span class="hljs-tag">&lt;/<span class="hljs-title">head</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-title">body</span>&gt;</span>
 
-    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span class="hljs-value">"container"</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-title">div</span> <span class="hljs-attribute">class</span>=<span
+            class="hljs-value">"container"</span>&gt;</span>
 
-        @response
+    @response
 
     <span class="hljs-tag">&lt;/<span class="hljs-title">div</span>&gt;</span>
 
-        @js
+    @js
     <span class="hljs-tag">&lt;/<span class="hljs-title">body</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
+    <span class="hljs-tag">&lt;/<span class="hljs-title">html</span>&gt;</span></code></pre>
 
-<blockquote>
-  <p>Tanda <strong><code>{{</code></strong> dan <strong><code>}}</code></strong> hanya tag pengganti untuk tag <strong><code>&lt;?php</code></strong> dan <strong><code>&gt;</code></strong> untuk mencetak anda dapat menggunakan <strong><code>{{=</code></strong> ini sama dengan <strong><code>&lt;?php echo</code></strong> sedangkan jika ingin menggunakan tanda <strong><code>{{</code></strong> dan <strong><code>}}</code></strong> untuk keperluan AngularJS anda bisa menggunakan tanda <strong><code>\</code></strong> didepan nya, contoh: <strong><code>\{{</code></strong> atau <strong><code>\}}</code></strong>, ini hanya untuk kebutuhan template engine sederhana saja, tapi anda tetap bisa menggunakan tag php</p>
-  
-  <p>Sedangkan <strong><code>@response</code></strong>  atau <strong><code>@yield</code></strong> adalah untuk meletakan hasil output dari controller. <br>
-  Sedangkan <strong><code>@css</code></strong> atau  <strong><code>@js</code></strong> adalah untuk me render assets css atau js.</p>
-  
-  <p>Tag-tag tersebut hanya digunakan pada template saja, tidak berlaku pada View <br>
-  Cara menggunakan template tersebut pada route adalah sebagai berikut.</p>
-</blockquote>
+    <blockquote>
+        <p>Tanda <strong><code>{{</code></strong> dan <strong><code>}}</code></strong> hanya tag pengganti untuk tag
+            <strong><code>&lt;?php</code></strong> dan <strong><code>&gt;</code></strong> untuk mencetak anda dapat
+            menggunakan <strong><code>{{=</code></strong> ini sama dengan <strong><code>&lt;?php echo</code></strong>
+            sedangkan jika ingin menggunakan tanda <strong><code>{{</code></strong> dan <strong><code>}}</code></strong>
+            untuk keperluan AngularJS anda bisa menggunakan tanda <strong><code>\</code></strong> didepan nya, contoh:
+            <strong><code>\{{</code></strong> atau <strong><code>\}}</code></strong>, ini hanya untuk kebutuhan template
+            engine sederhana saja, tapi anda tetap bisa menggunakan tag php</p>
+
+        <p>Sedangkan <strong><code>@response</code></strong> atau <strong><code>@yield</code></strong> adalah untuk
+            meletakan hasil output dari controller. <br>
+            Sedangkan <strong><code>@css</code></strong> atau <strong><code>@js</code></strong> adalah untuk me render
+            assets css atau js.</p>
+
+        <p>Tag-tag tersebut hanya digunakan pada template saja, tidak berlaku pada View <br>
+            Cara menggunakan template tersebut pada route adalah sebagai berikut.</p>
+    </blockquote>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'welcome/:nama'</span>, <span class="hljs-keyword">new</span> Controller\Welcome(<span class="hljs-variable">$app</span>), <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span class="hljs-variable">$controller</span>, <span class="hljs-variable">$nama</span>)</span> {</span>
-    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;welcome(<span class="hljs-variable">$nama</span>);
-})-&gt;template(<span class="hljs-string">'template'</span>);</code></pre>
+    <span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'welcome/:nama'</span>, <span
+            class="hljs-keyword">new</span> Controller\Welcome(<span class="hljs-variable">$app</span>), <span
+            class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(<span
+            class="hljs-variable">$controller</span>, <span class="hljs-variable">$nama</span>)</span> {</span>
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;welcome(<span
+            class="hljs-variable">$nama</span>);
+    })-&gt;template(<span class="hljs-string">'template'</span>);</code></pre>
 
-<p>Mengganti Template (Replace Template)</p>
+    <p>Mengganti Template (Replace Template)</p>
 
 
 
 <pre class="prettyprint"><code class="language-php hljs "><span class="hljs-preprocessor">&lt;?php</span>
-<span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'admin'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
-    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">isset</span>(<span class="hljs-variable">$_SESSION</span>[<span class="hljs-string">'login'</span>])) {
-        <span class="hljs-comment">//** Replace Template</span>
-        <span class="hljs-variable">$this</span>-&gt;template(<span class="hljs-string">'login'</span>, <span class="hljs-keyword">TRUE</span>);
+    <span class="hljs-variable">$app</span>-&gt;get(<span class="hljs-string">'admin'</span>, <span
+            class="hljs-function"><span class="hljs-keyword">function</span><span class="hljs-params">()</span> {</span>
+    <span class="hljs-keyword">if</span> (!<span class="hljs-keyword">isset</span>(<span
+            class="hljs-variable">$_SESSION</span>[<span class="hljs-string">'login'</span>])) {
+    <span class="hljs-comment">//** Replace Template</span>
+    <span class="hljs-variable">$this</span>-&gt;template(<span class="hljs-string">'login'</span>, <span
+            class="hljs-keyword">TRUE</span>);
     } <span class="hljs-keyword">else</span> {
-        <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Admin(<span class="hljs-variable">$this</span>);
-        <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index();
+    <span class="hljs-variable">$controller</span> = <span class="hljs-keyword">new</span> Controller\Admin(<span
+            class="hljs-variable">$this</span>);
+    <span class="hljs-keyword">return</span> <span class="hljs-variable">$controller</span>-&gt;index();
     }
-})-&gt;template(<span class="hljs-string">'template'</span>);</code></pre></div></body>
+    })-&gt;template(<span class="hljs-string">'template'</span>);</code></pre>
+</div>
+</body>
 </html>

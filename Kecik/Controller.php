@@ -7,8 +7,12 @@
  **/
 namespace Kecik;
 
-if (! class_exists('Kecik\Controller')) {
-    class Controller 
+if (!class_exists('Kecik\Controller')) {
+    /**
+     * Class Controller
+     * @package Kecik
+     */
+    class Controller
     {
         protected $request = '';
         protected $url = '';
@@ -19,9 +23,9 @@ if (! class_exists('Kecik\Controller')) {
         //protected $db = '';
 
         /**
-         * Construtor Controller
-         **/
-        public function __construct() 
+         * Controller constructor.
+         */
+        public function __construct()
         {
             //** ID: Silakan tambah inisialisasi controller sendiri disini
             //** EN: Please add your initialitation of controller in this
@@ -38,7 +42,7 @@ if (! class_exists('Kecik\Controller')) {
 
             $libraries = $app->getLibrariesEnabled();
 
-            while(list($idx, $library) = each($libraries)) {
+            while (list($idx, $library) = each($libraries)) {
 
                 if (isset($library[1]) && !empty($library[1])) {
                     $lib = $library[1];
@@ -66,51 +70,49 @@ if (! class_exists('Kecik\Controller')) {
         //-- EN: End add your function/method
 
         /**
-         * view
-         * ID: Funngsi untuk menampilkan view
-         * EN: Function for displaying view
-         * @param string $file
+         * @param $file
          * @param array $param
-         **/
-        protected function view($file, $param=array()) 
+         * @return string
+         */
+        protected function view($file, $param = array())
         {
             extract($param);
-        
-            if (! is_array($file)) {
-                $path =  explode('\\', get_class($this));
+
+            if (!is_array($file)) {
+                $path = explode('\\', get_class($this));
 
                 if (count($path) > 2) {
                     $view_path = '';
 
-                    for($i = 0; $i < count($path)-2; $i++) {
-                        $view_path .= strtolower($path[$i]).'/';
-                    }   
+                    for ($i = 0; $i < count($path) - 2; $i++) {
+                        $view_path .= strtolower($path[$i]) . '/';
+                    }
 
-                    $view_path = Config::get('path.mvc').'/'.$view_path;
+                    $view_path = Config::get('path.mvc') . '/' . $view_path;
                 } else {
                     $view_path = Config::get('path.mvc');
                 }
 
                 if (php_sapi_name() == 'cli') {
-                    $view_path = Config::get('path.basepath').'/'.$view_path;
+                    $view_path = Config::get('path.basepath') . '/' . $view_path;
                 }
             } else {
                 $view_path = Config::get('path.mvc');
 
                 if (isset($file[1])) {
-                    $view_path .= '/'.$file[0];
+                    $view_path .= '/' . $file[0];
                     $file = $file[1];
                 } else {
                     $file = $file[0];
                 }
 
                 if (php_sapi_name() == 'cli') {
-                    $view_path = Config::get('path.basepath').'/'.$view_path; 
+                    $view_path = Config::get('path.basepath') . '/' . $view_path;
                 }
             }
-            
+
             ob_start();
-                include $view_path.'/views/'.$file.'.php';
+            include $view_path . '/views/' . $file . '.php';
             return ob_get_clean();
         }
     }
