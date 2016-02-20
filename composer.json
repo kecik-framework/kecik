@@ -1,24 +1,31 @@
 {
-    "name": "kecik/kecik",
-    "description": "Kecik Framework, micro framework",
-    "keywords": ["kecik", "framework", "micro", "single"],
-    "license": "MIT",
-    "authors": [
-        {
-            "name": "Dony Wahyu Isp",
-            "email": "dna.extrim@gmail.com"
-        }
-    ],
-    "require": {
-        "php": ">=5.4.0"
-    },
-    "autoload": {
-        "psr-0": {"Kecik": "."}
-    },
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.2-dev"
-        }
-    },
-    "minimum-stability": "dev"
+  "name": "kecik/kecik",
+  "description": "Kecik Framework, micro framework",
+  "keywords": [
+    "kecik",
+    "framework",
+    "micro",
+    "single"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Dony Wahyu Isp",
+      "email": "dna.extrim@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.4.0"
+  },
+  "autoload": {
+    "psr-0": {
+      "Kecik": "."
+    }
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "1.2-dev"
+    }
+  },
+  "minimum-stability": "dev"
 }
