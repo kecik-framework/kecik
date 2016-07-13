@@ -2,172 +2,193 @@
 
 namespace Kecik;
 
-/**
- * Request
- *
- * @package     Kecik
- * @author      Dony Wahyu Isp
- * @since       1.0-alpha
- **/
+	/**
+	 * Request
+	 *
+	 * @package     Kecik
+	 * @author      Dony Wahyu Isp
+	 * @since       1.0-alpha
+	 **/
 
 /**
  * Class Request
  * @package Kecik
  */
-class Request
-{
-    /**
-     * Request constructor.
-     */
-    public function __construct()
-    {
+/**
+ * Class Request
+ * @package Kecik
+ */
+class Request {
 
-    }
+	/**
+	 * Request constructor.
+	 */
+	public function __construct() {
 
-    /**
-     * @return mixed|null
-     */
-    public static function get()
-    {
-        $args = func_get_args();
+	}
 
-        $var = (count($args) > 0) ? $args[0] : '';
+	/**
+	 * Get/Set variable from Get Method
+	 *
+	 * @param string $name
+	 * @param string $value
+	 *
+	 * @return mixed|null
+	 */
+	public static function get( $name = '', $value = '' ) {
 
-        if (isset($args[1])) {
-            $_GET[$var] = $args[1];
-        }
+		if ( ! empty( $value ) ) {
+			$_GET[ $name ] = $value;
+		}
 
-        if (!isset($args[0])) {
-            return $_GET;
-        } else {
-            return (isset($_GET[$var])) ? $_GET[$var] : NULL;
-        }
-    }
+		if ( empty( $name ) ) {
+			return $_GET;
+		} else {
+			return ( isset( $_GET[ $name ] ) ) ? $_GET[ $name ] : NULL;
+		}
 
-    /**
-     * @return mixed|null
-     */
-    public static function post()
-    {
-        $args = func_get_args();
+	}
 
-        $var = (count($args) > 0) ? $args[0] : '';
+	/**
+	 * Get/Set variable from Post Method
+	 *
+	 * @param string $name
+	 * @param string $value
+	 *
+	 * @return mixed|null
+	 */
+	public static function post( $name = '', $value = '' ) {
 
-        if (isset($args[1])) {
-            $_POST[$var] = $args[1];
-        }
+		if ( ! empty( $value ) ) {
+			$_POST[ $name ] = $value;
+		}
 
-        if (!isset($args[0])) {
-            return $_POST;
-        } else {
-            return (isset($_POST[$var])) ? $_POST[$var] : NULL;
-        }
-    }
+		if ( empty( $name ) ) {
+			return $_POST;
+		} else {
+			return ( isset( $_POST[ $name ] ) ) ? $_POST[ $name ] : NULL;
+		}
 
-    /**
-     * @return mixed|null
-     */
-    public static function put()
-    {
-        $args = func_get_args();
+	}
 
-        $var = (count($args) > 0) ? $args[0] : '';
+	/**
+	 * Get/Set variable from Put Method
+	 *
+	 * @param string $name
+	 * @param string $value
+	 *
+	 * @return mixed|null
+	 */
+	public static function put( $name = '', $value = '' ) {
 
-        if (isset($args[1])) {
-            $GLOBALS['_PUT'][$var] = $args[1];
-        }
+		if ( ! empty( $value ) ) {
+			$GLOBALS['_PUT'][ $name ] = $value;
+		}
 
-        if (!isset($args[0])) {
-            return (isset($GLOBALS['_PUT'])) ? $GLOBALS['_PUT'] : NULL;
-        } else {
-            return (isset($GLOBALS['_PUT'][$var])) ? $GLOBALS['_PUT'][$var] : NULL;
-        }
-    }
+		if ( empty( $name ) ) {
+			return ( isset( $GLOBALS['_PUT'] ) ) ? $GLOBALS['_PUT'] : NULL;
+		} else {
+			return ( isset( $GLOBALS['_PUT'][ $name ] ) ) ? $GLOBALS['_PUT'][ $name ] : NULL;
+		}
 
-    /**
-     * @return mixed|null
-     */
-    public static function delete()
-    {
-        $args = func_get_args();
+	}
 
-        $var = (count($args) > 0) ? $args[0] : '';
+	/**
+	 * Get/Set variable from Delete Method
+	 *
+	 * @param string $name
+	 * @param string $value
+	 *
+	 * @return mixed|null
+	 */
+	public static function delete( $name = '', $value = '' ) {
 
-        if (isset($args[1])) {
-            $GLOBALS['_DELETE'][$var] = $args[1];
-        }
+		if ( ! empty( $value ) ) {
+			$GLOBALS['_DELETE'][ $name ] = $value;
+		}
 
-        if (!isset($args[0])) {
-            return (isset($GLOBALS['_DELETE'])) ? $GLOBALS['_DELETE'] : NULL;
-        } else {
-            return (isset($GLOBALS['_DELETE'][$var])) ? $GLOBALS['_DELETE'][$var] : NULL;
-        }
-    }
+		if ( empty( $name ) ) {
+			return ( isset( $GLOBALS['_DELETE'] ) ) ? $GLOBALS['_DELETE'] : NULL;
+		} else {
+			return ( isset( $GLOBALS['_DELETE'][ $name ] ) ) ? $GLOBALS['_DELETE'][ $name ] : NULL;
+		}
 
-    /**
-     * @return mixed|null
-     */
-    public static function patch()
-    {
-        $args = func_get_args();
+	}
 
-        $var = (count($args) > 0) ? $args[0] : '';
+	/**
+	 * Get/Set variable from Patch Method
+	 *
+	 * @param string $name
+	 * @param string $value
+	 *
+	 * @return mixed|null
+	 */
+	public static function patch( $name = '', $value = '' ) {
 
-        if (isset($args[1])) {
-            $GLOBALS['_PATCH'][$var] = $args[1];
-        }
+		if ( ! empty( $value ) ) {
+			$GLOBALS['_PATCH'][ $name ] = $value;
+		}
 
-        if (!isset($args[0])) {
-            return (isset($GLOBALS['_PATCH'])) ? $GLOBALS['_PATCH'] : NULL;
-        } else {
-            return (isset($GLOBALS['_PATCH'][$var])) ? $GLOBALS['_PATCH'][$var] : NULL;
-        }
-    }
+		if ( empty( $name ) ) {
+			return ( isset( $GLOBALS['_PATCH'] ) ) ? $GLOBALS['_PATCH'] : NULL;
+		} else {
+			return ( isset( $GLOBALS['_PATCH'][ $name ] ) ) ? $GLOBALS['_PATCH'][ $name ] : NULL;
+		}
 
-    /**
-     * @return mixed|null
-     */
-    public static function options()
-    {
-        $args = func_get_args();
+	}
 
-        $var = (count($args) > 0) ? $args[0] : '';
+	/**
+	 * Get/Set variable from Options Method
+	 *
+	 * @param string $name
+	 * @param string $value
+	 *
+	 * @return mixed|null
+	 */
+	public static function options( $name = '', $value = '' ) {
 
-        if (isset($args[1])) {
-            $GLOBALS['_OPTIONS'][$var] = $args[1];
-        }
+		if ( ! empty( $value ) ) {
+			$GLOBALS['_OPTIONS'][ $name ] = $value;
+		}
 
-        if (!isset($args[0])) {
-            return (isset($GLOBALS['_OPTIONS'])) ? $GLOBALS['_OPTIONS'] : NULL;
-        } else {
-            return (isset($GLOBALS['_OPTIONS'][$var])) ? $GLOBALS['_OPTIONS'][$var] : NULL;
-        }
-    }
+		if ( empty( $name ) ) {
+			return ( isset( $GLOBALS['_OPTIONS'] ) ) ? $GLOBALS['_OPTIONS'] : NULL;
+		} else {
+			return ( isset( $GLOBALS['_OPTIONS'][ $name ] ) ) ? $GLOBALS['_OPTIONS'][ $value ] : NULL;
+		}
 
-    /**
-     * @param $file
-     * @return UploadFile
-     */
-    public static function file($file)
-    {
-        $file = $_FILES[$file];
-        return new UploadFile($file);
-    }
+	}
 
-    /**
-     * @param string $var
-     * @return mixed|null
-     */
-    public static function server($var = '')
-    {
+	/**
+	 * Get value of Upload file
+	 *
+	 * @param $file
+	 *
+	 * @return UploadFile
+	 */
+	public static function file( $file ) {
+		$file = $_FILES[ $file ];
 
-        if ($var == '') {
-            return $_SERVER;
-        } else {
-            return (isset($_SERVER[$var])) ? $_SERVER[$var] : NULL;
-        }
+		return new UploadFile( $file );
+	}
 
-    }
+	/**
+	 * Get variable from SERVER
+	 *
+	 * @param string $var
+	 *
+	 * @return mixed|null
+	 */
+	public static function server( $var = '' ) {
+
+		if ( empty( $var ) ) {
+			return $_SERVER;
+		} else {
+			return ( isset( $_SERVER[ $var ] ) ) ? $_SERVER[ $var ] : NULL;
+		}
+
+
+	}
 }
 
 
@@ -175,65 +196,68 @@ class Request
  * Class UploadFile
  * @package Kecik
  */
-class UploadFile extends \SplFileInfo
-{
-    private $file;
+class UploadFile extends \SplFileInfo {
+	private $file;
 
-    /**
-     * UploadFile constructor.
-     * @param $file
-     */
-    public function __construct($file)
-    {
-        if (isset($file['name'])) {
-            parent::__construct($file['name']);
-            $this->file = $file;
-        }
-    }
+	/**
+	 * UploadFile constructor.
+	 *
+	 * @param $file
+	 */
+	public function __construct( $file ) {
 
-    /**
-     * @param $destination
-     * @param string $newName
-     * @return string
-     * @throws FileException
-     */
-    public function move($destination, $newName = '')
-    {
-        $source = $this->file['tmp_name'];
+		if ( isset( $file['name'] ) ) {
+			parent::__construct( $file['name'] );
+			$this->file = $file;
+		}
 
-        if ($destination != '' && substr($destination, -1) != '/') {
-            $destination .= '/';
-        }
+	}
 
-        if (!empty($newName)) {
-            $target = $destination . $newName;
-        } else {
-            $target = $destination . $this->file['name'];
-        }
+	/**
+	 * Move file from temporary to actual location
+	 *
+	 * @param        $destination
+	 * @param string $newName
+	 *
+	 * @return string
+	 * @throws FileException
+	 */
+	public function move( $destination, $newName = '' ) {
+		$source = $this->file['tmp_name'];
 
-        if (!@move_uploaded_file($source, $target)) {
-            $error = error_get_last();
+		if ( $destination != '' && substr( $destination, - 1 ) != '/' ) {
+			$destination .= '/';
+		}
 
-            throw new FileException(
-                sprintf(
-                    'Could not move the file "%s" to "%s" (%s)',
-                    $this->getPathname(),
-                    $target,
-                    strip_tags($error['message'])
-                )
-            );
-        }
+		if ( ! empty( $newName ) ) {
+			$target = $destination . $newName;
+		} else {
+			$target = $destination . $this->file['name'];
+		}
 
-        @chmod($target, 0666 & ~umask());
-        return $target;
+		if ( ! @move_uploaded_file( $source, $target ) ) {
+			$error = error_get_last();
 
-    }
+			throw new FileException(
+				sprintf(
+					'Could not move the file "%s" to "%s" (%s)',
+					$this->getPathname(),
+					$target,
+					strip_tags( $error['message'] )
+				)
+			);
+		}
 
-    /**
-     * @return string|null
-     */
-    public function __tostring()
-    {
-        return (isset($this->file['name'])) ? $this->file['name'] : NULL;
-    }
+		@chmod( $target, 0666 & ~umask() );
+
+		return $target;
+
+	}
+
+	/**
+	 * @return string|null
+	 */
+	public function __tostring() {
+		return ( isset( $this->file['name'] ) ) ? $this->file['name'] : NULL;
+	}
 }

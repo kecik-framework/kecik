@@ -11,57 +11,64 @@ namespace Kecik;
  * Class Config
  * @package Kecik
  */
-class Config
-{
+class Config {
 
-    private static $config;
+	private static $config;
 
-    /**
-     * initialize method
-     */
-    public static function init()
-    {
-        self::$config = array(
-            'path.assets' => '',
-            'path.templates' => '',
-            'mod_rewrite' => FALSE,
-            'index' => '',
-            'template.open_tag' => '{{',
-            'template.close_tag' => '}}'
-        );
-    }
+	/**
+	 * Initialize for Config Class
+	 */
+	public static function init() {
+		self::$config = array(
+			'path.assets'        => '',
+			'path.templates'     => '',
+			'mod_rewrite'        => FALSE,
+			'index'              => '',
+			'template.open_tag'  => '{{',
+			'template.close_tag' => '}}'
+		);
+	}
 
-    /**
-     * @param $key
-     * @param $value
-     */
-    public static function set($key, $value)
-    {
-        self::$config[strtolower($key)] = $value;
-    }
+	/**
+	 * Set configuration
+	 *
+	 * @param $key
+	 * @param $value
+	 */
+	public static function set( $key, $value ) {
+		self::$config[ strtolower( $key ) ] = $value;
+	}
 
-    /**
-     * @param $key
-     * @return string
-     */
-    public static function get($key)
-    {
-        if (isset(self::$config[strtolower($key)])) {
-            return self::$config[strtolower($key)];
-        } else {
-            return '';
-        }
-    }
+	/**
+	 * Get configuration
+	 *
+	 * @param $key
+	 *
+	 * @return string
+	 */
+	public static function get( $key ) {
 
-    /**
-     * @param $key
-     */
-    public static function delete($key)
-    {
-        if (isset(self::$config[strtolower($key)])) {
-            unset(self::$config[strtolower($key)]);
-        }
-    }
+		if ( isset( self::$config[ strtolower( $key ) ] ) ) {
+			return self::$config[ strtolower( $key ) ];
+		} else {
+			return '';
+		}
+
+	}
+
+	/**
+	 * Delete configuration
+	 *
+	 * @param $key
+	 */
+	public static function delete( $key ) {
+
+		if ( isset( self::$config[ strtolower( $key ) ] ) ) {
+			unset( self::$config[ strtolower( $key ) ] );
+		}
+
+	}
+
 }
 
 Config::init();

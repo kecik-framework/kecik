@@ -7,159 +7,174 @@
  **/
 namespace Kecik;
 
-if (!class_exists('Kecik\Model')) {
-    /**
-     * Class Model
-     * @package Kecik
-     */
-    class Model
-    {
-        protected $field = array();
-        protected $where;
+if ( ! class_exists( 'Kecik\Model' ) ) {
 
-        protected $add = TRUE;
-        protected $table = '';
-        protected $fields = array();
-        protected $values = array();
-        protected $updateVar = array();
+	/**
+	 * Class Model
+	 * @package Kecik
+	 */
+	class Models {
+		protected $field = array();
+		protected $where;
 
-        /**
-         * @return string
-         */
-        public function save()
-        {
-            $this->setFieldsValues();
+		protected $add       = TRUE;
+		protected $table     = '';
+		protected $fields    = array();
+		protected $values    = array();
+		protected $updateVar = array();
 
-            if ($this->table != '') {
+		/**
+		 * Generate Insert/Update SQL base on Models
+		 *
+		 * @return string
+		 */
+		public function save() {
+			$this->setFieldsValues();
 
-                //** ID: Untuk menambah record | EN: For adding record
-                if ($this->add == TRUE) {
-                    $sql = "INSERT INTO $this->table ($this->fields) VALUES ($this->values)";
-                    //** ID: Untuk mengupdate record | EN: For updating record
-                } else {
-                    $sql = "UPDATE $this->table SET $this->updateVar $this->where";
-                }
+			if ( $this->table != '' ) {
 
-                //** ID: silakan tambah code database sendiri disini
-                //** EN: please add your database code in this
+				/**
+				 * ID: Untuk menambah record | EN: For adding record
+				 */
+				if ( $this->add == TRUE ) {
+					$sql = "INSERT INTO $this->table ($this->fields) VALUES ($this->values)";
+					/**
+					 * ID: Untuk mengupdate record | EN: For updating record
+					 */
+				} else {
+					$sql = "UPDATE $this->table SET $this->updateVar $this->where";
+				}
 
-                //-- ID: Akhir tambah code database sendiri
-                //-- EN: End of add your database code
-            }
+				/**
+				 * ID: silakan tambah code database sendiri disini
+				 * EN: please add your database code in this
+				 */
 
-            return (isset($sql)) ? $sql : '';
-        }
+				//--- ID: Akhir tambah code database sendiri
+				//--- EN: End of add your database code
+			}
 
-        /**
-         * @return string
-         */
-        public function delete()
-        {
-            $this->setFieldsValues();
+			return ( isset( $sql ) ) ? $sql : '';
+		}
 
-            if ($this->table != '') {
+		/**
+		 * Generate Delete SQL base on Models
+		 *
+		 * @return string
+		 */
+		public function delete() {
+			$this->setFieldsValues();
 
-                if ($this->where != '') {
-                    $sql = "DELETE FROM $this->table $this->where";
-                }
+			if ( $this->table != '' ) {
 
-                //** ID: silakan tambah code database sendiri disini
-                //** EN: please add your database code in this
+				if ( $this->where != '' ) {
+					$sql = "DELETE FROM $this->table $this->where";
+				}
 
-                //-- ID: AKhir tambah code database sendiri
-                //-- EN: End of add your database code
-            }
+				/**
+				 * ID: silakan tambah code database sendiri disini
+				 * EN: please add your database code in this
+				 */
 
-            return (isset($sql)) ? $sql : '';
-        }
+				//--- ID: AKhir tambah code database sendiri
+				//--- EN: End of add your database code
+			}
 
-        //** ID: Silakan tambah fungsi model sendiri disini
-        //** EN: Please add your function/method of model in this
+			return ( isset( $sql ) ) ? $sql : '';
+		}
 
-        //-- ID: Akhir tambah fungsi sendiri
-        //-- EN: End of your function/method
+		/**
+		 * ID: Silakan tambah fungsi model sendiri disini
+		 * EN: Please add your function/method of model in this
+		 */
 
-        /**
-         * Model constructor.
-         * @param string $id
-         */
-        public function __construct($id = '')
-        {
-            $this->where = '';
+		//--- ID: Akhir tambah fungsi sendiri
+		//--- EN: End of your function/method
 
-            if ($id != '') {
+		/**
+		 * Model constructor.
+		 *
+		 * @param string $id
+		 */
+		public function __construct( $id = '' ) {
+			$this->where = '';
 
-                if (is_array($id)) {
-                    $and = array();
+			if ( $id != '' ) {
 
-                    while (list($field, $value) = each($id)) {
+				if ( is_array( $id ) ) {
+					$and = array();
 
-                        if (preg_match('/<|>|!=/', $value)) {
-                            $and[] = "$field$value";
-                        } else {
-                            $and[] = "$field='$value'";
-                        }
+					while ( list( $field, $value ) = each( $id ) ) {
 
-                    }
+						if ( preg_match( '/<|>|!=/', $value ) ) {
+							$and[] = "$field$value";
+						} else {
+							$and[] = "$field='$value'";
+						}
 
-                    $this->where .= implode(' AND ', $and);
-                } else {
-                    $this->where .= "id='" . $id . "'";
-                }
+					}
 
-                $this->add = FALSE;
+					$this->where .= implode( ' AND ', $and );
+				} else {
+					$this->where .= "id='" . $id . "'";
+				}
 
-                //** ID: Silakan tambah inisialisasi model sendiri disini
-                //** EN: Please add your initialitation of model in this
+				$this->add = FALSE;
 
-                //-- EN: Akhir tambah inisialisasi model sendiri
-                //-- EN: End of your initialitation model
-            }
-        }
+				/**
+				 * ID: Silakan tambah inisialisasi model sendiri disini
+				 * EN: Please add your initialitation of model in this
+				 */
 
-        /**
-         *
-         */
-        private function setFieldsValues()
-        {
-            $fields = array_keys($this->field);
+				//-- EN: Akhir tambah inisialisasi model sendiri
+				//-- EN: End of your initialitation model
+			}
 
-            while (list($id, $field) = each($fields)) {
-                $fields[$id] = "$field";
-            }
+		}
 
-            $this->fields = implode(',', $fields);
+		/**
+		 * setFieldsValues
+		 */
+		private function setFieldsValues() {
+			$fields = array_keys( $this->field );
 
-            $values = array_values($this->field);
-            $updateVar = array();
+			while ( list( $id, $field ) = each( $fields ) ) {
+				$fields[ $id ] = "$field";
+			}
 
-            while (list($id, $value) = each($values)) {
-                $values[$id] = "'$value'";
-                $updateVar[] = "$fields[$id] = $value";
-            }
+			$this->fields = implode( ',', $fields );
 
-            $this->values = implode(',', $values);
-            $this->updateVar = implode(',', $updateVar);
+			$values    = array_values( $this->field );
+			$updateVar = array();
 
-            $this->where = ($this->where != '') ? ' WHERE ' . $this->where : '';
-        }
+			while ( list( $id, $value ) = each( $values ) ) {
+				$values[ $id ] = "'$value'";
+				$updateVar[]   = "$fields[$id] = $value";
+			}
 
-        /**
-         * @param $var
-         * @param $value
-         */
-        public function __set($var, $value)
-        {
-            $this->field[$var] = addslashes($value);
-        }
+			$this->values    = implode( ',', $values );
+			$this->updateVar = implode( ',', $updateVar );
 
-        /**
-         * @param $var
-         * @return string
-         */
-        public function __get($var)
-        {
-            return stripslashes($this->field[$var]);
-        }
-    }
+			$this->where = ( $this->where != '' ) ? ' WHERE ' . $this->where : '';
+		}
+
+		/**
+		 * set
+		 *
+		 * @param $var
+		 * @param $value
+		 */
+		public function __set( $var, $value ) {
+			$this->field[ $var ] = addslashes( $value );
+		}
+
+		/**
+		 * @param $var
+		 *
+		 * @return string
+		 */
+		public function __get( $var ) {
+			return stripslashes( $this->field[ $var ] );
+		}
+	}
 }

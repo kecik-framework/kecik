@@ -7,113 +7,113 @@
  **/
 namespace Kecik;
 
-if (!class_exists('Kecik\Controller')) {
-    /**
-     * Class Controller
-     * @package Kecik
-     */
-    class Controller
-    {
-        protected $request = '';
-        protected $url = '';
-        protected $assets = '';
-        protected $config = '';
-        protected $route = '';
-        //protected $container = '';
-        //protected $db = '';
+if ( ! class_exists( 'Kecik\Controller' ) ) {
 
-        /**
-         * Controller constructor.
-         */
-        public function __construct()
-        {
-            //** ID: Silakan tambah inisialisasi controller sendiri disini
-            //** EN: Please add your initialitation of controller in this
+	/**
+	 * Class Controller
+	 * @package Kecik
+	 */
+	class Controllers {
+		protected $request = '';
+		protected $url     = '';
+		protected $assets  = '';
+		protected $config  = '';
+		protected $route   = '';
+		//protected $container = '';
+		//protected $db = '';
 
-            //-- ID: Akhir tambah inisialisasi sendiri
-            //-- EN: End add your initialitation
+		/**
+		 * Controller constructor.
+		 */
+		public function __construct() {
+			/**
+			 * ID: Silakan tambah inisialisasi controller sendiri disini
+			 * EN: Please add your initialitation of controller in this
+			 */
 
-            $app = Kecik::getInstance();
-            $this->request = $app->request;
-            $this->url = $app->url;
-            $this->assets = $app->assets;
-            $this->config = $app->config;
-            $this->route = $app->route;
+			//-- ID: Akhir tambah inisialisasi sendiri
+			//-- EN: End add your initialitation
 
-            $libraries = $app->getLibrariesEnabled();
+			$app           = Kecik::getInstance();
+			$this->request = $app->request;
+			$this->url     = $app->url;
+			$this->assets  = $app->assets;
+			$this->config  = $app->config;
+			$this->route   = $app->route;
 
-            while (list($idx, $library) = each($libraries)) {
+			$libraries = $app->getLibrariesEnabled();
 
-                if (isset($library[1]) && !empty($library[1])) {
-                    $lib = $library[1];
-                    $this->$lib = $app->$lib;
-                }
+			foreach( $libraries as $library ) {
 
-            }
+				if ( isset( $library[1] ) && ! empty( $library[1] ) ) {
+					$lib        = $library[1];
+					$this->$lib = $app->$lib;
+				}
 
-            /*if (isset($app->container))
-                $this->container = $app->container;
-            if (isset($app->db))
-                $this->db = $app->db;
-            if (isset($app->session))
-                $this->session = $app->session;
-            if (isset($app->cookie))
-                $this->cookie = $app->cookie;
-            if (isset($app->language))
-                $this->language = $app->language;*/
-        }
+			}
 
-        //** ID: Silakan tambah fungsi controller sendiri disini
-        //** EN: Please add your function/method of controller in this
+		}
 
-        //-- ID: Akhir tambah fungsi sendiri
-        //-- EN: End add your function/method
+		/**
+		 * ID: Silakan tambah fungsi controller sendiri disini
+		 * EN: Please add your function/method of controller in this
+		 */
 
-        /**
-         * @param $file
-         * @param array $param
-         * @return string
-         */
-        protected function view($file, $param = array())
-        {
-            extract($param);
+		//-- ID: Akhir tambah fungsi sendiri
+		//-- EN: End add your function/method
 
-            if (!is_array($file)) {
-                $path = explode('\\', get_class($this));
+		/**
+		 * Load the view file from MVS structure
+		 *
+		 * @param       $file
+		 * @param array $param
+		 *
+		 * @return string
+		 */
+		protected function view( $file, $param = array() ) {
+			extract( $param );
 
-                if (count($path) > 2) {
-                    $view_path = '';
+			if ( ! is_array( $file ) ) {
+				$path = explode( '\\', get_class( $this ) );
 
-                    for ($i = 0; $i < count($path) - 2; $i++) {
-                        $view_path .= strtolower($path[$i]) . '/';
-                    }
+				if ( count( $path ) > 2 ) {
+					$view_path = '';
 
-                    $view_path = Config::get('path.mvc') . '/' . $view_path;
-                } else {
-                    $view_path = Config::get('path.mvc');
-                }
+					for ( $i = 0; $i < count( $path ) - 2; $i ++ ) {
+						$view_path .= strtolower( $path[ $i ] ) . '/';
+					}
 
-                if (php_sapi_name() == 'cli') {
-                    $view_path = Config::get('path.basepath') . '/' . $view_path;
-                }
-            } else {
-                $view_path = Config::get('path.mvc');
+					$view_path = Config::get( 'path.mvc' ) . '/' . $view_path;
+				} else {
+					$view_path = Config::get( 'path.mvc' );
+				}
 
-                if (isset($file[1])) {
-                    $view_path .= '/' . $file[0];
-                    $file = $file[1];
-                } else {
-                    $file = $file[0];
-                }
+				if ( php_sapi_name() == 'cli' ) {
+					$view_path = Config::get( 'path.basepath' ) . '/' . $view_path;
+				}
 
-                if (php_sapi_name() == 'cli') {
-                    $view_path = Config::get('path.basepath') . '/' . $view_path;
-                }
-            }
+			} else {
+				$view_path = Config::get( 'path.mvc' );
 
-            ob_start();
-            include $view_path . '/views/' . $file . '.php';
-            return ob_get_clean();
-        }
-    }
+				if ( isset( $file[1] ) ) {
+					$view_path .= '/' . $file[0];
+					$file = $file[1];
+				} else {
+					$file = $file[0];
+				}
+
+				if ( php_sapi_name() == 'cli' ) {
+					$view_path = Config::get( 'path.basepath' ) . '/' . $view_path;
+				}
+
+			}
+
+			ob_start();
+			include $view_path . '/Views/' . $file . '.php';
+
+			return ob_get_clean();
+		}
+
+	}
+
 }
