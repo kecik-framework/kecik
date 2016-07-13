@@ -1,93 +1,90 @@
 <?php
-namespace Controller;
+namespace Controllers;
 
-use Kecik\Controller;
+use Kecik\Controllers;
+use Models\Data;
 
 /**
  * Class Welcome
  * @package Controller
  */
-class Welcome extends Controller
-{
-    public $dbcon;
+class Welcome extends Controllers {
+	public $dbcon;
 
-    /**
-     * Welcome constructor.
-     * @param $dbcon
-     */
-    public function __construct($dbcon)
-    {
-        parent::__construct();
-        $this->dbcon = $dbcon;
-    }
+	/**
+	 * Welcome constructor.
+	 *
+	 * @param $dbcon
+	 */
+	public function __construct( $dbcon ) {
+		parent::__construct();
+		$this->dbcon = $dbcon;
+	}
 
-    /**
-     *
-     */
-    public function index()
-    {
-        $this->view('index');
-    }
+	/**
+	 *
+	 */
+	public function index() {
+		return $this->view( 'index' );
+	}
 
-    /**
-     *
-     */
-    public function Data()
-    {
-        $this->view('data');
-    }
+	/**
+	 *
+	 */
+	public function Data() {
+		return $this->view( 'data' );
+	}
 
-    /**
-     * @param string $id
-     */
-    public function Form($id = '')
-    {
-        if ($id == '') {
-            $url = $this->url->linkTo('index.php/save');
-        } else {
-            $url = $this->url->linkTo('index.php/update/' . $id);
-        }
+	/**
+	 * @param string $id
+	 *
+	 * @return string
+	 */
+	public function Form( $id = '' ) {
+		if ( $id == '' ) {
+			$url = $this->url->linkTo( 'index.php/save' );
+		} else {
+			$url = $this->url->linkTo( 'index.php/update/' . $id );
+		}
 
-        $this->view('form', array('id' => $id, 'url' => $url));
-    }
+		return $this->view( 'form', array( 'id' => $id, 'url' => $url ) );
+	}
 
-    /**
-     *
-     */
-    public function save()
-    {
-        $model = new \Model\Data();
-        $model->nama = $this->request->post('nama');
-        $model->email = $this->request->post('email');
-        $sql = $model->save();
-        mysqli_query($this->dbcon, $sql);
+	/**
+	 *
+	 */
+	public function save() {
+		$model        = new Data();
+		$model->name  = $this->request->post( 'name' );
+		$model->email = $this->request->post( 'email' );
+		$sql          = $model->save();
+		var_dump($this->dbcon);
+		mysqli_query( $this->dbcon, $sql );
 
-        $this->url->redirect('index.php/data');
-    }
+		$this->url->redirect( 'index.php/data' );
+	}
 
-    /**
-     * @param $id
-     */
-    public function update($id)
-    {
-        $model = new \Model\Data(array('id' => $id));
-        $model->nama = $this->request->post('nama');
-        $model->email = $this->request->post('email');
-        $sql = $model->save();
-        mysqli_query($this->dbcon, $sql);
+	/**
+	 * @param $id
+	 */
+	public function update( $id ) {
+		$model        = new Data( array( 'id' => $id ) );
+		$model->name  = $this->request->post( 'name' );
+		$model->email = $this->request->post( 'email' );
+		$sql          = $model->save();
+		mysqli_query( $this->dbcon, $sql );
 
-        $this->url->redirect('index.php/data');
-    }
+		$this->url->redirect( 'index.php/data' );
+	}
 
-    /**
-     * @param $id
-     */
-    public function delete($id)
-    {
-        $model = new \Model\Data(array('id' => $id));
-        $sql = $model->delete();
-        mysqli_query($this->dbcon, $sql);
+	/**
+	 * @param $id
+	 */
+	public function delete( $id ) {
+		$model = new Data( array( 'id' => $id ) );
+		$sql   = $model->delete();
+		mysqli_query( $this->dbcon, $sql );
 
-        $this->url->redirect('index.php/data');
-    }
+		$this->url->redirect( 'index.php/data' );
+	}
 }
