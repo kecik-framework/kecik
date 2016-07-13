@@ -34,11 +34,10 @@ if (mysqli_connect_errno($dbcon)) {
     die("Failed to connect to MySQL: " . mysqli_connect_error());
 }
 
-
 $app->get(
     '/',
     function () use ($dbcon) {
-        $controller = new Controller\Welcome($dbcon);
+        $controller = new Controllers\Welcome($dbcon);
         return $controller->index();
     }
 )->template('template_kecik');
@@ -46,7 +45,7 @@ $app->get(
 $app->get(
     'data',
     function () use ($dbcon) {
-        $controller = new Controller\Welcome($dbcon);
+        $controller = new Controllers\Welcome($dbcon);
         return $controller->Data();
     }
 )->template('template_kecik');
@@ -54,7 +53,7 @@ $app->get(
 $app->get(
     'tambah',
     function () use ($dbcon) {
-        $controller = new Controller\Welcome($dbcon);
+        $controller = new Controllers\Welcome($dbcon);
         return $controller->Form();
     }
 )->template('template_kecik');
@@ -62,7 +61,7 @@ $app->get(
 $app->get(
     'edit/:id',
     function ($id) use ($dbcon) {
-        $controller = new Controller\Welcome($dbcon);
+        $controller = new Controllers\Welcome($dbcon);
         return $controller->Form($id);
     }
 )->template('template_kecik');
@@ -70,7 +69,7 @@ $app->get(
 $app->get(
     'delete/:id',
     function ($id) use ($dbcon) {
-        $controller = new Controller\Welcome($dbcon);
+        $controller = new Controllers\Welcome($dbcon);
         $controller->delete($id);
     }
 );
@@ -78,7 +77,7 @@ $app->get(
 $app->post(
     'save',
     function () use ($dbcon) {
-        $controller = new Controller\Welcome($this, $dbcon);
+        $controller = new Controllers\Welcome($dbcon);
         $controller->save();
     }
 );
@@ -86,7 +85,7 @@ $app->post(
 $app->post(
     'update/:id',
     function ($id) use ($dbcon) {
-        $controller = new Controller\Welcome($dbcon);
+        $controller = new Controllers\Welcome($dbcon);
         $controller->update($id);
     }
 );
