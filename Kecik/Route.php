@@ -155,20 +155,11 @@ class Route {
 			self::$RealParams = self::$params;
 			self::$ParamsStr  = implode( '/', $ResultSegment );
 		} else {
-			$path = str_replace( self::$protocol . $_SERVER['HTTP_HOST'] . '/', '', self::$BaseUrl );
+            $path = str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['PHP_SELF']);
 
-			if ( strpos( $_SERVER['REQUEST_URI'], $index ) ) {
-				$_SERVER['REQUEST_URI'] = substr(
-					$_SERVER['REQUEST_URI'],
-					strpos( $_SERVER['REQUEST_URI'], '/' . $index ) + strlen( $index ) + 1
-				);
-			}
-
-			$path = str_replace( $path, '', $_SERVER['REQUEST_URI'] );
-
-			if ( substr( $path, 0, 1 ) == '/' ) {
-				$path = substr( $path, 1 );
-			}
+            if (substr($path, 0, 1) == '/' && strlen($path) > 1) {
+                $path = substr($path, 1);
+            }
 
 			$segments = explode( '/', $path );
 
