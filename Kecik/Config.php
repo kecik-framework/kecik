@@ -46,11 +46,13 @@ class Config
      */
     public static function get($key)
     {
+
         if (isset(self::$config[strtolower($key)])) {
             return self::$config[strtolower($key)];
         } else {
             return '';
         }
+        
     }
 
     /**

@@ -51,16 +51,25 @@ if (!class_exists('Kecik\Controller')) {
 
             }
 
-            /*if (isset($app->container))
+            /*if (isset($app->container)) {
                 $this->container = $app->container;
-            if (isset($app->db))
+            }
+
+            if (isset($app->db)) {
                 $this->db = $app->db;
-            if (isset($app->session))
+            }
+
+            if (isset($app->session)) {
                 $this->session = $app->session;
-            if (isset($app->cookie))
+            }
+
+            if (isset($app->cookie)) {
                 $this->cookie = $app->cookie;
-            if (isset($app->language))
-                $this->language = $app->language;*/
+            }
+
+            if (isset($app->language)) {
+                $this->language = $app->language;
+            }*/
         }
 
         //** ID: Silakan tambah fungsi controller sendiri disini
@@ -112,7 +121,7 @@ if (!class_exists('Kecik\Controller')) {
             }
 
             ob_start();
-            include $view_path . '/views/' . $file . '.php';
+            include $view_path . '/Views/' . $file . '.php';
             return ob_get_clean();
         }
     }

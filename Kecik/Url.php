@@ -33,6 +33,7 @@ class Url
             $this->_index = basename($_SERVER["SCRIPT_FILENAME"], '.php') . '.php/';
             Config::set('index', $this->_index);
         }
+
     }
 
     /**
@@ -64,7 +65,10 @@ class Url
      */
     public function redirect($link)
     {
-        if ($link == '/') $link = '';
+        if ($link == '/') {
+            $link = '';
+        }
+
         header('Location: ' . $this->_base_url . $this->_index . $link);
         exit();
     }
@@ -74,7 +78,10 @@ class Url
      */
     public function to($link)
     {
-        if ($link == '/') $link = '';
+        if ($link == '/') {
+            $link = '';
+        }
+
         echo $this->_base_url . $this->_index . $link;
     }
 
@@ -84,7 +91,10 @@ class Url
      */
     public function linkTo($link)
     {
-        if ($link == '/') $link = '';
+        if ($link == '/') {
+            $link = '';
+        }
+
         return $this->_base_url . $this->_index . $link;
     }
 }

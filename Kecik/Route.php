@@ -154,18 +154,9 @@ class Route
             self::$RealParams = self::$params;
             self::$ParamsStr = implode('/', $ResultSegment);
         } else {
-            $path = str_replace(self::$protocol . $_SERVER['HTTP_HOST'] . '/', '', self::$BaseUrl);
+            $path = str_replace($_SERVER['SCRIPT_NAME'], '', $_SERVER['PHP_SELF']);
 
-            if (strpos($_SERVER['REQUEST_URI'], $index)) {
-                $_SERVER['REQUEST_URI'] = substr(
-                    $_SERVER['REQUEST_URI'],
-                    strpos($_SERVER['REQUEST_URI'], '/' . $index) + strlen($index) + 1
-                );
-            }
-
-            $path = str_replace($path, '', $_SERVER['REQUEST_URI']);
-
-            if (substr($path, 0, 1) == '/') {
+            if (substr($path, 0, 1) == '/' && strlen($path) > 1) {
                 $path = substr($path, 1);
             }
 
@@ -211,6 +202,7 @@ class Route
         } else {
             return self::$params;
         }
+
     }
 
     /**
@@ -227,8 +219,10 @@ class Route
                 return NULL;
             }
 
-        } else
+        } else {
             return self::$RealParams;
+        }
+
     }
 
     /**
@@ -289,6 +283,7 @@ class Route
      */
     public function isPost()
     {
+
         if (isset($_SERVER['REQUEST_METHOD'])) {
 
             if ($_SERVER['REQUEST_METHOD'] == 'POST' && !isset($_POST['_METHOD'])) {
@@ -300,6 +295,7 @@ class Route
         } else {
             return FALSE;
         }
+
     }
 
     /**
@@ -307,6 +303,7 @@ class Route
      */
     public function isGet()
     {
+
         if (isset($_SERVER['REQUEST_METHOD'])) {
 
             if ($_SERVER['REQUEST_METHOD'] == 'GET' && !isset($_POST['_METHOD'])) {
@@ -318,6 +315,7 @@ class Route
         } else {
             return TRUE;
         }
+
     }
 
     /**
@@ -335,10 +333,12 @@ class Route
                 }
 
                 $GLOBALS['_PUT'] = $_PUT = $vars;
+
                 return TRUE;
             } else {
                 return FALSE;
             }
+
         } else
             return FALSE;
 
@@ -360,8 +360,8 @@ class Route
                 }
 
                 $GLOBALS['_DELETE'] = $_DELETE = $vars;
-                return TRUE;
 
+                return TRUE;
             } else {
                 return FALSE;
             }
@@ -369,6 +369,7 @@ class Route
         } else {
             return FALSE;
         }
+
     }
 
     /**
@@ -386,6 +387,7 @@ class Route
                 }
 
                 $GLOBALS['_PATCH'] = $_PATCH = $vars;
+
                 return TRUE;
             } else {
                 return FALSE;
@@ -394,6 +396,7 @@ class Route
         } else {
             return FALSE;
         }
+
     }
 
     /**
@@ -411,6 +414,7 @@ class Route
                 }
 
                 $GLOBALS['_OPTIONS'] = $_OPTIONS = $vars;
+
                 return TRUE;
             } else {
                 return FALSE;
@@ -419,6 +423,7 @@ class Route
         } else {
             return FALSE;
         }
+
     }
 
     /**
@@ -426,11 +431,13 @@ class Route
      */
     public function isAjax()
     {
+
         if (filter_input(INPUT_SERVER, 'HTTP_X_REQUESTED_WITH') === 'xmlhttprequest') {
             return TRUE;
         } else {
             return FALSE;
         }
+
     }
 
     /**

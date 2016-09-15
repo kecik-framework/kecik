@@ -42,6 +42,7 @@ class Request
         } else {
             return (isset($_GET[$var])) ? $_GET[$var] : NULL;
         }
+
     }
 
     /**
@@ -62,6 +63,7 @@ class Request
         } else {
             return (isset($_POST[$var])) ? $_POST[$var] : NULL;
         }
+
     }
 
     /**
@@ -82,6 +84,7 @@ class Request
         } else {
             return (isset($GLOBALS['_PUT'][$var])) ? $GLOBALS['_PUT'][$var] : NULL;
         }
+
     }
 
     /**
@@ -102,6 +105,7 @@ class Request
         } else {
             return (isset($GLOBALS['_DELETE'][$var])) ? $GLOBALS['_DELETE'][$var] : NULL;
         }
+
     }
 
     /**
@@ -122,6 +126,7 @@ class Request
         } else {
             return (isset($GLOBALS['_PATCH'][$var])) ? $GLOBALS['_PATCH'][$var] : NULL;
         }
+
     }
 
     /**
@@ -142,6 +147,7 @@ class Request
         } else {
             return (isset($GLOBALS['_OPTIONS'][$var])) ? $GLOBALS['_OPTIONS'][$var] : NULL;
         }
+
     }
 
     /**
@@ -167,6 +173,7 @@ class Request
             return (isset($_SERVER[$var])) ? $_SERVER[$var] : NULL;
         }
 
+
     }
 }
 
@@ -185,10 +192,12 @@ class UploadFile extends \SplFileInfo
      */
     public function __construct($file)
     {
+
         if (isset($file['name'])) {
             parent::__construct($file['name']);
             $this->file = $file;
         }
+
     }
 
     /**
