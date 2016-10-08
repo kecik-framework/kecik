@@ -14,13 +14,6 @@ if (!class_exists('Kecik\Controller')) {
      */
     class Controller
     {
-        protected $request = '';
-        protected $url = '';
-        protected $assets = '';
-        protected $config = '';
-        protected $route = '';
-        //protected $container = '';
-        //protected $db = '';
 
         /**
          * Controller constructor.
@@ -33,43 +26,6 @@ if (!class_exists('Kecik\Controller')) {
             //-- ID: Akhir tambah inisialisasi sendiri
             //-- EN: End add your initialitation
 
-            $app = Kecik::getInstance();
-            $this->request = $app->request;
-            $this->url = $app->url;
-            $this->assets = $app->assets;
-            $this->config = $app->config;
-            $this->route = $app->route;
-
-            $libraries = $app->getLibrariesEnabled();
-
-            while (list($idx, $library) = each($libraries)) {
-
-                if (isset($library[1]) && !empty($library[1])) {
-                    $lib = $library[1];
-                    $this->$lib = $app->$lib;
-                }
-
-            }
-
-            /*if (isset($app->container)) {
-                $this->container = $app->container;
-            }
-
-            if (isset($app->db)) {
-                $this->db = $app->db;
-            }
-
-            if (isset($app->session)) {
-                $this->session = $app->session;
-            }
-
-            if (isset($app->cookie)) {
-                $this->cookie = $app->cookie;
-            }
-
-            if (isset($app->language)) {
-                $this->language = $app->language;
-            }*/
         }
 
         //** ID: Silakan tambah fungsi controller sendiri disini

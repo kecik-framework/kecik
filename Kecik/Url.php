@@ -1,37 +1,40 @@
 <?php
 /**
  * Url
+ *
  * @package Kecik
- * @author Dony Wahyu Isp
- * @since 1.0.1-alpha
+ * @author  Dony Wahyu Isp
+ * @since   1.0.1-alpha
  **/
 namespace Kecik;
 
 /**
  * Class Url
+ *
  * @package Kecik
  */
 class Url
 {
-    private $_protocol, $_base_url, $_base_path, $_index;
-    private $_route;
-    private $_app;
+    private static $instance;
+
+    private static $protocol, $baseUrl, $basePath, $index;
 
     /**
      * Url constructor.
+     *
      * @param $protocol
      * @param $baseUrl
      * @param $basePath
      */
-    public function __construct($protocol, $baseUrl, $basePath)
+    public static function init($protocol, $baseUrl, $basePath)
     {
-        $this->_protocol = $protocol;
-        $this->_base_url = $baseUrl;
-        $this->_base_path = $basePath;
+        self::$protocol = $protocol;
+        self::$baseUrl = $baseUrl;
+        self::$basePath = $basePath;
 
-        if (Config::get('mod_rewrite') === FALSE) {
-            $this->_index = basename($_SERVER["SCRIPT_FILENAME"], '.php') . '.php/';
-            Config::set('index', $this->_index);
+        if ( Config::get('mod_rewrite') === FALSE ) {
+            self::$index = basename($_SERVER["SCRIPT_FILENAME"], '.php') . '.php/';
+            Config::set('index', self::$index);
         }
 
     }
@@ -39,63 +42,69 @@ class Url
     /**
      * @return mixed
      */
-    public function protocol()
+    public static function protocol()
     {
-        return $this->_protocol;
+        return self::$protocol;
     }
 
     /**
      * @return mixed
      */
-    public function basePath()
+    public static function basePath()
     {
-        return $this->_base_path;
+        return self::$basePath;
+    }
+
+    public static function setBasePath($path)
+    {
+        self::$basePath = $path;
     }
 
     /**
      * @return mixed
      */
-    public function baseUrl()
+    public static function baseUrl()
     {
-        return $this->_base_url;
+        return self::$baseUrl;
     }
 
     /**
      * @param $link
      */
-    public function redirect($link)
+    public static function redirect($link)
     {
-        if ($link == '/') {
+        if ( $link == '/' ) {
             $link = '';
         }
 
-        header('Location: ' . $this->_base_url . $this->_index . $link);
+        header('Location: ' . self::$baseUrl . self::$index . $link);
         exit();
     }
 
     /**
      * @param $link
      */
-    public function to($link)
+    public static function to($link)
     {
-        if ($link == '/') {
+        if ( $link == '/' ) {
             $link = '';
         }
 
-        echo $this->_base_url . $this->_index . $link;
+        echo self::$baseUrl . self::$index . $link;
     }
 
     /**
      * @param $link
+     *
      * @return string
      */
-    public function linkTo($link)
+    public static function linkTo($link)
     {
-        if ($link == '/') {
+        if ( $link == '/' ) {
             $link = '';
         }
 
-        return $this->_base_url . $this->_index . $link;
+        return self::$baseUrl . self::$index . $link;
     }
 }
 //--
