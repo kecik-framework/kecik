@@ -247,7 +247,8 @@ class Kecik
     }
 
     /**
-     * @param null $yield
+     * @param       $callback
+     * @param array ...$params
      *
      * @return bool
      */

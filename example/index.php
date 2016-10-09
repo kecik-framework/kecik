@@ -15,7 +15,9 @@ $config = array(
     'path.basepath' => __DIR__ . '/'
 );
 
-Kecik::run(function() {
+$dbcon = NULL;
+
+Kecik::run(function () use (&$dbcon) {
     Config::apply(function() {
         $this->set('path.basepath', __DIR__ . '/');
         $this->set('path.assets', 'assets');
@@ -29,8 +31,7 @@ Kecik::run(function() {
     Assets::$css->add('starter-template');
     Assets::$js->add('jquery.min');
     Assets::$js->add('bootstrap.min');
-    
-    $dbcon = null;
+
     $this->before(function() use(&$dbcon) {
         $dbcon = @mysqli_connect(
             'localhost',
@@ -48,39 +49,39 @@ Kecik::run(function() {
     Route::get(
         '/',
         function () use ($dbcon) {
-            $controller = new Controller\Welcome($dbcon);
+            $controller = new Controllers\Welcome($dbcon);
             return $controller->index();
         }
-    )->template('template_kecik');
+    ); //->template('template_kecik');
     
     Route::get(
         'data',
         function () use ($dbcon) {
-            $controller = new Controller\Welcome($dbcon);
+            $controller = new Controllers\Welcome($dbcon);
             return $controller->Data();
         }
-    )->template('template_kecik');
+    ); //->template('template_kecik');
     
     Route::get(
         'tambah',
         function () use ($dbcon) {
-            $controller = new Controller\Welcome($dbcon);
+            $controller = new Controllers\Welcome($dbcon);
             return $controller->Form();
         }
-    )->template('template_kecik');
+    ); //->template('template_kecik');
     
     Route::get(
         'edit/:id',
         function ($id) use ($dbcon) {
-            $controller = new Controller\Welcome($dbcon);
+            $controller = new Controllers\Welcome($dbcon);
             return $controller->Form($id);
         }
-    )->template('template_kecik');
+    ); //->template('template_kecik');
     
     Route::get(
         'delete/:id',
         function ($id) use ($dbcon) {
-            $controller = new Controller\Welcome($dbcon);
+            $controller = new Controllers\Welcome($dbcon);
             $controller->delete($id);
         }
     );
@@ -88,7 +89,7 @@ Kecik::run(function() {
     Route::post(
         'save',
         function () use ($dbcon) {
-            $controller = new Controller\Welcome($this, $dbcon);
+            $controller = new Controllers\Welcome($this, $dbcon);
             $controller->save();
         }
     );
@@ -96,7 +97,7 @@ Kecik::run(function() {
     Route::post(
         'update/:id',
         function ($id) use ($dbcon) {
-            $controller = new Controller\Welcome($dbcon);
+            $controller = new Controllers\Welcome($dbcon);
             $controller->update($id);
         }
     );
