@@ -1,10 +1,14 @@
 <?php
-namespace Controller;
+namespace Controllers;
 
 use Kecik\Controller;
+use Kecik\Request;
+use Kecik\Url;
+use Models\Data;
 
 /**
  * Class Welcome
+ *
  * @package Controller
  */
 class Welcome extends Controller
@@ -13,6 +17,7 @@ class Welcome extends Controller
 
     /**
      * Welcome constructor.
+     *
      * @param $dbcon
      */
     public function __construct($dbcon)
@@ -26,7 +31,7 @@ class Welcome extends Controller
      */
     public function index()
     {
-        $this->view('index');
+        return $this->view('index');
     }
 
     /**
@@ -34,21 +39,23 @@ class Welcome extends Controller
      */
     public function Data()
     {
-        $this->view('data');
+        return $this->view('data');
     }
 
     /**
      * @param string $id
+     *
+     * @return string
      */
     public function Form($id = '')
     {
-        if ($id == '') {
-            $url = $this->url->linkTo('index.php/save');
+        if ( $id == '' ) {
+            $url = Url::linkTo('index.php/save');
         } else {
-            $url = $this->url->linkTo('index.php/update/' . $id);
+            $url = Url::linkTo('index.php/update/' . $id);
         }
 
-        $this->view('form', array('id' => $id, 'url' => $url));
+        return $this->view('form', [ 'id' => $id, 'url' => $url ]);
     }
 
     /**
@@ -56,13 +63,13 @@ class Welcome extends Controller
      */
     public function save()
     {
-        $model = new \Model\Data();
-        $model->nama = $this->request->post('nama');
-        $model->email = $this->request->post('email');
+        $model = new Data();
+        $model->nama = Request::post('nama');
+        $model->email = Request::post('email');
         $sql = $model->save();
         mysqli_query($this->dbcon, $sql);
 
-        $this->url->redirect('index.php/data');
+        Url::redirect('index.php/data');
     }
 
     /**
@@ -70,13 +77,13 @@ class Welcome extends Controller
      */
     public function update($id)
     {
-        $model = new \Model\Data(array('id' => $id));
-        $model->nama = $this->request->post('nama');
-        $model->email = $this->request->post('email');
+        $model = new Data([ 'id' => $id ]);
+        $model->nama = Request::post('nama');
+        $model->email = Request::post('email');
         $sql = $model->save();
         mysqli_query($this->dbcon, $sql);
 
-        $this->url->redirect('index.php/data');
+        Url::redirect('index.php/data');
     }
 
     /**
@@ -84,10 +91,10 @@ class Welcome extends Controller
      */
     public function delete($id)
     {
-        $model = new \Model\Data(array('id' => $id));
+        $model = new Data([ 'id' => $id ]);
         $sql = $model->delete();
         mysqli_query($this->dbcon, $sql);
 
-        $this->url->redirect('index.php/data');
+        Url::redirect('index.php/data');
     }
 }
