@@ -107,7 +107,7 @@ class Kecik
      *
      * @param array $config
      */
-    public function init()
+    public static function init()
     {
         self::$instance = new self;
 
@@ -251,7 +251,7 @@ class Kecik
      *
      * @return bool
      */
-    public function run($callback, ...$params)
+    public static function run($callback, ...$params)
     {
         $config = [];
 
@@ -412,7 +412,7 @@ class Kecik
 
     }
 
-    public function stop()
+    public static function stop()
     {
         exit();
     }
@@ -420,7 +420,7 @@ class Kecik
     /**
      * @return array
      */
-    public function getLibrariesEnabled()
+    public static function getLibrariesEnabled()
     {
         return self::$instance->LibrariesEnabled;
     }
@@ -431,7 +431,7 @@ class Kecik
      *
      * @return string
      */
-    public function render($file, $response = "")
+    public static function render($file, $response = "")
     {
         ob_start();
         include $file;

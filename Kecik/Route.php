@@ -285,7 +285,10 @@ class Route
         }
 
     }
-
+    
+    /**
+     * @return bool
+     */
     public static function status()
     {
         return self::$routedStatus;
@@ -343,7 +346,7 @@ class Route
     {
         return self::$paramsStr;
     }
-
+    
     /**
      * @param string $route
      *
@@ -365,9 +368,10 @@ class Route
         }
 
     }
-
+    
     /**
-     * @param $args
+     * @param $route
+     * @param $callback
      */
     private static function parser($route, $callback)
     {
@@ -455,12 +459,12 @@ class Route
         }
 
     }
-
+    
     /**
      * @param $callFunc
-     * @param $params
      *
-     * @return Closure
+     * @return \Closure
+     * @throws \Exception
      */
     private function createCallbackFromString($callFunc)
     {
@@ -543,7 +547,15 @@ class Route
 
         return $this;
     }
-
+    
+    /**
+     * @param array $method
+     * @param       $route
+     * @param       $callback
+     * @param array ...$params
+     *
+     * @return $this
+     */
     public function match(Array $method, $route, $callback, ...$params)
     {
         $this->RoutedStatus = FALSE;
@@ -576,11 +588,16 @@ class Route
 
         return $this;
     }
-
+    
+    
     /**
-     * @return $this
+     * @param       $route
+     * @param       $callback
+     * @param array ...$params
+     *
+     * @return null
      */
-    public function get($route, $callback, ...$params)
+    public static function get($route, $callback, ...$params)
     {
         $route = self::routeGroup($route);
         self::registerRoute('GET', $route);
@@ -591,11 +608,15 @@ class Route
 
         return self::apply($route, $callback, $params);
     }
-
+    
     /**
-     * @return $this
+     * @param       $route
+     * @param       $callback
+     * @param array ...$params
+     *
+     * @return null
      */
-    public function post($route, $callback, ...$params)
+    public static function post($route, $callback, ...$params)
     {
         $route = self::routeGroup($route);
         self::registerRoute('POST', $route);
@@ -606,11 +627,15 @@ class Route
 
         return self::apply($route, $callback, $params);
     }
-
+    
     /**
-     * @return $this
+     * @param       $route
+     * @param       $callback
+     * @param array ...$params
+     *
+     * @return null
      */
-    public function put($route, $callback, ...$params)
+    public static function put($route, $callback, ...$params)
     {
         $route = self::routeGroup($route);
         self::registerRoute('PUT', $route);
@@ -621,26 +646,34 @@ class Route
 
         return self::apply($route, $callback, $params);
     }
-
+    
     /**
-     * @return $this
+     * @param       $route
+     * @param       $callback
+     * @param array ...$params
+     *
+     * @return null
      */
-    public function delete($route, $callback, ...$params)
+    public static function delete($route, $callback, ...$params)
     {
         $route = self::routeGroup($route);
         self::registerRoute('DELETE', $route);
 
         if ( ! Request::isDelete() ) {
-            return $this;
+            return self::$instance;
         }
 
         return self::apply($route, $callback, $params);
     }
-
+    
     /**
-     * @return $this
+     * @param       $route
+     * @param       $callback
+     * @param array ...$params
+     *
+     * @return null
      */
-    public function patch($route, $callback, ...$params)
+    public static function patch($route, $callback, ...$params)
     {
         $route = self::routeGroup($route);
         self::registerRoute('PATCH', $route);
@@ -651,11 +684,15 @@ class Route
 
         return self::apply($route, $callback, $params);
     }
-
+    
     /**
-     * @return $this
+     * @param       $route
+     * @param       $callback
+     * @param array ...$params
+     *
+     * @return null
      */
-    public function options($route, $callback, ...$params)
+    public static function options($route, $callback, ...$params)
     {
         $route = self::routeGroup($route);
         self::registerRoute('OPTIONS', $route);
@@ -666,9 +703,12 @@ class Route
 
         return self::apply($route, $callback, $params);
     }
-
+    
     /**
-     * @return $this
+     * @param $route
+     * @param $callback
+     *
+     * @return null
      */
     public static function group($route, $callback)
     {
@@ -688,7 +728,7 @@ class Route
         unset(self::$group[self::$groupLevel]);
         self::$groupLevel--;
     }
-
+    
     /**
      * @param $route
      *
