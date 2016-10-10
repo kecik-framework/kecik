@@ -1,4 +1,8 @@
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->  
+<?php
+use Kecik\Route;
+use Kecik\Url;
+?><!--[if IE 8]>
+<html lang="en" class="ie8"> <![endif]-->
 <!--[if IE 9]> <html lang="en" class="ie9"> <![endif]-->  
 <!--[if !IE]><!--> <html> <!--<![endif]-->  
     <head>
@@ -26,8 +30,10 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-            <li <?php if ($this->route->is('/')) { ?> class="active" <?php } ?> ><a href="{{ $this->url->to('') }}">Home</a></li>
-            <li <?php if ($this->route->is('data')) { ?> class="active" <?php } ?> ><a href="{{ $this->url->to('data') }}">Data</a></li>
+              <li <?php if ( Route::is('/') ) { ?> class="active" <?php } ?> ><a href="<?php Url::to('') ?>">Home</a>
+              </li>
+              <li <?php if ( Route::is('data') ) { ?> class="active" <?php } ?> ><a
+                      href="<?php Url::to('data') ?>">Data</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

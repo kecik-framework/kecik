@@ -9,6 +9,7 @@ use Kecik\Assets;
 use Kecik\Config;
 use Kecik\Kecik;
 use Kecik\Route;
+use Kecik\Template;
 
 
 $config = array(
@@ -44,43 +45,48 @@ Kecik::run(function () use (&$dbcon) {
             header('X-Error-Message: Fail Connecting', true, 500);
             die("Failed to connect to MySQL: " . mysqli_connect_error());
         }
+
     });
     
     Route::get(
         '/',
         function () use ($dbcon) {
             $controller = new Controllers\Welcome($dbcon);
-            return $controller->index();
+
+            return Template::render('template_kecik', $controller->index());
         }
-    ); //->template('template_kecik');
+    );
     
     Route::get(
         'data',
-        function () use ($dbcon) {
+        function () use (&$dbcon) {
             $controller = new Controllers\Welcome($dbcon);
-            return $controller->Data();
+
+            return Template::render('template_kecik', $controller->Data());
         }
-    ); //->template('template_kecik');
+    );
     
     Route::get(
         'tambah',
-        function () use ($dbcon) {
+        function () use (&$dbcon) {
             $controller = new Controllers\Welcome($dbcon);
-            return $controller->Form();
+
+            return Template::render('template_kecik', $controller->Form());
         }
-    ); //->template('template_kecik');
+    );
     
     Route::get(
         'edit/:id',
-        function ($id) use ($dbcon) {
+        function ($id) use (&$dbcon) {
             $controller = new Controllers\Welcome($dbcon);
-            return $controller->Form($id);
+
+            return Template::render('template_kecik', $controller->Form($id));
         }
-    ); //->template('template_kecik');
+    );
     
     Route::get(
         'delete/:id',
-        function ($id) use ($dbcon) {
+        function ($id) use (&$dbcon) {
             $controller = new Controllers\Welcome($dbcon);
             $controller->delete($id);
         }
@@ -88,15 +94,16 @@ Kecik::run(function () use (&$dbcon) {
     
     Route::post(
         'save',
-        function () use ($dbcon) {
-            $controller = new Controllers\Welcome($this, $dbcon);
+        function () use (&$dbcon) {
+            var_dump($dbcon);
+            $controller = new Controllers\Welcome($dbcon);
             $controller->save();
         }
     );
     
     Route::post(
         'update/:id',
-        function ($id) use ($dbcon) {
+        function ($id) use (&$dbcon) {
             $controller = new Controllers\Welcome($dbcon);
             $controller->update($id);
         }

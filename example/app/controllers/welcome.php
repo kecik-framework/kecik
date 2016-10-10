@@ -39,7 +39,7 @@ class Welcome extends Controller
      */
     public function Data()
     {
-        return $this->view('data');
+        return $this->view('data', [ 'dbcon' => $this->dbcon ]);
     }
 
     /**
@@ -50,12 +50,12 @@ class Welcome extends Controller
     public function Form($id = '')
     {
         if ( $id == '' ) {
-            $url = Url::linkTo('index.php/save');
+            $url = Url::linkTo('save');
         } else {
-            $url = Url::linkTo('index.php/update/' . $id);
+            $url = Url::linkTo('update/' . $id);
         }
 
-        return $this->view('form', [ 'id' => $id, 'url' => $url ]);
+        return $this->view('form', [ 'dbcon' => $this->dbcon, 'id' => $id, 'url' => $url ]);
     }
 
     /**
@@ -69,7 +69,7 @@ class Welcome extends Controller
         $sql = $model->save();
         mysqli_query($this->dbcon, $sql);
 
-        Url::redirect('index.php/data');
+        Url::redirect('data');
     }
 
     /**
@@ -83,7 +83,7 @@ class Welcome extends Controller
         $sql = $model->save();
         mysqli_query($this->dbcon, $sql);
 
-        Url::redirect('index.php/data');
+        Url::redirect('data');
     }
 
     /**
@@ -95,6 +95,6 @@ class Welcome extends Controller
         $sql = $model->delete();
         mysqli_query($this->dbcon, $sql);
 
-        Url::redirect('index.php/data');
+        Url::redirect('data');
     }
 }
