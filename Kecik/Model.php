@@ -135,7 +135,7 @@ if (!class_exists('Kecik\Model')) {
 
             while (list($id, $value) = each($values)) {
                 $values[$id] = "'$value'";
-                $updateVar[] = "$fields[$id] = $value";
+                $updateVar[] = "$fields[$id] = $values[$id]";
             }
 
             $this->values = implode(',', $values);

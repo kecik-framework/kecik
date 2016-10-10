@@ -32,6 +32,9 @@ require_once "Url.php";
 require_once "Request.php";
 require_once "Response.php";
 require_once "Assets.php";
+require_once "Template.php";
+require_once "View.php";
+
 /**
  * End Load require
  */
@@ -120,7 +123,7 @@ class Kecik
         }
 
         Route::init();
-        Url::setBasePath( Config::get('path.basepath') );
+        Url::setBasePath(Config::get('path.basepath'));
         Assets::init();
 //        self::$instance->assets    = new Assets(self::$instance->url);
         Request::init();
@@ -276,140 +279,74 @@ class Kecik
 
         if ( php_sapi_name() == 'cli-server' ) {
 
-            if ( is_file(route::$BasePath . str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'])) &&
-                 file_exists(route::$BasePath . str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'])) &&
+            if ( is_file(Url::basePath() . str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'])) &&
+                 file_exists(Url::basePath() . str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI'])) &&
                  substr(strtolower($_SERVER['REQUEST_URI']), -4) != '.php'
             ) {
-                readfile(route::$BasePath . str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI']));
+                readfile(Url::basePath() . str_replace('/', DIRECTORY_SEPARATOR, $_SERVER['REQUEST_URI']));
 
                 return TRUE;
             }
 
         }
 
+        if ( Route::status() ) {
 
-        if ( self::$FullRender != '' ) {
+            if ( is_callable(self::$instance->before) ) {
+                $before = self::$instance->before;
+                $before();
+            }
 
-            if ( Route::status() ) {
+            //** Run Middleware Before
+            foreach ( Middleware::getBefore() as $middleware ) {
+                $middleware();
+            }
 
-                if ( is_callable(self::$instance->before) ) {
-                    $before = self::$instance->before;
-                    $before();
-                }
 
-                //** Run Middleware Before
-                foreach ( Middleware::getBefore() as $middleware ) {
-                    $middleware();
-                }
+            list( $response, $result ) = Response::get();
 
-                list($response, $result) = Response::get();
+            if ( ! is_string($response) && ! is_numeric($response) ) {
+                $response = json_encode($response);
+            }
 
-                if ( is_callable(self::$instance->after) ) {
-                    $after = self::$instance->after;
-                    $response = $after(self::$instance->request, $response);
-                }
 
-                $response = ( empty( $response ) || is_bool($response) ) ? $result : $response . $result;
+            if ( is_callable(self::$instance->after) ) {
+                $after = self::$instance->after;
+                $response = $after(self::$instance->request, $response);
+            }
 
-                if ( count(self::$header) > 0 && php_sapi_name() != 'cli' ) {
+            $response = ( empty( $response ) || is_bool($response) ) ? $result : $response . $result;
 
-                    while ( list( $idx_header, $headerValue ) = each(self::$header) ) {
-                        header($headerValue);
-                    }
+            if ( count(self::$header) > 0 && php_sapi_name() != 'cli' ) {
 
-                }
-
-                //** Run Middleware After
-                foreach ( Middleware::getAfter() as $middleware ) {
-                    $middleware();
-                }
-
-                //** Replace Tag
-                echo self::$FullRender = self::$instance->render(
-                    Config::get('path.basepath') . Config::get('path.template') .
-                    '/' .
-                    self::$FullRender . '.php',
-                    $response
-                );
-
-            } else {
-
-                if ( php_sapi_name() != 'cli' ) {
-                    header($_SERVER["SERVER_PROTOCOL"] . ' ' . Route::$HttpResponse[404]);
-                }
-
-                if ( self::$instance->config->get('error.404') != '' ) {
-                    include self::$instance->config->get('path.template') . '/' .
-                            self::$instance->config->get('error.404') . '.php';
-                } else {
-                    die( Route::$HttpResponse[404] );
+                while ( list( $idx_header, $headerValue ) = each(self::$header) ) {
+                    header($headerValue);
                 }
 
             }
 
-            self::$FullRender = '';
+            //** Run Middleware After
+            foreach ( Middleware::getAfter() as $middleware ) {
+                $middleware();
+            }
+
+            echo $response;
+            //echo $result;
         } else {
 
-            if ( Route::status() ) {
+            if ( php_sapi_name() != 'cli' ) {
+                header($_SERVER["SERVER_PROTOCOL"] . ' ' . Route::$HttpResponse[404]);
+            }
 
-                if ( is_callable(self::$instance->before) ) {
-                    $before = self::$instance->before;
-                    $before();
-                }
-
-                //** Run Middleware Before
-                foreach ( Middleware::getBefore() as $middleware ) {
-                    $middleware();
-                }
-
-
-                list($response, $result) = Response::get();
-
-                if ( ! is_string($response) && ! is_numeric($response) ) {
-                    $response = json_encode($response);
-                }
-
-
-
-                if ( is_callable(self::$instance->after) ) {
-                    $after = self::$instance->after;
-                    $response = $after(self::$instance->request, $response);
-                }
-
-                $response = ( empty( $response ) || is_bool($response) ) ? $result : $response . $result;
-
-                if ( count(self::$header) > 0 && php_sapi_name() != 'cli' ) {
-
-                    while ( list( $idx_header, $headerValue ) = each(self::$header) ) {
-                        header($headerValue);
-                    }
-
-                }
-
-                //** Run Middleware After
-                foreach ( Middleware::getAfter() as $middleware ) {
-                    $middleware();
-                }
-
-                echo $response;
-                //echo $result;
+            if ( Config::get('error.404') != '' ) {
+                list( $result, $printed ) = Response::set(Template::render(Config::get('error.404')))->get();
+                echo $result;
             } else {
-
-                if ( php_sapi_name() != 'cli' ) {
-                    header($_SERVER["SERVER_PROTOCOL"] . ' ' . Route::$HttpResponse[404]);
-                }
-
-                if ( Config::get('error.404') != '' ) {
-                    echo self::$instance->render(
-                        Config::get('path.template') . '/' . Config::get('error.404') . '.php'
-                    );
-                } else {
-                    die( Route::$HttpResponse[404] );
-                }
-
+                die( Route::$HttpResponse[404] );
             }
 
         }
+
 
     }
 

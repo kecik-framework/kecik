@@ -61,6 +61,8 @@ class Response
     public static function set($result)
     {
         self::$result = $result;
+
+        return self::$instance;
     }
 
     public static function get()
@@ -69,8 +71,9 @@ class Response
         ob_start();
         $return = call_user_func_array($func, Route::getParams());
         $printed = ob_get_clean();
+        $return = ( ! is_null($return) ) ? $return : '';
 
-        return [$return, $printed];
+        return [ $return, $printed ];
     }
 }
 
