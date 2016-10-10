@@ -1,7 +1,7 @@
 <?php
 if ($id != '') {
     $sql = "SELECT * FROM data WHERE id=$id";
-    $res = mysqli_query($this->dbcon, $sql);
+    $res = mysqli_query($dbcon, $sql);
 
     while ($data = mysqli_fetch_object($res)) {
         $nama = $data->nama;
