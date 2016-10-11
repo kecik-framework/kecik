@@ -1,9 +1,8 @@
-<?php
+<[
 use Kecik\Url;
-
-?>
+]>
 <br/>
-<a href="<?php Url::to('tambah') ?>" class="btn btn-success">Tambah Data</a><br />
+<a href="<[ Url::to('tambah') ]>" class="btn btn-success">Tambah Data</a><br />
 
 <table class="table table-striped table-hover">
     <thead>
@@ -16,26 +15,26 @@ use Kecik\Url;
     </thead>
 
     <tbody>
-    <?php
+    <[
     $sql = "SELECT * FROM data";
     $res = mysqli_query($this->dbcon, $sql);
     $no = 1;
 
     while ($data = mysqli_fetch_object($res)):
-        ?>
+    ]>
         <tr>
-            <td><?php echo $no; ?></td>
-            <td><?php echo $data->nama; ?></td>
-            <td><?php echo $data->email; ?></td>
+            <td><[= $no; ]></td>
+            <td><[= $data->nama; ]></td>
+            <td><[= $data->email; ]></td>
             <td>
-                <a href="<?php Url::to('edit/' . $data->id) ?>" class="btn btn-primary">Ubah</a>
-                <a href="<?php Url::to('delete/' . $data->id) ?>" class="btn btn-danger">Hapus</a>
+                <a href="<[ Url::to('edit/' . $data->id) ]>" class="btn btn-primary">Ubah</a>
+                <a href="<[ Url::to('delete/' . $data->id) ]>" class="btn btn-danger">Hapus</a>
             </td>
         </tr>
-        <?php
-        $no++;
+    <[
+    $no++;
     endwhile;
-    ?>
+    ]>
 
     </tbody>
 </table>
