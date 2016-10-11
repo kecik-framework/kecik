@@ -44,7 +44,7 @@ if ( ! class_exists('Kecik\Controller') ) {
          */
         protected function view($file, $param = [])
         {
-            return View::render($this, $file, $param);
+            return View::render($file, $param, $this);
         }
     }
 }

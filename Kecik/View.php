@@ -20,12 +20,11 @@ class View
         }
     }
 
-    public static function render($controller, $view, $params = [])
+    public static function render($view, $params = [], $controller = NULL)
     {
-        extract($params);
 
         if ( ! is_array($view) ) {
-            $path = explode('\\', get_class($controller));
+            $path = [];
 
             if ( count($path) > 2 ) {
                 $view_path = '';
@@ -58,8 +57,34 @@ class View
         }
 
         ob_start();
-        include $view_path . '/Views/' . $view . '.php';
+        if ( ! is_null($controller) && ( $controller instanceof Controller ) ) {
+            return self::$instance->callback($controller, $view_path, $view, $params);
+        } else {
+            extract($params);
 
-        return ob_get_clean();
+            include $view_path . '/Views/' . $view . '.php';
+
+            return ob_get_clean();
+        }
+
     }
+
+    private function callback($controller, $view_path, $view, $params)
+    {
+        $func = function ($view_path, $view, $params) {
+            extract($params);
+
+            ob_start();
+            include $view_path . '/Views/' . $view . '.php';
+
+            return ob_get_clean();
+        };
+
+        $func = $func->bindTo($controller);
+
+        return $func($view_path, $view, $params);
+    }
+
 }
+
+View::init();
