@@ -30,10 +30,11 @@ use Kecik\Url;
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
-              <li <?php if ( Route::is('/') ) { ?> class="active" <?php } ?> ><a href="<?php Url::to('') ?>">Home</a>
+              <li
+              <[ if ( Route::is('/') ) { ]> class="active" <[ } ]> ><a href="<[ Url::to('') ]>">Home</a>
               </li>
-              <li <?php if ( Route::is('data') ) { ?> class="active" <?php } ?> ><a
-                      href="<?php Url::to('data') ?>">Data</a></li>
+              <li
+              <[ if ( Route::is('data') ) { ]> class="active" <[ } ]> ><a href="<[ Url::to('data') ]>">Data</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

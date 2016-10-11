@@ -52,7 +52,6 @@ Kecik::run(function () use (&$dbcon) {
         '/',
         function () use ($dbcon) {
             $controller = new Controllers\Welcome($dbcon);
-
             return Template::render('template_kecik', $controller->index());
         }
     );

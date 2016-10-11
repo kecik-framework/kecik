@@ -17,7 +17,6 @@ use Kecik\Url;
 
     <tbody>
     <?php
-    var_dump($this);
     $sql = "SELECT * FROM data";
     $res = mysqli_query($this->dbcon, $sql);
     $no = 1;

@@ -39,7 +39,7 @@ class Welcome extends Controller
      */
     public function Data()
     {
-        return $this->view('data', [ 'dbcon' => $this->dbcon ]);
+        return $this->view('data');
     }
 
     /**
@@ -55,7 +55,7 @@ class Welcome extends Controller
             $url = Url::linkTo('update/' . $id);
         }
 
-        return $this->view('form', [ 'dbcon' => $this->dbcon, 'id' => $id, 'url' => $url ]);
+        return $this->view('form', [ 'id' => $id, 'url' => $url ]);
     }
 
     /**
