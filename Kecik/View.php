@@ -75,9 +75,21 @@ class View
             extract($params);
 
             ob_start();
-            include $view_path . '/Views/' . $view . '.php';
+            readfile($view_path . '/Views/' . $view . '.php');
+            $result = ob_get_clean();
 
-            return ob_get_clean();
+            $result = Template::parse($result);
+
+            $temp = tempnam(sys_get_temp_dir(), 'KEV');
+            $f = fopen($temp, 'w');
+            fwrite($f, $result);
+            fclose($f); // this removes the file
+            ob_start();
+            include( $temp );
+            $result = ob_get_clean();
+
+            return $result;
+
         };
 
         $func = $func->bindTo($controller);

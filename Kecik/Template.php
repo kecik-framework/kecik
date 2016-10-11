@@ -26,6 +26,32 @@ class Template
         readfile(Config::get('path.template') . '/' . $file . '.php');
         $fullRender = ob_get_clean();
 
+        $fullRender = self::parse($fullRender, $response);
+
+        $temp = tempnam(sys_get_temp_dir(), 'KET');
+        $f = fopen($temp, 'w');
+        fwrite($f, $fullRender);
+        fclose($f); // this removes the file
+        ob_start();
+        include( $temp );
+        $fullRender = ob_get_clean();
+
+        return $fullRender;
+
+        /*ob_start();
+        eval('?> ' . $fullRender);
+        $fullRender = ob_get_clean();
+        return $fullRender;*/
+    }
+
+    /**
+     * @param $response
+     * @param $fullRender
+     *
+     * @return mixed
+     */
+    public static function parse($fullRender, $response = '')
+    {
         $open_tags_replaces = [
             '[' => '\\[',
             '{' => '\\{',
@@ -95,22 +121,12 @@ class Template
                 $fullRender
             );
 
+            return $fullRender;
+
         }
-        //-- END Replace Tag
 
-        $temp = tempnam(sys_get_temp_dir(), 'kec');
-        $f = fopen($temp, 'w');
-        fwrite($f, $fullRender);
-        fclose($f); // this removes the file
-        ob_start();
-        include( $temp );
-        $fullRender = ob_get_clean();
         return $fullRender;
-
-        /*ob_start();
-        eval('?> ' . $fullRender);
-        $fullRender = ob_get_clean();
-        return $fullRender;*/
+        //-- END Replace Tag
     }
 }
 
