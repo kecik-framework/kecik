@@ -31,8 +31,8 @@ class Config
             'path.templates'     => '',
             'mod_rewrite'        => FALSE,
             'index'              => '',
-            'template.open_tag'  => '{{',
-            'template.close_tag' => '}}'
+            'template.open_tag'  => '<[',
+            'template.close_tag' => ']>'
         ];
     }
 

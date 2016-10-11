@@ -23,23 +23,54 @@ class Template
     public static function render($file, $response = '')
     {
         ob_start();
-        include Config::get('path.template') . '/' . $file . '.php';
+        readfile(Config::get('path.template') . '/' . $file . '.php');
         $fullRender = ob_get_clean();
+
+        $open_tags_replaces = [
+            '[' => '\\[',
+            '{' => '\\{',
+            '(' => '\\(',
+        ];
+
+        $close_tags_replaces = [
+            ']' => '\\]',
+            '}' => '\\}',
+            ')' => '\\)',
+            '?' => '\\?',
+            '$' => '\\$',
+            '^' => '\\^',
+            '*' => '\\*',
+            '+' => '\\+',
+            '|' => '\\|',
+            '.' => '\\.',
+            '/' => '\\/',
+
+        ];
+
+        $open_tag = addslashes(Config::get('template.open_tag'));
+        $close_tag = addslashes(Config::get('template.close_tag'));
+
+        foreach ( $open_tags_replaces as $search => $open_tags_replace ) {
+            $open_tag = str_replace($search, $open_tags_replace, $open_tag);
+        }
+
+        foreach ( $close_tags_replaces as $search => $close_tags_replace ) {
+            $close_tag = str_replace($search, $close_tags_replace, $close_tag);
+        }
 
         $fullRender = preg_replace_callback(
             [
-                '/(\\\)?' . addslashes(Config::get('template.open_tag')) . '=?' . '/',
-                '/(\\\)?' . addslashes(Config::get('template.close_tag')) . '/'
+                '/(\\\)?' . $open_tag . '=?' . '/',
+                '/(\\\)?' . $close_tag . '/'
             ],
             function ($s) {
 
                 if ( isset( $s[0] ) ) {
-
                     if ( isset( $s[1] ) && $s[1] == '\\' ) {
                         return substr($s[0], 1);
                     } elseif ( $s[0] == Config::get('template.open_tag') ) {
                         return '<?php ';
-                    } elseif ( $s[0] == '{{=' ) {
+                    } elseif ( $s[0] == '<[=' ) {
                         return '<?php echo ';
                     } elseif ( $s[0] == Config::get('template.close_tag') ) {
                         return '?>';
@@ -67,11 +98,19 @@ class Template
         }
         //-- END Replace Tag
 
+        $temp = tempnam(sys_get_temp_dir(), 'kec');
+        $f = fopen($temp, 'w');
+        fwrite($f, $fullRender);
+        fclose($f); // this removes the file
         ob_start();
-        eval( '?>' . $fullRender );
+        include( $temp );
         $fullRender = ob_get_clean();
-
         return $fullRender;
+
+        /*ob_start();
+        eval('?> ' . $fullRender);
+        $fullRender = ob_get_clean();
+        return $fullRender;*/
     }
 }
 
