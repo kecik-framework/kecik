@@ -17,9 +17,10 @@ class Middleware
 
     public static function setBefore(\Closure ...$funcs)
     {
+
         if ( ! Route::status() ) {
             foreach ( $funcs as $func ) {
-                self::$middlewares['before'] = $func;
+                self::$middlewares['before'][] = $func;
             }
         }
 
@@ -35,7 +36,7 @@ class Middleware
     {
         if ( ! Route::status() ) {
             foreach ( $funcs as $func ) {
-                self::$middlewares['after'] = $func;
+                self::$middlewares['after'][] = $func;
             }
         }
 

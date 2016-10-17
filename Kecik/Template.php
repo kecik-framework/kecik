@@ -15,15 +15,19 @@ class Template
     
     public static function init()
     {
+
         if (is_null(self::$instance)) {
             self::$instance = new self;
         }
+
     }
 
     public static function render($file, $response = '')
     {
+        if ( file_exists(Config::get('path.template') . "/$file/__init__.php") )
+
         ob_start();
-        readfile(Config::get('path.template') . '/' . $file . '.php');
+        readfile(Config::get('path.template') . "/$file/$file.php");
         $fullRender = ob_get_clean();
 
         $fullRender = self::parse($fullRender, $response);

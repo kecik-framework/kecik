@@ -295,11 +295,17 @@ class Kecik
             if ( is_callable(self::$instance->before) ) {
                 $before = self::$instance->before;
                 $before();
+
             }
+
 
             //** Run Middleware Before
             foreach ( Middleware::getBefore() as $middleware ) {
-                $middleware();
+
+                if ( $middleware() === FALSE ) {
+                    self::stop();
+                }
+
             }
 
 
@@ -325,13 +331,20 @@ class Kecik
 
             }
 
-            //** Run Middleware After
-            foreach ( Middleware::getAfter() as $middleware ) {
-                $middleware();
-            }
-
             echo $response;
             //echo $result;
+
+
+            //** Run Middleware After
+            foreach ( Middleware::getAfter() as $middleware ) {
+
+                if ( $middleware() === FALSE ) {
+                    self::stop();
+                }
+
+            }
+
+
         } else {
 
             if ( php_sapi_name() != 'cli' ) {
